@@ -390,6 +390,18 @@ void CAodixCore::gui_delete_current_instance(HWND const hwnd)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::gui_scroll_to_instance()
+{
+	// instance before instance list offset
+	if(user_instance<user_instance_list_offset)
+		user_instance_list_offset=user_instance;
+
+	// instance after instance list offset
+	if(user_instance>(user_instance_list_offset+10))
+		user_instance_list_offset=user_instance-10;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::gui_scroll_iterate(HWND const hwnd,int const ym,int const seq_area_y,int const h)
 {
 	// get current pattern pointer

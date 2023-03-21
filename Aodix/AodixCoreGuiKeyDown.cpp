@@ -384,6 +384,22 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			gui_is_dirty=1;
 		}
 
+		// select next instance
+		if(keycode==VK_MULTIPLY)
+		{
+			user_instance=arg_tool_clipped_assign(user_instance+1,0,MAX_INSTANCES-1);
+			gui_scroll_to_instance();
+			gui_is_dirty=1;
+		}
+
+		// select prev instance
+		if(keycode==VK_DIVIDE)
+		{
+			user_instance=arg_tool_clipped_assign(user_instance-1,0,MAX_INSTANCES-1);
+			gui_scroll_to_instance();
+			gui_is_dirty=1;
+		}
+
 		// delete key (multifunction)
 		if(keycode==VK_DELETE)
 		{

@@ -271,13 +271,8 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 		user_instance=arg_tool_clipped_assign(user_instance+(spin_index*2)-1,0,MAX_INSTANCES-1);
 		user_pressed=18+spin_index;
 
-		// new instance before instance list offset
-		if(user_instance<user_instance_list_offset)
-			user_instance_list_offset=user_instance;
-
-		// new instance after instance list offset
-		if(user_instance>(user_instance_list_offset+10))
-			user_instance_list_offset=user_instance-10;
+		// scroll to instance
+		gui_scroll_to_instance();
 
 		// post refresh
 		gui_is_dirty=1;
@@ -969,13 +964,8 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 					// update selected instance
 					user_instance=i;
 
-					// new instance before instance list offset
-					if(user_instance<user_instance_list_offset)
-						user_instance_list_offset=user_instance;
-
-					// new instance after instance list offset
-					if(user_instance>(user_instance_list_offset+10))
-						user_instance_list_offset=user_instance-10;
+					// scroll to instance
+					gui_scroll_to_instance();
 
 					// select first parameter
 					user_parameter_list_offset=0;

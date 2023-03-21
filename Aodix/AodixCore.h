@@ -302,6 +302,7 @@ public:
 	void gui_key_up(HWND const hwnd,int const keycode);
 	void gui_key_pc_piano(int const keycode,int* pkeyval);
 	void gui_delete_current_instance(HWND const hwnd);
+	void gui_scroll_to_instance();
 	void gui_vst_build_lib(void);
 	void gui_scroll_iterate(HWND const hwnd,int const ym,int const seq_area_y,int const h);
 
