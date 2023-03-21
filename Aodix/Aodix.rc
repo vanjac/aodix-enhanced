@@ -41,7 +41,7 @@ BEGIN
     BEGIN
         MENUITEM "New...",                      ID_FILE_NEW40001
         MENUITEM SEPARATOR
-        MENUITEM "Open...",                     ID_FILE_OPEN40002
+        MENUITEM "Open...\tCtrl+O",             ID_FILE_OPEN40002
         MENUITEM "Save\tCtrl+S",                ID_FILE_SAVE40025
         MENUITEM "Save As...",                  ID_FILE_SAVEAS
         MENUITEM SEPARATOR
