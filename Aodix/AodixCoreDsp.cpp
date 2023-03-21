@@ -512,6 +512,7 @@ void CAodixCore::dsp_transport_play(void)
 
 	// undo if recording
 	edit_undo_snapshot();
+	edit_undo_combine_next();
 
 	// get current pattern pointer
 	ADX_PATTERN* pp=&project.pattern[user_pat];

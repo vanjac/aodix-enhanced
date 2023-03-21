@@ -91,6 +91,9 @@ void CAodixCore::midi_in_process(BYTE const data0,BYTE const data1,BYTE const da
 		// sequencer record instance midi events
 		if(master_time_info.flags & kVstTransportRecording)
 		{
+			// update undo (combining)
+			edit_undo_snapshot(true);
+
 			// write midi event with transport playing and live
 			if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
 			{
@@ -153,6 +156,9 @@ void CAodixCore::midi_in_process(BYTE const data0,BYTE const data1,BYTE const da
 							// write midi wrapped automation event (live else offline)
 							if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
 								new_event_pos=seq_sample_to_pos(master_transport_sampleframe);
+
+							// update undo (combining)
+							edit_undo_snapshot(true);
 
 							// add automation event
 							seq_add_event(new_event_pos,user_pat,user_trk,4,i,(p>>8)&0xFF,p&0xFF,(data2<<1),user_edit_overwrite);

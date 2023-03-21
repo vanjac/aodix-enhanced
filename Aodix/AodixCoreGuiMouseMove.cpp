@@ -68,6 +68,9 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 			// get integral tempo
 			int const int_tempo=int(d_tempo*256.0);
 
+			// update undo (combining)
+			edit_undo_snapshot(true);
+
 			// write automation tempo (live else offline)
 			if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
 				seq_add_event(play_pos,user_pat,user_trk,5,(int_tempo>>8)&0xFF,(int_tempo&0xFF),0,0,user_edit_overwrite);

@@ -112,6 +112,7 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 
 		// update undo
 		edit_undo_snapshot();
+		edit_undo_combine_next();
 
 		// read instance data
 		for(int i=0;i<MAX_INSTANCES;i++)

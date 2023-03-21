@@ -67,6 +67,7 @@ CAodixCore::CAodixCore(HINSTANCE const hinstance)
 
 	// reset undo data
 	undo_num_events=0;
+	undo_combine=false;
 
 	// reset gui flags
 	gui_is_dirty=0;
@@ -386,6 +387,7 @@ void CAodixCore::reset_project(void)
 
 	// reset undo events
 	undo_num_events=0;
+	undo_combine=false;
 
 	// reset master input pins
 	for(p=0;p<NUM_DSP_INPUTS;p++)

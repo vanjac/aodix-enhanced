@@ -475,6 +475,9 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			// sequencer delete at position
 			if(user_page==0)
 			{
+				// update undo (combining)
+				edit_undo_snapshot(true);
+
 				// delete sequencer events at same position and track
 				seq_delete_events_at(user_pat,pp->usr_pos,edit_get_quantization(),user_trk,1);
 
@@ -644,6 +647,9 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 				// get current instance
 				ADX_INSTANCE* pi=&instance[user_instance];
 
+				// update undo (combining)
+				edit_undo_snapshot(true);
+
 				// if effect instanced, add midi program change message event (with current instance program index else first program)
 				if(pi->peffect!=NULL)
 					seq_add_event(pp->usr_pos,user_pat,user_trk,3,user_instance,0xC0+user_midi_ch,pi->peffect->dispatcher(pi->peffect,effGetProgram,0,0,NULL,0.0f),0,user_edit_overwrite);
@@ -692,6 +698,9 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			// entering hex data
 			if(pc_kbd_dig>=0)
 			{
+				// update undo (combining)
+				edit_undo_snapshot(true);
+
 				// scan sequencer events
 				for(int e=0;e<seq_num_events;e++)
 				{
@@ -748,6 +757,9 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 					int const t_live=(master_time_info.flags & kVstTransportPlaying) && cfg.rec_live;
 					int const t_event_pos=(t_live*seq_sample_to_pos(master_transport_sampleframe))+(!t_live*pp->usr_pos);
 
+					// update undo (combining)
+					edit_undo_snapshot(true);
+
 					// write jump event
 					if(pc_kbd_not==-2)
 						seq_add_event(t_event_pos,user_pat,user_trk,2,0,0,0,0,user_edit_overwrite);
@@ -781,6 +793,9 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 					// record note-on event to the sequencer
 					if(master_time_info.flags & kVstTransportRecording)
 					{
+						// update undo (combining)
+						edit_undo_snapshot(true);
+
 						// write midi note on event with transport playing and live
 						if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
 						{
@@ -853,6 +868,9 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 				// record pattern event (always offline)
 				if((master_time_info.flags & kVstTransportRecording) && pc_kbd_pat>=0)
 				{
+					// update undo (combining)
+					edit_undo_snapshot(true);
+
 					// write pattern event
 					if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
 					{

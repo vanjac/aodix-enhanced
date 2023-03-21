@@ -740,6 +740,9 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				int const ne_pos=(ym_seq_pos/i_quantize)*i_quantize;
 				int const ne_not=arg_tool_clipped_assign(pr_no+(xm-(TRACK_WIDTH+4))/user_pr_note_width,0,127);
 
+				// update undo (combining)
+				edit_undo_snapshot(true);
+
 				// add new event
 				seq_add_event(ne_pos,user_pat,user_trk,0,user_instance,user_midi_ch,ne_not,user_kbd_velo,0);
 

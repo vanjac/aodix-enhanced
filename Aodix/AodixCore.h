@@ -302,7 +302,7 @@ public:
 	void gui_key_up(HWND const hwnd,int const keycode);
 	void gui_key_pc_piano(int const keycode,int* pkeyval);
 	void gui_delete_current_instance(HWND const hwnd);
-	void gui_scroll_to_instance();
+	void gui_scroll_to_instance(void);
 	void gui_vst_build_lib(void);
 	void gui_scroll_iterate(HWND const hwnd,int const ym,int const seq_area_y,int const h);
 
@@ -363,7 +363,8 @@ public:
 	ADX_INSTANCE* instance_get_from_effect(AEffect* peffect,int* pindex);
 
 public:
-	void edit_undo_snapshot(void);
+	void edit_undo_snapshot(bool combine=false);
+	void edit_undo_combine_next(void);
 	void edit_undo(void);
 	void edit_insert(int const all_tracks);
 	void edit_back(int const all_tracks);
@@ -533,6 +534,7 @@ public:
 public:
 	// undo buffer info
 	int undo_num_events;
+	bool undo_combine;
 
 public:
 	// user variables

@@ -60,14 +60,26 @@ int CAodixCore::edit_quantize(int const position)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CAodixCore::edit_undo_snapshot(void)
+void CAodixCore::edit_undo_snapshot(bool combine)
 {
+	if(undo_combine&&combine)
+		return;
+
 	// store number of events for undo buffer
 	undo_num_events=seq_num_events;
 
 	// store edit event array in undo buffer
 	for(int e=0;e<undo_num_events;e++)
 		undo_event[e]=seq_event[e];
+
+	// combine next snapshot
+	undo_combine=combine;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::edit_undo_combine_next(void)
+{
+	undo_combine=true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +89,9 @@ void CAodixCore::edit_undo(void)
 	int num_events_tmp=undo_num_events;
 	undo_num_events=seq_num_events;
 	seq_num_events=num_events_tmp;
+
+	// don't combine next snapshot
+	undo_combine=false;
 
 	// temporary event storage
 	ADX_EVENT e_tmp;
@@ -297,8 +312,7 @@ void CAodixCore::edit_transpose(int const amt,int const apply_quantize)
 	int const user_block_trk_len=user_block_trk_end-user_block_trk_sta;
 
 	// update undo
-	if(apply_quantize)
-		edit_undo_snapshot();
+	edit_undo_snapshot(!apply_quantize);
 
 	// range selected
 	if(user_block_pos_len>0 && user_block_trk_len>0)
