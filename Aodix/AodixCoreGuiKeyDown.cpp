@@ -525,6 +525,12 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			gui_is_dirty=1;
 		}
 
+		if(keycode==VK_F9)
+		{
+			pp->usr_mod=!pp->usr_mod;
+			gui_is_dirty=1;
+		}
+
 		// master transport switch
 		if(keycode==VK_SPACE)
 		{
