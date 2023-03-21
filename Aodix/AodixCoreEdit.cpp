@@ -158,6 +158,65 @@ void CAodixCore::edit_back(int const all_tracks)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::edit_resize(int const all_tracks)
+{
+	// set wait cursor
+	SetCursor(hcursor_wait);
+
+	// get current pattern pointer
+	ADX_PATTERN* pp=&project.pattern[user_pat];
+
+	// update undo
+	edit_undo_snapshot();
+
+	// start by trying to shorten events
+	int last_end_pos=0;
+
+	// scan sequencer events
+	for(int e=0;e<seq_num_events;e++)
+	{
+		// get event pointer
+		ADX_EVENT* pe=&seq_event[e];
+
+		if(pe->pat==user_pat && (all_tracks==1 || pe->trk==user_trk)
+			&& pe->szd && pe->pos < pp->usr_pos)
+		{
+			int end_pos = pe->pos + pe->par;
+			if(end_pos > pp->usr_pos)
+			{
+				// cut event
+				pe->par = pp->usr_pos - pe->pos;
+				last_end_pos=MAX_SIGNED_INT;
+			}
+			else if(end_pos < pp->usr_pos && end_pos > last_end_pos)
+				last_end_pos=end_pos;
+		}
+	}
+
+	// couldn't find any event to shorten, so now try to extend events
+	if(last_end_pos != MAX_SIGNED_INT)
+	{
+		// scan sequencer events
+		for(int e=0;e<seq_num_events;e++)
+		{
+			// get event pointer
+			ADX_EVENT* pe=&seq_event[e];
+
+			if(pe->pat==user_pat && (all_tracks==1 || pe->trk==user_trk) && pe->szd)
+			{
+				int end_pos = pe->pos + pe->par;
+				// extend event
+				if(end_pos==last_end_pos)
+					pe->par = pp->usr_pos - pe->pos;
+			}
+		}
+	}
+
+	// set arrow cursor
+	SetCursor(hcursor_arro);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::edit_copy(int const cut)
 {
 	// set wait cursor

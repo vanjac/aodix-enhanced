@@ -181,6 +181,13 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			gui_is_dirty=1;
 		}
 
+		// resize command
+		if(keycode==VK_OEM_3) // `~ key
+		{
+			edit_resize(1);
+			gui_is_dirty=1;
+		}
+
 		// file save(as) aodix project
 		if(keycode=='S')
 			gui_command(hwnd,ID_FILE_SAVE40025);
@@ -436,6 +443,13 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 		if(keycode==VK_BACK)
 		{
 			edit_back(0);
+			gui_is_dirty=1;
+		}
+
+		// resize command
+		if(keycode==VK_OEM_3) // `~ key
+		{
+			edit_resize(0);
 			gui_is_dirty=1;
 		}
 
