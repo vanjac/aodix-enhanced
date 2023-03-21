@@ -43,7 +43,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Open...\tCtrl+O",             ID_FILE_OPEN40002
         MENUITEM "Save\tCtrl+S",                ID_FILE_SAVE40025
-        MENUITEM "Save As...",                  ID_FILE_SAVEAS
+        MENUITEM "Save As...\tCtrl+Shift+S",    ID_FILE_SAVEAS
         MENUITEM SEPARATOR
         MENUITEM "Bounce...",                   ID_FILE_BOUNCE40029
         MENUITEM SEPARATOR

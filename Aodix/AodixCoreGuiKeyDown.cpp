@@ -14,6 +14,10 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 	// shift pressed, control pressed
 	if(GetKeyState(VK_SHIFT)<0 && GetKeyState(VK_CONTROL)<0)
 	{
+		// file save as aodix project
+		if(keycode=='S')
+			gui_command(hwnd,ID_FILE_SAVEAS);
+
 		// track solo toggle
 		if(keycode=='M')
 		{
