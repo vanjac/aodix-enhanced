@@ -73,12 +73,24 @@ void CAodixCore::edit_undo_snapshot(void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::edit_undo(void)
 {
-	// dump undo data
-	seq_num_events=undo_num_events;
+	// swap undo data
+	int num_events_tmp=undo_num_events;
+	undo_num_events=seq_num_events;
+	seq_num_events=num_events_tmp;
 
-	// dump undo events
-	for(int e=0;e<seq_num_events;e++)
-		seq_event[e]=undo_event[e];
+	// temporary event storage
+	ADX_EVENT e_tmp;
+
+	// num events to swap
+	int num_swap=max(undo_num_events,seq_num_events);
+
+	// swap undo events
+	for(int e=0;e<num_swap;e++)
+	{
+		e_tmp=undo_event[e];
+		undo_event[e]=seq_event[e];
+		seq_event[e]=e_tmp;
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
