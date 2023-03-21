@@ -222,6 +222,10 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 		if(keycode=='S')
 			gui_command(hwnd,ID_FILE_SAVE40025);
 
+		// configuration dialog
+		if(keycode==VK_OEM_COMMA)
+			gui_command(hwnd,ID_FILE_CONFIGURATION);
+
 		// sequencer mark block start
 		if(keycode=='B')
 		{

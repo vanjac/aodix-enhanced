@@ -56,7 +56,7 @@ BEGIN
         MENUITEM "Export MIDI File...",         ID_FILE_EXPORTMIDIFILE
         , GRAYED
         MENUITEM SEPARATOR
-        MENUITEM "Configuration...",            ID_FILE_CONFIGURATION
+        MENUITEM "Configuration...\tCtrl+,",    ID_FILE_CONFIGURATION
         MENUITEM SEPARATOR
         MENUITEM "Exit...",                     ID_FILE_EXIT
         MENUITEM SEPARATOR
