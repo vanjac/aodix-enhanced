@@ -24,6 +24,10 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 	PVSTMAIN _pMain = NULL;
 	_pMain=(PVSTMAIN)GetProcAddress(h_dll,"main");
 
+	// VST 2.4 SDK adds "VSTPluginMain"
+	if (!_pMain)
+		_pMain=(PVSTMAIN)GetProcAddress(h_dll,"VSTPluginMain");
+
 	// no plug's main entry function?
 	if(!_pMain)
 	{
