@@ -99,6 +99,9 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 			EnableWindow(hwnd_chec1,FALSE);
 			EnableWindow(hwnd_chec2,FALSE);
 
+			// focus stop button
+			SetFocus(hwnd_butt2);
+
 			// status rendering
 			SetWindowText(hwnd_stat1,"Rendering...");
 
@@ -278,6 +281,9 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 			EnableWindow(hwnd_butt3,TRUE);
 			EnableWindow(hwnd_chec1,TRUE);
 			EnableWindow(hwnd_chec2,TRUE);
+
+			// focus file name box
+			SetFocus(hwnd_edit1);
 
 			// finish rendering
 			SetWindowText(hwnd_stat1,"Render Finished");
