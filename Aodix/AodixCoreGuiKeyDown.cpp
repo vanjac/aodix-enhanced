@@ -11,6 +11,18 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 	// get current pattern pointer
 	ADX_PATTERN* pp=&project.pattern[user_pat];
 
+	// shift pressed, control pressed
+	if(GetKeyState(VK_SHIFT)<0 && GetKeyState(VK_CONTROL)<0)
+	{
+		// track solo toggle
+		if(keycode=='M')
+		{
+			ADX_TRACK *pt = &pp->track[user_trk];
+			pt->solo=!pt->solo;
+			gui_is_dirty=1;
+		}
+	}
+
 	// shift pressed, no control pressed
 	if(GetKeyState(VK_SHIFT)<0 && GetKeyState(VK_CONTROL)>=0)
 	{
@@ -286,6 +298,14 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			}
 
 			// post refresh
+			gui_is_dirty=1;
+		}
+
+		// track mute toggle
+		if(keycode=='M')
+		{
+			ADX_TRACK *pt = &pp->track[user_trk];
+			pt->mute=!pt->mute;
 			gui_is_dirty=1;
 		}
 	}
