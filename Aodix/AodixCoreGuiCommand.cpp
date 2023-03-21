@@ -266,6 +266,9 @@ void CAodixCore::gui_command(HWND const hwnd,int const id)
 	// bounce project
 	if(id==ID_FILE_BOUNCE40029)
 	{
+		// close midi
+		midi_in_close();
+
 		// shutdown asio
 		asio_close(hwnd);
 
@@ -280,6 +283,9 @@ void CAodixCore::gui_command(HWND const hwnd,int const id)
 
 		// re-init asio
 		asio_init(hwnd);
+
+		// restart midi
+		midi_in_init();
 
 		// post refresh
 		gui_is_dirty=1;
