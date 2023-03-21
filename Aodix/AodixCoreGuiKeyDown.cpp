@@ -8,11 +8,17 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 {
+	// shift pressed
+	bool shift=GetKeyState(VK_SHIFT)<0;
+
+	// control pressed
+	bool control=GetKeyState(VK_CONTROL)<0;
+
 	// get current pattern pointer
 	ADX_PATTERN* pp=&project.pattern[user_pat];
 
 	// shift pressed, control pressed
-	if(GetKeyState(VK_SHIFT)<0 && GetKeyState(VK_CONTROL)<0)
+	if(shift && control)
 	{
 		// file save as aodix project
 		if(keycode=='S')
@@ -28,7 +34,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 	}
 
 	// shift pressed, no control pressed
-	if(GetKeyState(VK_SHIFT)<0 && GetKeyState(VK_CONTROL)>=0)
+	if(shift && !control)
 	{
 		// sequencer go previous track
 		if(keycode==VK_TAB)
@@ -46,7 +52,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 	}
 
 	// shift no pressed, control pressed
-	if(GetKeyState(VK_SHIFT)>=0 && GetKeyState(VK_CONTROL)<0)
+	if(!shift && control)
 	{
 		// return to previous pattern
 		if(keycode==VK_RETURN)
@@ -319,7 +325,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 	}
 
 	// no shift pressed and no control pressed
-	if(GetKeyState(VK_SHIFT)>=0 && GetKeyState(VK_CONTROL)>=0)
+	if(!shift && !control)
 	{
 		// sequencer go next track
 		if(keycode==VK_TAB)
