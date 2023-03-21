@@ -133,10 +133,11 @@ void CAodixCore::gui_key_up(HWND const hwnd,int const keycode)
 		case 'S':	pc_kbd_pat=28;	break;
 		case 'T':	pc_kbd_pat=29;	break;
 		case 'U':	pc_kbd_pat=30;	break;
-		case 'W':	pc_kbd_pat=31;	break;
-		case 'X':	pc_kbd_pat=32;	break;
-		case 'Y':	pc_kbd_pat=33;	break;
-		case 'Z':	pc_kbd_pat=34;	break;
+		case 'V':	pc_kbd_pat=31;	break;
+		case 'W':	pc_kbd_pat=32;	break;
+		case 'X':	pc_kbd_pat=33;	break;
+		case 'Y':	pc_kbd_pat=34;	break;
+		case 'Z':	pc_kbd_pat=35;	break;
 		}
 
 		// finish pattern events
