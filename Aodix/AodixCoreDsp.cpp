@@ -89,7 +89,6 @@ void CAodixCore::dsp_work(void)
 	int const i_samples_per_point=int(d_samples_per_point*16.0);
 
 	// get transport and pattern cue positions
-	int const trn_pos_sample=(master_transport_sampleframe<<4)/i_samples_per_point;
 	int const cue_sta_sample=(pp->cue_sta*i_samples_per_point)>>4;
 	int const cue_end_sample=(pp->cue_end*i_samples_per_point)>>4;
 	int const cue_stp_sample=(pp->cue_stp*i_samples_per_point)>>4;
@@ -101,7 +100,7 @@ void CAodixCore::dsp_work(void)
 	master_time_info.samplePos=double(master_transport_sampleframe);
 	master_time_info.sampleRate=cfg.asio_driver_sample_rate;
 	master_time_info.nanoSeconds=0.0;
-	master_time_info.ppqPos=double(trn_pos_sample)/double(project.master_ppqn);
+	master_time_info.ppqPos=double(master_transport_sampleframe)/d_samples_per_point/double(project.master_ppqn);
 	master_time_info.tempo=(cfg.asio_driver_sample_rate*60.0)/(double(int(i_samples_per_point*project.master_ppqn))/16.0);
 	master_time_info.barStartPos=(int(master_time_info.ppqPos)/project.master_numerator)*project.master_numerator;
 	master_time_info.cycleStartPos=double(pp->cue_sta)/double(project.master_ppqn);
