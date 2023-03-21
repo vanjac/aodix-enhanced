@@ -110,6 +110,9 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 		// read events
 		fread(seq_event,sizeof(ADX_EVENT),seq_num_events,pfile);
 
+		// update undo
+		edit_undo_snapshot();
+
 		// read instance data
 		for(int i=0;i<MAX_INSTANCES;i++)
 		{
