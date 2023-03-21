@@ -252,7 +252,8 @@ void CAodixCore::dsp_work(void)
 			if(pw->instance_index<MASTER_INSTANCE)
 			{
 				ADX_INSTANCE* pdi=&instance[pw->instance_index];
-				arg_dsp_gmix(dsp_input_buffer[i],pdi->pins[pw->pin_index],dsp_block_size,pw->value*pw->value);
+				if(pdi->peffect)
+					arg_dsp_gmix(dsp_input_buffer[i],pdi->pins[pw->pin_index],dsp_block_size,pw->value*pw->value);
 			}
 
 			// mix master input in master out
@@ -409,7 +410,8 @@ void CAodixCore::dsp_work(void)
 							if(pw->instance_index<MASTER_INSTANCE)
 							{
 								ADX_INSTANCE* pdi=&instance[pw->instance_index];
-								arg_dsp_gmix(pi->pous[o],pdi->pins[pw->pin_index],dsp_block_size,pw->value*pw->value);
+								if(pdi->peffect)
+									arg_dsp_gmix(pi->pous[o],pdi->pins[pw->pin_index],dsp_block_size,pw->value*pw->value);
 							}
 
 							// mix instance out in master out
