@@ -987,7 +987,8 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 					user_lym=ym;
 
 					// set instance box draggin mode, refresh and return
-					user_pressed=35;
+					if(!is_double_click)
+						user_pressed=35;
 					gui_is_dirty=1;
 					return;
 				}
