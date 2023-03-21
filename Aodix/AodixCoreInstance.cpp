@@ -115,8 +115,11 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 	}
 
 	// init alias name
-	memset(pi->alias,0,32);
-	pi->peffect->dispatcher(pi->peffect,effGetEffectName,0,0,pi->alias,0.0f);
+	char effect_name[64]; // in VST 2.3 the limit was 32 bytes, in 2.4 it was raised to 64 bytes
+	memset(effect_name,0,sizeof(effect_name));
+	pi->peffect->dispatcher(pi->peffect,effGetEffectName,0,0,effect_name,0.0f);
+	memcpy(pi->alias,effect_name,sizeof(pi->alias));
+	pi->alias[sizeof(pi->alias) - 1] = 0;
 
 	// check if plugin alias name was not set, then format with dll title
 	if(pi->alias[0]==0)
