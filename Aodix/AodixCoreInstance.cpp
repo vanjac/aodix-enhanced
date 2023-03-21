@@ -88,6 +88,12 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 		for(int o=0;o<pi->peffect->numOutputs;o++)
 			pi->pous[o]=new float[MAX_DSP_BLOCK_SIZE];
 
+		// maximum assigned master output pin (at least 1)
+		int num_master_output_pins=1;
+		for(int oo=0;oo<NUM_DSP_OUTPUTS;oo++)
+			if(cfg.asio_output_pin[oo]<asio_num_outputs)
+				num_master_output_pins=oo+1;
+
 		// create audio output pin(s) array
 		pi->pout_pin=new ADX_PIN[pi->peffect->numOutputs];
 
@@ -103,7 +109,7 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 
 			// add wire to master
 			if (cfg.instance_autolink)
-				edit_add_wire(pp, MASTER_INSTANCE, o, 1.0);
+				edit_add_wire(pp, MASTER_INSTANCE, o%num_master_output_pins, 1.0);
 		}
 	}
 
