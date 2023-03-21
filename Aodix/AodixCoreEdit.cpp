@@ -284,6 +284,10 @@ void CAodixCore::edit_transpose(int const amt,int const apply_quantize)
 	int const user_block_pos_len=user_block_pos_end-user_block_pos_sta;
 	int const user_block_trk_len=user_block_trk_end-user_block_trk_sta;
 
+	// update undo
+	if(apply_quantize)
+		edit_undo_snapshot();
+
 	// range selected
 	if(user_block_pos_len>0 && user_block_trk_len>0)
 	{
@@ -452,6 +456,9 @@ void CAodixCore::edit_interpolate(void)
 	int const user_block_pos_len=user_block_pos_end-user_block_pos_sta;
 	int const user_block_trk_len=user_block_trk_end-user_block_trk_sta;
 
+	// update undo
+	edit_undo_snapshot();
+
 	// range selected
 	if(user_block_pos_len>0 && user_block_trk_len>0)
 	{
@@ -513,6 +520,9 @@ void CAodixCore::edit_randomize(void)
 	// get block length
 	int const user_block_pos_len=user_block_pos_end-user_block_pos_sta;
 	int const user_block_trk_len=user_block_trk_end-user_block_trk_sta;
+
+	// update undo
+	edit_undo_snapshot();
 
 	// range selected
 	if(user_block_pos_len>0 && user_block_trk_len>0)
