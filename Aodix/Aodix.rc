@@ -151,7 +151,24 @@ EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Aodix - Configuration"
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
+    GROUPBOX        "",IDC_STATIC,4,0,264,40
+    CTEXT           "User Information",IDC_STATIC,8,8,256,12,SS_CENTERIMAGE,
+                    WS_EX_STATICEDGE
+    CTEXT           "User Name",IDC_STATIC,8,24,64,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_USER_NAME_EDIT,72,24,192,12,ES_AUTOHSCROLL
+    GROUPBOX        "",IDC_STATIC,4,40,264,56
+    CTEXT           "ASIO",IDC_STATIC,8,48,256,12,SS_CENTERIMAGE,
+                    WS_EX_STATICEDGE
+    CTEXT           "Current Driver",IDC_STATIC,8,64,64,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_ASIO_DRIVER_COMBO,72,64,192,60,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Sample Rate",IDC_STATIC,8,80,64,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_ASIO_RATE_COMBO,72,80,128,188,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Control Panel...",IDC_ASIO_CONTROL_PANEL,204,80,60,12
     GROUPBOX        "",IDC_STATIC,4,96,264,88
+    CTEXT           "VST Plugins",IDC_STATIC,8,104,256,12,SS_CENTERIMAGE,
+                    WS_EX_STATICEDGE
     CTEXT           "VST Path 1",IDC_STATIC,8,120,64,12,SS_CENTERIMAGE
     EDITTEXT        IDC_VST_PATH_EDIT1,72,120,172,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_VST_PATH_BUTTON1,248,120,16,12
@@ -165,50 +182,33 @@ BEGIN
     EDITTEXT        IDC_VST_PATH_EDIT4,72,168,172,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_VST_PATH_BUTTON4,248,168,16,12
     GROUPBOX        "",IDC_STATIC,272,0,264,72
+    CTEXT           "User Interface",IDC_STATIC,276,8,256,12,SS_CENTERIMAGE,
+                    WS_EX_STATICEDGE
     CTEXT           "Keyboard Layout",IDC_STATIC,276,24,64,12,SS_CENTERIMAGE
     COMBOBOX        IDC_KBD_LAYOUT_COMBO,340,24,192,60,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "",IDC_STATIC,4,40,264,56
-    CTEXT           "Current Driver",IDC_STATIC,8,64,64,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_ASIO_DRIVER_COMBO,72,64,192,60,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CTEXT           "Sample Rate",IDC_STATIC,8,80,64,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_ASIO_RATE_COMBO,72,80,128,188,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Control Panel...",IDC_ASIO_CONTROL_PANEL,204,80,60,12
-    GROUPBOX        "",IDC_STATIC,272,72,264,112
-    LISTBOX         IDC_MIDI_IN_LIST,276,96,256,52,LBS_NOINTEGRALHEIGHT | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Override Channel Messages",IDC_CHECK_MIDI_CH_ROUT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,404,152,128,12
-    DEFPUSHBUTTON   "Apply Changes",IDC_APPLY_BUTTON,4,188,128,12
-    PUSHBUTTON      "Cancel",IDC_CANCEL_BUTTON,136,188,128,12
-    GROUPBOX        "",IDC_STATIC,4,0,264,40
-    CTEXT           "User Name",IDC_STATIC,8,24,64,12,SS_CENTERIMAGE
-    EDITTEXT        IDC_USER_NAME_EDIT,72,24,192,12,ES_AUTOHSCROLL
-    CONTROL         "Override Note Velocity Messages",
-                    IDC_CHECK_MIDI_VL_ROUT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,276,168,128,12
-    CONTROL         "Open MIDI In Devices",IDC_CHECK_MIDI_IN_OPEN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,276,152,128,12
-    CTEXT           "User Information",IDC_STATIC,8,8,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
-    CTEXT           "ASIO",IDC_STATIC,8,48,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
-    CTEXT           "VST Plugins",IDC_STATIC,8,104,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
-    CTEXT           "User Interface",IDC_STATIC,276,8,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
-    CTEXT           "MIDI Input",IDC_STATIC,276,80,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
-    AUTOCHECKBOX    "Instance To Master Autolink",IDC_AUTOLINK_CHECK,
-                    276,56,128,12
     CTEXT           "Skin Bitmaps Path *",IDC_STATIC,276,40,64,12,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_SKIN_PATH_EDIT,340,40,172,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_SKIN_PATH_BUTTON,516,40,16,12
+    AUTOCHECKBOX    "Instance To Master Autolink",IDC_AUTOLINK_CHECK,
+                    276,56,128,12
     AUTOCHECKBOX    "Run In Fullscreen Mode *",IDC_FULLSCREEN_CHECK,
                     404,56,128,12
+    GROUPBOX        "",IDC_STATIC,272,72,264,112
+    CTEXT           "MIDI Input",IDC_STATIC,276,80,256,12,SS_CENTERIMAGE,
+                    WS_EX_STATICEDGE
+    LISTBOX         IDC_MIDI_IN_LIST,276,96,256,52,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Open MIDI In Devices",IDC_CHECK_MIDI_IN_OPEN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,276,152,128,12
+    CONTROL         "Override Channel Messages",IDC_CHECK_MIDI_CH_ROUT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,404,152,128,12
+    CONTROL         "Override Note Velocity Messages",
+                    IDC_CHECK_MIDI_VL_ROUT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,276,168,128,12
+    DEFPUSHBUTTON   "Apply Changes",IDC_APPLY_BUTTON,4,188,128,12
+    PUSHBUTTON      "Cancel",IDC_CANCEL_BUTTON,136,188,128,12
     CTEXT           "* Changes Will Take Effect After Restarting Aodix",
                     IDC_STATIC,272,188,260,12,SS_CENTERIMAGE
 END
