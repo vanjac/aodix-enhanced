@@ -45,7 +45,7 @@ BEGIN
         MENUITEM "Save\tCtrl+S",                ID_FILE_SAVE40025
         MENUITEM "Save As...\tCtrl+Shift+S",    ID_FILE_SAVEAS
         MENUITEM SEPARATOR
-        MENUITEM "Bounce...",                   ID_FILE_BOUNCE40029
+        MENUITEM "Bounce...\tCtrl+W",           ID_FILE_BOUNCE40029
         MENUITEM SEPARATOR
         POPUP "Import"
         BEGIN
