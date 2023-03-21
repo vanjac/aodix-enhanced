@@ -423,6 +423,7 @@ public:
 	void asio_leave_cs(void);
 	void asio_init(HWND const hwnd);
 	void asio_close(HWND const hwnd);
+	bool asio_is_inited(void);
 	void asio_get_driver_name(int const id,char* buf,int const num_chars);
 	long asio_init_list(void);
 	void asio_fill_pin_menu(HMENU const hmenu,int const fill_inputs,int const init_id);

@@ -55,14 +55,16 @@ LRESULT CALLBACK plug_wnd_proc(HWND hwnd,UINT message,WPARAM wparam,LPARAM lpara
 	// key down message
 	if(message==WM_KEYDOWN)
 	{
-		gl_padx->gui_key_down(gl_hwnd_main,wparam,lparam);
+		if(gl_padx->asio_is_inited())
+			gl_padx->gui_key_down(gl_hwnd_main,wparam,lparam);
 		return 0;
 	}	
 
 	// key up message
 	if(message==WM_KEYUP)
 	{
-		gl_padx->gui_key_up(gl_hwnd_main,wparam);
+		if(gl_padx->asio_is_inited())
+			gl_padx->gui_key_up(gl_hwnd_main,wparam);
 		return 0;
 	}
 
