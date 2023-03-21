@@ -210,6 +210,10 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			gui_is_dirty=1;
 		}
 
+		// file new
+		if(keycode=='N')
+			gui_command(hwnd,ID_FILE_NEW40001);
+
 		// file open
 		if(keycode=='O')
 			gui_command(hwnd,ID_FILE_OPEN40002);
