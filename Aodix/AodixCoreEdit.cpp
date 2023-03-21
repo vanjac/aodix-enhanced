@@ -554,8 +554,8 @@ void CAodixCore::edit_randomize(void)
 					}
 				}
 
-				// randomize pattern event
-				if(pe->typ==1)
+				// randomize pattern or vst automation event
+				if(pe->typ==1 || pe->typ==4)
 				{
 					// select row
 					switch(user_row)
@@ -588,16 +588,21 @@ void CAodixCore::edit_randomize(void)
 					}
 				}
 
-				// randomize vst automation event
-				if(pe->typ==4)
-				{
-					*(float*)(&pe->par)=float(rand())/32768.0f;
-				}
-
 				// randomize tempo automation event
 				if(pe->typ==5)
 				{
-					*(float*)(&pe->par)=16.0f+float(rand())/128.0f;
+					// select row
+					switch(user_row)
+					{
+					case 1:	pe->da0=(rand()&0x7F)+0x10;	break;
+					case 2:	pe->da0=(rand()&0x7F)+0x10;	break;
+					case 3:	pe->da1=rand()&0xFF;	break;
+					case 4:	pe->da1=rand()&0xFF;	break;
+					case 5:	pe->da2=rand()&0xFF;	break;
+					case 6:	pe->da2=rand()&0xFF;	break;
+					case 7:	pe->da3=rand()&0xFF;	break;
+					case 8:	pe->da3=rand()&0xFF;	break;
+					}
 				}
 			}
 		}
