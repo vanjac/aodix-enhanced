@@ -384,6 +384,9 @@ void CAodixCore::reset_project(void)
 	// reset sequencer events
 	seq_num_events=0;
 
+	// reset undo events
+	undo_num_events=0;
+
 	// reset master input pins
 	for(p=0;p<NUM_DSP_INPUTS;p++)
 		edit_clr_pin(&master_input_pin[p]);
