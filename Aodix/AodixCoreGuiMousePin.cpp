@@ -22,7 +22,7 @@ void CAodixCore::gui_mouse_scan_pin(HWND const hwnd,int const xm,int const ym,AD
 		ADX_PIN* pp=&ppins[p];
 
 		// scan wires
-		for(int w=0;w<pp->num_wires;w++)
+		for(int w=(pp->num_wires-1);w>=0;w--)
 		{
 			// check flag
 			bool check=false;

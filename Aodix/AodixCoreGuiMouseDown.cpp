@@ -903,8 +903,8 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	// routing page
 	if(user_page==1 && arg_tool_check_plane_xy(xm,ym,0,rout_area_y,w,rout_area_h))
 	{
-		// scan all instances
-		for(int i=0;i<MAX_INSTANCES;i++)
+		// scan all instances in reverse order
+		for(int i=(MAX_INSTANCES-1);i>=0;i--)
 		{
 			// get instance pointer
 			ADX_INSTANCE* pi=&instance[i];
