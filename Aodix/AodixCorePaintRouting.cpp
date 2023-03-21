@@ -105,6 +105,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 				BitBlt(hdc,i_x+i_w-2,i_y,2,48,hdc_gfx,262,672,SRCCOPY);
 
 				// get instance current program label
+				buf_a[0]=0;
 				pi->peffect->dispatcher(pi->peffect,effGetProgramName,0,0,buf_a,0.0f);
 
 				// paint instance labels

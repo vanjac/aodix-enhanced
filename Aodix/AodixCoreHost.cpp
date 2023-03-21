@@ -300,6 +300,7 @@ void CAodixCore::host_update_window_caption(AEffect* peffect)
 		// set plugin window caption
 		char buf[128];
 		char prg_buf[32];
+		prg_buf[0]=0;
 
 		// get program name
 		peffect->dispatcher(peffect,effGetProgramName,0,0,prg_buf,0.0f);

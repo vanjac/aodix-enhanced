@@ -305,6 +305,7 @@ void CAodixCore::export_cub_file(HWND const hwnd,char* filename,int const is_fxp
 
 				// write program name
 				char prg_name[28];
+				prg_name[0]=0;
 				pi->peffect->dispatcher(pi->peffect,effGetProgramName,0,0,prg_name,0.0f);
 				fwrite(prg_name,28,1,pfile);
 
@@ -331,6 +332,7 @@ void CAodixCore::export_cub_file(HWND const hwnd,char* filename,int const is_fxp
 
 				// write program name
 				char prg_name[28];
+				prg_name[0]=0;
 				pi->peffect->dispatcher(pi->peffect,effGetProgramName,0,0,prg_name,0.0f);
 				fwrite(prg_name,28,1,pfile);
 
@@ -397,6 +399,7 @@ void CAodixCore::export_cub_file(HWND const hwnd,char* filename,int const is_fxp
 
 					// write program name
 					char prg_name[28];
+					prg_name[0]=0;
 					pi->peffect->dispatcher(pi->peffect,effGetProgramName,0,0,prg_name,0.0f);
 					fwrite(prg_name,28,1,pfile);
 
