@@ -43,7 +43,7 @@ void CAodixCore::gui_key_up(HWND const hwnd,int const keycode)
 			asio_leave_cs();
 
 			// rec note-off
-			if((master_time_info.flags & kVstTransportRecording) && user_row==0)
+			if(user_record && user_row==0)
 			{
 				// scan for unfinished sequencer note events
 				if(pc_kbd_not>=0)
@@ -141,7 +141,7 @@ void CAodixCore::gui_key_up(HWND const hwnd,int const keycode)
 		}
 
 		// finish pattern events
-		if((master_time_info.flags & kVstTransportRecording) && pc_kbd_pat>=0 && user_row==0)
+		if(user_record && pc_kbd_pat>=0 && user_row==0)
 		{
 			// scan for unfinished sequencer pattern events
 			for(int e=0;e<seq_num_events;e++)

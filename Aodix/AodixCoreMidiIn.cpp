@@ -89,7 +89,7 @@ void CAodixCore::midi_in_process(BYTE const data0,BYTE const data1,BYTE const da
 		}
 
 		// sequencer record instance midi events
-		if(master_time_info.flags & kVstTransportRecording)
+		if(user_record)
 		{
 			// update undo (combining)
 			edit_undo_snapshot(true);

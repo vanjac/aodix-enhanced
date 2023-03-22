@@ -305,6 +305,7 @@ void CAodixCore::reset_user(void)
 	// reset user data
 	user_pat=0;
 	user_page=0;
+	user_record=0;
 	user_quantize=5;
 	user_midi_ch=0;
 	user_kbd_note_offset=48;

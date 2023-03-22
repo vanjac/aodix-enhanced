@@ -368,7 +368,7 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 	BitBlt(hdc,67,85,64,28,hdc_gfx,128,96+(user_pressed==8)*28,SRCCOPY);
 
 	// master transport record events
-	BitBlt(hdc,131,85,64,28,hdc_gfx,192,96+(user_pressed==9)*28+(master_time_info.flags & kVstTransportRecording)*7,SRCCOPY);
+	BitBlt(hdc,131,85,64,28,hdc_gfx,192,96+(user_pressed==9)*28+user_record*56,SRCCOPY);
 
 	// master transport record automation
 	BitBlt(hdc,195,85,64,28,hdc_gfx,256,96+(user_pressed==10)*28+((master_time_info.flags & kVstAutomationWriting)>0)*56,SRCCOPY);

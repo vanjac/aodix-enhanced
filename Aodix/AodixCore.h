@@ -539,6 +539,7 @@ public:
 public:
 	// user variables
 	int	user_page;
+	int user_record;
 	int user_quantize;
 	int user_midi_ch;
 	int	user_kbd_note_offset;

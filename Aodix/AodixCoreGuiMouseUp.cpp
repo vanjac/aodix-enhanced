@@ -50,7 +50,7 @@ void CAodixCore::gui_mouse_up(HWND const hwnd)
 
 	// master transport rec-events button released
 	if(user_pressed==9)
-		master_time_info.flags^=kVstTransportRecording;
+		user_record=!user_record;
 
 	// master transport rec-automation button released
 	if(user_pressed==10)

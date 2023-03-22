@@ -111,6 +111,12 @@ void CAodixCore::dsp_work(void)
 	master_time_info.smpteFrameRate=0;
 	master_time_info.samplesToNextClock=0;
 
+	// update record state
+	if (user_record && (master_time_info.flags & kVstTransportPlaying))
+		master_time_info.flags|=kVstTransportRecording;
+	else
+		master_time_info.flags&=~kVstTransportRecording;
+
 	// transport process
 	if(master_time_info.flags & kVstTransportPlaying)
 	{

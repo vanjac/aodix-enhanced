@@ -521,7 +521,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 		// master rec events switch
 		if(keycode==VK_F1)
 		{
-			master_time_info.flags^=kVstTransportRecording;
+			user_record=!user_record;
 			gui_is_dirty=1;
 		}
 
@@ -642,7 +642,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			}
 
 			// sequencer enter program change midi event (note mode)
-			if(master_time_info.flags & kVstTransportRecording)
+			if(user_record)
 			{
 				// get current instance
 				ADX_INSTANCE* pi=&instance[user_instance];
@@ -751,7 +751,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 				gui_key_pc_piano(keycode,&pc_kbd_not);
 
 				// kbd enter midi program or jump event
-				if((master_time_info.flags & kVstTransportRecording) && pc_kbd_not==-2 && user_row==0)
+				if(user_record && pc_kbd_not==-2 && user_row==0)
 				{
 					// new event flags
 					int const t_live=(master_time_info.flags & kVstTransportPlaying) && cfg.rec_live;
@@ -791,7 +791,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 					asio_leave_cs();
 
 					// record note-on event to the sequencer
-					if(master_time_info.flags & kVstTransportRecording)
+					if(user_record)
 					{
 						// update undo (combining)
 						edit_undo_snapshot(true);
@@ -866,7 +866,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 				}
 
 				// record pattern event (always offline)
-				if((master_time_info.flags & kVstTransportRecording) && pc_kbd_pat>=0)
+				if(user_record && pc_kbd_pat>=0)
 				{
 					// update undo (combining)
 					edit_undo_snapshot(true);
