@@ -2,6 +2,7 @@
 *.suo
 *.ncb
 *.res
+*.chm
 */Debug/*
 */Release/*
 /AsioSdk2/*
