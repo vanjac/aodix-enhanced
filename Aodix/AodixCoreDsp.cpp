@@ -443,6 +443,9 @@ void CAodixCore::dsp_work(void)
 	for(mo=0;mo<NUM_DSP_OUTPUTS;mo++)
 		dsp_vumeter_drive(dsp_output_buffer[mo],dsp_output_vumeter[mo],dsp_block_size);
 
+	// clear changed flag
+	master_time_info.flags&=~kVstTransportChanged;
+
 	// transport advance
 	if(master_time_info.flags & kVstTransportPlaying)
 	{
@@ -492,6 +495,7 @@ void CAodixCore::dsp_work(void)
 
 			// stop transport
 			master_time_info.flags&=~kVstTransportPlaying;
+			master_time_info.flags|=kVstTransportChanged;
 
 			// post refresh
 			gui_is_dirty=1;
@@ -534,7 +538,9 @@ void CAodixCore::dsp_transport_play(void)
 	master_transport_sampleframe=seq_pos_to_sample(pp->usr_pos);
 
 	// launch transport
-	master_time_info.flags|=kVstTransportPlaying;
+	master_time_info.flags|=kVstTransportPlaying|kVstTransportChanged;
+	if(user_record)
+		master_time_info.flags|=kVstTransportRecording;
 
 	// leave critical section
 	asio_leave_cs();
@@ -554,7 +560,8 @@ void CAodixCore::dsp_transport_stop(void)
 		pp->usr_pos=edit_quantize(seq_sample_to_pos(master_transport_sampleframe));
 
 	// stop transport
-	master_time_info.flags&=~kVstTransportPlaying;
+	master_time_info.flags&=~(kVstTransportPlaying|kVstTransportRecording);
+	master_time_info.flags|=kVstTransportChanged;
 
 	// send all notes off (all sounds off too if transport is stopped)
 	for(int i=0;i<MAX_INSTANCES;i++)
