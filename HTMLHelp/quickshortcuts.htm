@@ -86,9 +86,9 @@ program in hex)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
 editable.<br>
 <br>
 <b><font size="1">Syntaxes:</font></b><font size="1"><br>
-</font>&nbsp;&nbsp;&nbsp; - Note Event syntax: NNN II 00 KK VV<br>
+</font>&nbsp;&nbsp;&nbsp; - Note Event syntax: NNN II 0C KK VV<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NNN = note 
-name; II = Instance number (hex); KK = key (hex); VV = velocity (hex)<br>
+name; II = Instance number (hex); 0C = midi channel (hex); KK = key (hex); VV = velocity (hex)<br>
 &nbsp;&nbsp;&nbsp; - Automation Event syntax : Aut II NN NN VV<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; II = Instance 
 number (hex); NN NN = VST Controller Number (hex); VV = value (hex)<br>
@@ -97,6 +97,9 @@ number (hex); NN NN = VST Controller Number (hex); VV = value (hex)<br>
 (hex) MM = marker (hex) TT = transposing (0x80 = no transpose)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VV = velocity 
 scaling (0x80 = no scaling, 0x40 = 50%... etc).<br>
+&nbsp;&nbsp;&nbsp; - Midi Event syntax : Mid II MC P1 P2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; II = Instance 
+number (hex); MC = midi message / channel (hex); P1 = param1 (hex); P2 = param2 (hex)<br>
 <br>
 <b><font size="1">Changing values in boxes and knobs :</font></b><font size="1"><br>
 </font>&nbsp;&nbsp;&nbsp;

@@ -574,26 +574,29 @@ will begin playing (see &quot;<a href="#s6"><font color="#008080">Sequencer : Ev
 <img border="0" src="images/aodix_syntaxes.jpg" width="398" height="499"></p>
 <p align="left">
 <b><font face="Verdana" size="2">Blue event = note event<br>
-syntax : NNN II 00 KK VV</font></b></p>
+syntax : NNN II 0C KK VV</font></b></p>
 <p align="left">
 <font face="Verdana" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NNN = note 
 name<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; II = Instance number (hex)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 00 = zero 
-byte (not used)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0C = midi channel (hex, minus 1)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KK = key 
 (hex)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VV = velocity 
 (hex)</font></p>
 <p align="left">
-<font face="Verdana" size="2"><b>Red event = Automation<br>
+<font face="Verdana" size="2"><b>Red event = Automation or Tempo<br>
 syntax : Aut II NN NN VV<br>
 </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; II = Instance 
 number (hex)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NN NN = VST 
 parameter Number (hex)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VV = value 
-of the parameter (hex)</font></p>
+of the parameter (hex)<br><br>
+<b>syntax : Tmp TT FF 00 00</b><br>
+</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TT = Integer part of tempo (hex)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FF = Fractional part / 256 (hex)<br>
+</font></p>
 <p align="left">
 <font face="Verdana" size="2"><b>Light-brown event = generic Midi Event (mostly 
 used for program change)<br>
@@ -644,6 +647,9 @@ scaling (hex) (0x80 = no scaling, 0x40 = 50%... etc)<br>
 Cues, jumps and Stop Marker from the called pattern are ignored 
 in a pattern call event.<br>
 Tempo changes from the called pattern are applied, they affect the global tempo. </font></p>
+<p align="left">
+<b><font face="Verdana" size="2">Black event = Jump<br>
+syntax : Jmp (no parameters)</font></b></p>
 <p align="left">
 <font face="Verdana" size="2"><b>Note : </b>each track can be loaded with any 
 kind of events at the same time, even superimposed and overlapped.</font></p>
