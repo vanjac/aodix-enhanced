@@ -15,14 +15,18 @@
 </b><font face="Verdana">- F Keys :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; F1 : REC&nbsp;&nbsp;&nbsp; F2 : Aut&nbsp;&nbsp;&nbsp;&nbsp; 
 F3 : Loop&nbsp;&nbsp;&nbsp;&nbsp; F4 : Live&nbsp;&nbsp;&nbsp;&nbsp; F5 : 
 Stop-Wrap<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; F6 : Step&nbsp;&nbsp; F7 : Over&nbsp;&nbsp;&nbsp; F8 : Routing/Sequencer view<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; F6 : Step&nbsp;&nbsp; F7 : Over&nbsp;&nbsp; F8 : Routing/Sequencer view&nbsp;&nbsp;
+F9: Event/Pattern entry mode<br>
 &nbsp;&nbsp;&nbsp;
 - Spacebar : Play / Stop.<b><font size="1"><br>
 </font>
 </b>&nbsp;&nbsp;&nbsp; - Ctrl + 1/2 : set quantize to previous/next value<br>
 &nbsp;&nbsp;&nbsp; - Ctrl + 3/4 : set master channel to previous/next value<br>
 &nbsp;&nbsp;&nbsp; - Ctrl + 5/6 : set octave reference to previous/next value<br>
-&nbsp;&nbsp;&nbsp; - Ctrl + Mouse Wheel : change zoom</font></p>
+&nbsp;&nbsp;&nbsp; - Numpad / * : select previous/next instance<br>
+&nbsp;&nbsp;&nbsp; - Ctrl + Mouse Wheel : change zoom<br>
+&nbsp;&nbsp;&nbsp; - Ctrl + , (comma) : Configuration dialog</font></p>
+
 <p dir="ltr"><font face="Verdana"><b><font size="1">Sequencer Browsing:<br>
 </font>
 </b>&nbsp;&nbsp;&nbsp; - arrows : browse sequencer (elementary)<br>
@@ -63,6 +67,10 @@ all the block<br>
 (transpose, -1/+1 velocity,...)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Ctrl + Q : rearrange block by 
 quantizing notes inside it<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Ctrl + R :
+randomize data in the selected byte<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Ctrl + I :
+interpolate data in the selected byte across selection<br>
 &nbsp;&nbsp;&nbsp; - Object operations (point at right half of an object)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Click + 
 drag object : move object<br>
@@ -72,12 +80,16 @@ drag object : move object, locking vertical moves<br>
 object, quantize-free<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Click at 
 object's bottom + drag up/down = resize object (length)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - ` (backquote) :
+resize previous object(s) to cursor (French keyboard: ù; German Keyboard: ö)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 
 Double-click : delete object<br>
 &nbsp;&nbsp;&nbsp; - Ctrl + Home/End : set Start/End Cues<br>
 &nbsp;&nbsp;&nbsp; - Double-click in the left-most timeline column : create/delete marker<br>
 &nbsp;&nbsp;&nbsp; - Ctrl + double-click in the leftmost timeline column : 
 create/delete STOP marker<br>
+&nbsp;&nbsp;&nbsp; - Ctrl + M : mute track<br>
+&nbsp;&nbsp;&nbsp; - Ctrl + Shift + M : solo track<br>
 &nbsp;&nbsp;&nbsp; - Special Commands :<br>
 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 1 : write a Jump event<br>
 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Enter : write a midi 0xC program change command (param1 = new 
@@ -107,8 +119,9 @@ number (hex); MC = midi message / channel (hex); P1 = param1 (hex); P2 = param2 
 &nbsp;&nbsp;&nbsp;
 - Ctrl + Click and Move mouse on value : tweak value (slower and more accurate).</font></p>
 
-<p dir="ltr"><b>Routing Operations</b><font face="Verdana"><b> :<br>
-</b>&nbsp;&nbsp;&nbsp; - Double click in Routing view : load instance<br>
+<p dir="ltr"><font face="Verdana" size="1"><b>Routing Operations :<br>
+</b></font><font face="Verdana">
+&nbsp;&nbsp;&nbsp; - Double click in Routing view : load instance<br>
 &nbsp;&nbsp;&nbsp;
 - Click on instance object and press &quot;Del&quot; : unload instance<br>
 &nbsp;&nbsp;&nbsp; - Click on instance output pin and drag to input pin : draw 
@@ -122,9 +135,15 @@ adjust wire gain<br>
 pin<br>
 &nbsp;&nbsp;&nbsp; - Ctrl + click on the slot of a used instance in the list : 
 center routing view on instance</font></p>
-<p dir="ltr"><b><font face="Verdana"><font size="1">File Operation :</font><font size="2">
-</font> </font>
-</b><font face="Verdana">Ctrl + S : Save project</font>.</p>
+
+<p dir="ltr"><b><font face="Verdana" size="1">File Operation :</font><br>
+</b><font face="Verdana">
+&nbsp;&nbsp;&nbsp; - Ctrl + S : Save project<br>
+&nbsp;&nbsp;&nbsp; - Ctrl + Shift + S : Save As<br>
+&nbsp;&nbsp;&nbsp; - Ctrl + O : Open project<br>
+&nbsp;&nbsp;&nbsp; - Ctrl + N : New project<br>
+&nbsp;&nbsp;&nbsp; - Ctrl + W : Bounce dialog<br>
+</font></p>
 
 </body>
 
