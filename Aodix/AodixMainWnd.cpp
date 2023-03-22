@@ -108,16 +108,9 @@ LRESULT CALLBACK main_wnd_proc(HWND hwnd,UINT message,WPARAM wparam,LPARAM lpara
 		if(HMENU(wparam)==hmenu)
 		{
 
-			// check full version
-#ifdef FULL_VERSION
 			// enable save and save as items
 			EnableMenuItem(GetSubMenu(hmenu,0),3,MF_BYPOSITION | MF_ENABLED);
 			EnableMenuItem(GetSubMenu(hmenu,0),4,MF_BYPOSITION | MF_ENABLED);
-#else
-			// disable save and save as items
-			EnableMenuItem(GetSubMenu(hmenu,0),3,MF_BYPOSITION | MF_GRAYED | MF_DISABLED);
-			EnableMenuItem(GetSubMenu(hmenu,0),4,MF_BYPOSITION | MF_GRAYED | MF_DISABLED);
-#endif
 
 			// update recent file list
 			for(int rf=0;rf<NUM_RECENT_FILES;rf++)

@@ -102,11 +102,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	char buf[256];
 
 	// check version
-#ifdef FULL_VERSION
-	sprintf(buf,"Aodix %c.%c.%c.%c (Licensed Version)",adx_ver_buf[0],adx_ver_buf[1],adx_ver_buf[2],adx_ver_buf[3]);
-#else
-	sprintf(buf,"Aodix %c.%c.%c.%c (Demo Version)",adx_ver_buf[0],adx_ver_buf[1],adx_ver_buf[2],adx_ver_buf[3]);
-#endif
+	sprintf(buf,"Aodix %c.%c.%c.%c (Enhanced Version)",adx_ver_buf[0],adx_ver_buf[1],adx_ver_buf[2],adx_ver_buf[3]);
 
 	// create window
 	if (gl_padx->cfg.fullscreen)

@@ -40,9 +40,6 @@ void CAodixCore::export_adx_file(HWND const hwnd,char* filename)
 	// set wait cursor
 	SetCursor(hcursor_wait);
 
-	// check if registered
-#ifdef FULL_VERSION
-
 	// open file
 	FILE* pfile=fopen(filename,"wb");
 
@@ -192,9 +189,6 @@ void CAodixCore::export_adx_file(HWND const hwnd,char* filename)
 		// leave critical section
 		asio_leave_cs();
 	}
-
-	// end of directive
-#endif
 
 	// set arrow cursor
 	SetCursor(hcursor_arro);

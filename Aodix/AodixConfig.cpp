@@ -52,17 +52,9 @@ LRESULT CALLBACK conf_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 		// get user key and license edit pointers
 		HWND const hwnd_user_edit=GetDlgItem(hdlg,IDC_USER_NAME_EDIT);
 		
-		// check full license
-#ifdef FULL_VERSION
-		
 		// set user key and license key
 		SetWindowText(hwnd_user_edit,gl_padx->cfg.user_name);
 		EnableWindow(hwnd_user_edit,TRUE);
-#else
-		// set demo text
-		SetWindowText(hwnd_user_edit,"<Demo Version>");
-		EnableWindow(hwnd_user_edit,FALSE);
-#endif
 
 		// get asio driver combo pointer
 		HWND const hwnd_asio_comb=GetDlgItem(hdlg,IDC_ASIO_DRIVER_COMBO);
