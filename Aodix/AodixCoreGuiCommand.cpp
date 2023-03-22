@@ -406,7 +406,7 @@ void CAodixCore::gui_command(HWND const hwnd,int const id)
 	if(id==ID_HELP_ABOUT)
 		DialogBox(hinstance_app,(LPCTSTR)IDD_ABOUTBOX,hwnd,(DLGPROC)abou_dlg_proc);
 
-	// visit arguru software website
-	if(id==ID_HELP_ARGURUSOFTWAREWEBSITE)
-		WinExec("explorer http://www.aodix.com",SW_SHOWNORMAL);
+	// visit aodix enhanced website
+	if(id==ID_HELP_WEBSITE)
+		WinExec("explorer https://chroma.zone/aodix-enhanced/",SW_SHOWNORMAL);
 }

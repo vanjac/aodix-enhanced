@@ -85,7 +85,7 @@ BEGIN
         MENUITEM "Content...",                  ID_HELP_CONTENT
         MENUITEM "About...",                    ID_HELP_ABOUT
         MENUITEM SEPARATOR
-        MENUITEM "Arguru Software Website...",  ID_HELP_ARGURUSOFTWAREWEBSITE
+        MENUITEM "Website...",                  ID_HELP_WEBSITE
 
     END
 END

@@ -63,7 +63,7 @@
 #define ID_FILE_IMPORTMIDIFILE          40019
 #define ID_FILE_EXIT                    40024
 #define ID_FILE_SAVE40025               40025
-#define ID_HELP_ARGURUSOFTWAREWEBSITE   40027
+#define ID_HELP_WEBSITE                 40027
 #define ID_EDIT_QUANTIZENOTES           40028
 #define ID_FILE_BOUNCE40029             40029
 #define ID_EDIT_RANDOMIZE               40035
