@@ -67,8 +67,7 @@ BEGIN
     END
     POPUP "&Edit"
     BEGIN
-        MENUITEM "Undo Clipboard Operation\tCtrl+Z", 
-                                                ID_EDIT_UNDOCLIPBOARDOPERATION
+        MENUITEM "Undo\tCtrl+Z",                ID_EDIT_UNDOCLIPBOARDOPERATION
 
         MENUITEM SEPARATOR
         MENUITEM "Cut\tCtrl+X",                 ID_EDIT_CUT40012

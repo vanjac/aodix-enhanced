@@ -342,7 +342,7 @@ void CAodixCore::gui_command(HWND const hwnd,int const id)
 		}
 	}
 
-	// edit undo last clipboard operation
+	// edit undo last operation
 	if(id==ID_EDIT_UNDOCLIPBOARDOPERATION)
 	{
 		edit_undo();
