@@ -458,22 +458,6 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 		gui_is_dirty=1;
 	}
 
-	/*
-	// irc line list slider change
-	if(user_pressed==42)
-	{
-	irc_line_list_offset=gui_clipped_assign(irc_line_list_offset+i_my_dif,0,irc_num_lines-20);
-	gui_refresh(hwnd);
-	}
-
-	// irc nick list slider change
-	if(user_pressed==43 && irc_num_nicks>20)
-	{
-	irc_nick_list_offset=gui_clipped_assign(irc_nick_list_offset+i_my_dif,0,irc_num_nicks-20);
-	gui_refresh(hwnd);
-	}
-	*/
-
 	// update last coords
 	user_lxm=xm;
 	user_lym=ym;

@@ -478,22 +478,6 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	if(arg_tool_check_plane_xy(xm,ym,853,213,168,16))
 		gui_create_edit(hwnd,853,213,168,16,project.info,514);
 
-	/*
-	// irc line list slider change
-	if(arg_tool_check_plane_xy(xm,ym,1131,17,16,240))
-	{
-	user_pressed=42;
-	gui_refresh(hwnd);
-	}
-
-	// irc nick list slider change
-	if(arg_tool_check_plane_xy(xm,ym,1051,17,16,240))
-	{
-	user_pressed=43;
-	gui_refresh(hwnd);
-	}
-	*/
-
 	// sequencer page
 	if(user_page==0)
 	{
