@@ -275,11 +275,13 @@ void CAodixCore::dsp_work(void)
 
 	// routing work
 	bool all_worked=false;
+	bool any_worked=true;
 
 	// bubble routing loop iteration
-	while(!all_worked)
+	while(!all_worked&&any_worked)
 	{
 		all_worked=true;
+		any_worked=false;
 
 		// scan all instances
 		for(i=0;i<MAX_INSTANCES;i++)
@@ -340,6 +342,7 @@ void CAodixCore::dsp_work(void)
 				{
 					// set worked flag
 					i_worked[i]=true;
+					any_worked=true;
 
 					// sort events by delta
 					if(pi->midi_queue_size>1)
