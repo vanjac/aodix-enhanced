@@ -1,0 +1,84 @@
+ADX File Format Specification
+
+All values are little-endian
+
+0x00000000  4B  "ADX4"
+0x00000004  4B  Version number (as integer, eg. 4201)
+0x00000008  ADX_PROJECT struct (0x002C6058 bytes)
+    +0x00000000     32 chars: Project name (UI allows 26 chars)
+    +0x00000020     32 chars: Project comment (UI allows 26 chars)
+    +0x00000040     double: Tempo (BPM)
+    +0x00000048     ADX_PATTERN table. 0x2C60 bytes x 256 patterns = 0x002C6000 bytes.
+        +0x0000     32 chars: Pattern name (UI allows 14 chars)
+        +0x0020     ADX_TRACK table. 0x24 bytes x 256 tracks = 0x2400 bytes
+            +0x0000     32 chars: Track name (UI allows 14 chars)
+            +0x0020     1B  Mute (0 or 1)
+            +0x0021     1B  Solo
+            +0x0022     2B  RESERVED
+        +0x2420     4B  Start cue time
+        +0x2424     4B  End cue time
+        +0x2428     4B  Stop marker time (0 for disabled)
+        +0x242C     4B  RESERVED
+        +0x2430     4B  Cursor time
+        +0x2434     4B  Zoom (points per pixel)
+        +0x2438     4B  Pre-release
+        +0x243C     4B  Entry mode. 0 = Event, 1 = Pattern.
+        +0x2440     32B RESERVED
+        +0x2460     ADX_MARKER table. 8 bytes x 256 markers = 0x0800 bytes.
+            +0x0000     4B  Marker time. 0th marker is always 0.
+            +0x0004     4B  Marker enabled (0 or 1). 0th marker is always 0.
+    +0x002C6048     4B  Time signature numerator (UI allows 3, 4, or 5)
+    +0x002C604C     4B  Time signature denominator (UI only allows 4)
+    +0x002C6050     4B  PPQN
+    +0x002C6054     4B  RESERVED
+
+0x002C6060  4B  Num events
+0x002C6064  ADX_EVENT table. 0x10 bytes per event. Not sorted.
+    +0x0000     4B  Start time
+    +0x0004     4B  Length
+    +0x0008     1B  Pattern num
+    +0x0009     1B  Track num
+    +0x000A     1B  Event type. 0 = note, 1 = Pat, 2 = Jmp, 3 = Mid, 4 = Aut, 5 = Tmp
+    +0x000B     1B  Resizable (0 or 1)
+    +0x000C     4B  Event data
+
+0xXXXXXXXX  VST instance table. 256 instances, min 1 byte each.
+    +0x0000     1B  Instance exists (0 or 1)
+    === If instance doesn't exist, rest of this data is skipped ===
+    +0x0001     260 chars: Path to DLL
+    +0x0105     4B  VST unique ID
+    +0x0109     4B  X position
+    +0x010D     4B  Y position
+    +0x0111     1B  Mute (0 or 1)
+    +0x0112     1B  Bypass (0 or 1)
+    +0x0113     32 chars: Instance name
+    +0x0133     Output table (all audio and midi output pins).
+        +0x0000     4B  Num wires from output
+        +0x0004     ADX_WIRE table. 8 bytes per wire.
+            +0x0000     2B  Input instance # (256 for master output)
+            +0x0002     2B  Input pin # (separate indices for audio and midi)
+            +0x0004     float: Gain (0.0 to 1.0)
+    +0xXXXX     4B  Program number
+    +0xXXXX     VST data. Format depends on if the VST has the effFlagsProgramChunks flag.
+        Chunks available:
+            +0x0000     4B  Chunk size (bytes)
+            +0x0004     Chunk data
+        Chunks not available:
+            Parameters are stored for the first program only, if available (this is a bug!)
+            Some VSTs report 0 or -1 programs, in which case no data is written.
+            +0x0000     32 chars: Program name
+            +0x0020     Parameter table. 4 bytes per parameter.
+                +0x0000     float: Parameter value
+    +0xXXXX     Parameter midi mapping table. 1 byte per parameter.
+        +0x0000     1B  Assigned midi controller. 0xFF for no controller.
+
+0xXXXXXXXX  Output table of Master Input. Same format as VSTs. Always 32 outputs.
+0xXXXXXXXX  Routing properties...
+    +0x0000     4B  Master Input X position
+    +0x0004     4B  Master Input Y position
+    +0x0008     4B  Master Output X position
+    +0x000C     4B  Master Output Y position
+    +0x0010     4B  Scroll X
+    +0x0014     4B  Scroll Y
+
+Data past this point is reserved.
