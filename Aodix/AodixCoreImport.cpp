@@ -133,10 +133,11 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 				fread(pi->dll_path,sizeof(char),_MAX_PATH,pfile);
 
 				// localize dll file
-				if(import_localize_vst_dll(hwnd,pi->dll_path)==0)
+				if(import_localize_vst_dll(hwnd,i,pi->dll_path)==0)
 				{
 					// close file, dll not found
 					fclose(pfile);
+					MessageBox(hwnd,"Project loading stopped. Not all instances were loaded.","Aodix - Import ADX",MB_OK | MB_ICONERROR);
 					return;
 				}
 
@@ -294,7 +295,7 @@ void CAodixCore::import_search_file(char* pfolder,char* pfilename,char* pmatchfi
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int CAodixCore::import_localize_vst_dll(HWND const hwnd,char* pfilename)
+int CAodixCore::import_localize_vst_dll(HWND const hwnd,int index,char* pfilename)
 {
 	// check if current path exist
 	FILE* pf=fopen(pfilename,"rb");
@@ -308,6 +309,7 @@ int CAodixCore::import_localize_vst_dll(HWND const hwnd,char* pfilename)
 
 	// file doesnt exist in current path, extract filetitle
 	char filetitle[_MAX_PATH];
+	filetitle[0]=0;
 	GetFileTitle(pfilename,filetitle,_MAX_PATH);
 
 	// execute search in vst path folder
@@ -335,10 +337,20 @@ int CAodixCore::import_localize_vst_dll(HWND const hwnd,char* pfilename)
 	{
 		// format failed plugin location
 		char buf[256];
-		sprintf(buf,"Error: Unable To Locate Plugin '%s'",filetitle);
+		sprintf(buf,"Unable to locate Instance %.2X Plugin '%s'\nWould you like to browse for it?",index,filetitle);
 
 		// verbose failed relocation
-		MessageBox(hwnd,buf,"Aodix - VST Host",MB_OK | MB_ICONERROR);
+		if(MessageBox(hwnd,buf,"Aodix - VST Host",MB_YESNO | MB_ICONWARNING)==IDYES)
+		{
+			if(arg_file_dialog_open(hinstance_app,hwnd,"Choose VST Plugin",pfilename,"DLL Files (*.dll)\0*.dll\0\0","dll",cfg.vst_path[0],1,0))
+			{
+				if(pf=fopen(pfilename,"rb"))
+				{
+					fclose(pf);
+					return 1;
+				}
+			}
+		}
 	}
 
 	// failed location search

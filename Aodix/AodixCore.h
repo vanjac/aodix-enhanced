@@ -393,7 +393,7 @@ public:
 	void import_adx_pin(ADX_PIN* pp,int num_pins,FILE* pfile);
 	void import_adx_file(HWND const hwnd,char* filename);
 	void import_search_file(char* pfolder,char* pfilename,char* pmatchfile);
-	int  import_localize_vst_dll(HWND const hwnd,char* pfilename);
+	int  import_localize_vst_dll(HWND const hwnd,int index,char* pfilename);
 	long import_reverse_long(long const data);
 	void import_cub_file_dlg(HWND const hwnd);
 	void import_cub_file(HWND const hwnd,char* filename);
