@@ -132,6 +132,23 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 				// read instance path
 				fread(pi->dll_path,sizeof(char),_MAX_PATH,pfile);
 
+				// check if corrupted path saved with Aodix v4.2.0.1 or earlier
+				if(pi->dll_path[0]==0)
+				{
+					pi->dll_path[_MAX_PATH-1]=0;
+
+					// search for first non-null byte
+					for(int c=0;c<_MAX_PATH;c++)
+					{
+						if(pi->dll_path[c])
+						{
+							// attempt to repair path
+							strcpy(pi->dll_path,pi->dll_path+c);
+							break;
+						}
+					}
+				}
+
 				// localize dll file
 				if(import_localize_vst_dll(hwnd,i,pi->dll_path)==0)
 				{
