@@ -1,0 +1,28 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=aodixv4helpv1.chm
+Contents file=aodixv4helpv1.hhc
+Default Window=AodixWindow800x600
+Default topic=index.htm
+Display compile progress=No
+Index file=aodixv4helpv1.hhk
+Language=0x409 Anglais (États-Unis)
+Title=Aodix V4 Help
+
+[WINDOWS]
+Window500x400="Help Window","aodixv4helpv1.hhc","aodixv4helpv1.hhk","index.htm","index.htm",,,,,0x2120,122,0x304e,[271,0,871,400],0x20000,,,,,,0
+Window 600x500="Aodix V4 Help","aodixv4helpv1.hhc","aodixv4helpv1.hhk","index.htm",,,,,,0x20,170,0x204e,[400,0,1050,500],0x70000,,,,,,0
+AodixWindow800x600="Aodix v4 Help","aodixv4helpv1.hhc","aodixv4helpv1.hhk","index.htm","index.htm","quickshortcuts.htm","Quick Shortcut List",,,0x20,265,0x4204c,[24,10,984,690],0x870000,,,,,,0
+
+
+[FILES]
+index.htm
+gettingstarted.html
+detailed_desc.html
+operation.htm
+overview_feat.html
+troubleshooting.htm
+quickshortcuts.htm
+
+[INFOTYPES]
+
