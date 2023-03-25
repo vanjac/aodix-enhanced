@@ -28,7 +28,7 @@ Var StartMenuFolder
 !insertmacro MUI_LANGUAGE "English"
 
 Section "Aodix" SecBase
-	SetOutPath $INSTDIR
+    SetOutPath $INSTDIR
     WriteUninstaller "$INSTDIR\uninst.exe"
 
     WriteRegStr HKLM "${REG_UNINST_KEY}" "DisplayName" "Arguru Software Aodix"
@@ -61,6 +61,7 @@ Section "Aodix" SecBase
     Delete $INSTDIR\uninst.dat
     Delete $INSTDIR\uninst.ini
     Delete $INSTDIR\uninst.lng
+    Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall Aodix.lnk"
 SectionEnd
 
 Section "un.Uninstall"
