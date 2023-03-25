@@ -3,6 +3,7 @@
 *.ncb
 *.res
 *.chm
+*.exe
 */Debug/*
 */Release/*
 /AsioSdk2/*
