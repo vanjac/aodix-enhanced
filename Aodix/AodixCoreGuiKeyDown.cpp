@@ -204,7 +204,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 		}
 
 		// resize command
-		if(keycode==VK_OEM_3) // `~ key
+		if(keycode==VK_OEM_PLUS)
 		{
 			edit_resize(1);
 			gui_is_dirty=1;
@@ -512,7 +512,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 		}
 
 		// resize command
-		if(keycode==VK_OEM_3) // `~ key
+		if(keycode==VK_OEM_PLUS)
 		{
 			edit_resize(0);
 			gui_is_dirty=1;
