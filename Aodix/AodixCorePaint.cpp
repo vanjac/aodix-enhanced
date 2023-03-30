@@ -111,8 +111,12 @@ void CAodixCore::paint_txt(HDC const hdc,int const x,int const y,char* txt,int c
 	int const yo=588+type*8;
 
 	// blit char string
-	for(int c=0;c<num_chars;c++)
+	for(int c=0;c<num_chars && txt[c];c++)
 		BitBlt(hdc,x+c*6,y,6,8,hdc_gfx,txt[c]*6,yo,SRCCOPY);
+
+	// after null, draw blank characters for remaining space
+	for(;c<num_chars;c++)
+		BitBlt(hdc,x+c*6,y,6,8,hdc_gfx,0,       yo,SRCCOPY);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
