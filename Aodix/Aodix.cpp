@@ -29,7 +29,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	// get desktop device context
 	HDC const hdc_desktop=GetDC(hwnd_desktop);
 
-	char gfx_path[MAX_PATH], knb_path[MAX_PATH], gui_path[MAX_PATH];
+	char gfx_path[_MAX_PATH], knb_path[_MAX_PATH], gui_path[_MAX_PATH];
 	sprintf(gfx_path, "%s\\gfx.bmp", gl_padx->cfg.skin_path);
 	sprintf(knb_path, "%s\\knb.bmp", gl_padx->cfg.skin_path);
 	sprintf(gui_path, "%s\\gui.bmp", gl_padx->cfg.skin_path);
