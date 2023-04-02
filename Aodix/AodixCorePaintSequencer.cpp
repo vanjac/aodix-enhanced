@@ -294,9 +294,29 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 					// note event
 					if(pe->typ==0)
 					{
+						int clipped_vel = arg_tool_clipped_assign(pe->da3,0,127);
+
+						int inst_div_24 = (pe->da0 * 0xAAB) >> 16;
+						int inst_mod_24 = pe->da0 - inst_div_24 * 24;
+						int hue = (inst_mod_24<<4) | ((inst_div_24&1)<<3) | ((inst_div_24&2)<<1) | ((inst_div_24&4)>>1) | ((inst_div_24&8)>>3);
+
+						COLORREF color;
+						if (hue < 64) // B -> M
+							color = 0x804040 + hue;
+						else if (hue < 128) // M -> R
+							color = 0x804080 - (hue - 64) * 0x010000;
+						else if (hue < 192) // R -> Y
+							color = 0x404080 + (hue - 128) * 0x000100;
+						else if (hue < 256) // Y -> G
+							color = 0x408080 - (hue - 192);
+						else if (hue < 320) // G -> C
+							color = 0x408040 + (hue - 256) * 0x010000;
+						else // C -> B
+							color = 0x808040 - (hue - 320) * 0x000100;
+
 						// paint tracker event
 						sprintf(buf_a,"%s %.2X %.2X %.2X %.2X",note_name[pe->da2],pe->da0,pe->da1,pe->da2,pe->da3);
-						paint_event(hdc,e_x,e_y,TRACK_WIDTH,e_h,0x00808080+pe->da3*0x00010101,0x00806060,buf_a);
+						paint_event(hdc,e_x,e_y,TRACK_WIDTH,e_h,0x00808080+clipped_vel*0x00010101,color+0x202020,buf_a);
 
 						// paint event in pr
 						if(pe->trk==user_trk)
@@ -309,7 +329,7 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 							if(pr_ni>=0 && pr_ni<pr_vn)
 							{
 								arg_gdi_paint_solid_rect(hdc,TRACK_WIDTH+4+pr_ex,e_y,user_pr_note_width,e_h,0x0);
-								arg_gdi_paint_solid_rect(hdc,TRACK_WIDTH+5+pr_ex,e_y+1,user_pr_note_width-2,e_h-2,0x00806060+pe->da3*0x00010101);
+								arg_gdi_paint_solid_rect(hdc,TRACK_WIDTH+5+pr_ex,e_y+1,user_pr_note_width-2,e_h-2,color+(clipped_vel/2)*0x010101);
 							}
 						}
 					}
