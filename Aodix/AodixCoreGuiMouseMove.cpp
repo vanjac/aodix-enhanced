@@ -109,7 +109,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	// edit change note pre-release
 	if(user_pressed==17)
 	{
-		pp->usr_pre=arg_tool_clipped_assign(pp->usr_pre-i_my_dif,1,MAX_SIGNED_INT);
+		pp->usr_pre=arg_tool_clipped_assign(pp->usr_pre-i_my_dif,0,MAX_SIGNED_INT);
 		gui_is_dirty=1;
 	}
 
