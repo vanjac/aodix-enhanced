@@ -139,9 +139,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Aodix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AodixCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
