@@ -7,7 +7,9 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "winres.h"
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -16,10 +18,8 @@
 // Neutral resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
-#ifdef _WIN32
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -30,12 +30,13 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // remains consistent on all systems.
 IDI_AODIX               ICON                    "aodix.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDR_AODIX MENU 
+IDR_AODIX MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -50,11 +51,9 @@ BEGIN
         POPUP "Import"
         BEGIN
             MENUITEM "MIDI File...",                ID_FILE_IMPORTMIDIFILE
-            MENUITEM "WAVE File...",                ID_IMPORT_WAVEFILE
-            , GRAYED
+            MENUITEM "WAVE File...",                ID_IMPORT_WAVEFILE, GRAYED
         END
-        MENUITEM "Export MIDI File...",         ID_FILE_EXPORTMIDIFILE
-        , GRAYED
+        MENUITEM "Export MIDI File...",         ID_FILE_EXPORTMIDIFILE, GRAYED
         MENUITEM SEPARATOR
         MENUITEM "Configuration...\tCtrl+,",    ID_FILE_CONFIGURATION
         MENUITEM SEPARATOR
@@ -68,7 +67,6 @@ BEGIN
     POPUP "&Edit"
     BEGIN
         MENUITEM "Undo\tCtrl+Z",                ID_EDIT_UNDOCLIPBOARDOPERATION
-
         MENUITEM SEPARATOR
         MENUITEM "Cut\tCtrl+X",                 ID_EDIT_CUT40012
         MENUITEM "Copy\tCtrl+C",                ID_EDIT_COPY40013
@@ -86,7 +84,6 @@ BEGIN
         MENUITEM "About...",                    ID_HELP_ABOUT
         MENUITEM SEPARATOR
         MENUITEM "Website...",                  ID_HELP_WEBSITE
-
     END
 END
 
@@ -103,71 +100,54 @@ CAPTION "Aodix - About"
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     GROUPBOX        "",IDC_STATIC,4,0,200,76
-    CTEXT           "Arguru Software Aodix",IDC_STATIC,8,8,192,12,
-                    SS_CENTERIMAGE,WS_EX_STATICEDGE
-    CTEXT           "By Juan Antonio Arguelles Rius && Zafer Kantar",
-                    IDC_STATIC,8,24,192,8,SS_CENTERIMAGE
-    CTEXT           "Graphics: Paul Merchant && Marc De Haar",IDC_STATIC,8,36,192,8,
-                    SS_CENTERIMAGE
+    CTEXT           "Arguru Software Aodix",IDC_STATIC,8,8,192,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
+    CTEXT           "By Juan Antonio Arguelles Rius && Zafer Kantar",IDC_STATIC,8,24,192,8,SS_CENTERIMAGE
+    CTEXT           "Graphics: Paul Merchant && Marc De Haar",IDC_STATIC,8,36,192,8,SS_CENTERIMAGE
     ICON            IDI_AODIX,IDC_STATIC,93,52,20,20
-    CONTROL         "",IDC_STATIC,"STATIC",SS_BLACKFRAME,8,48,192,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,48,192,1,WS_EX_STATICEDGE
 END
 
 IDD_BOUNCE DIALOGEX 0, 0, 256, 154
-STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Aodix - Project Bounce"
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     GROUPBOX        "",IDC_STATIC,4,0,248,56
-    CTEXT           "&Output File (RAW PCM Audio)",IDC_STATIC,8,8,240,12,
-                    SS_CENTERIMAGE,WS_EX_STATICEDGE
+    CTEXT           "&Output File (RAW PCM Audio)",IDC_STATIC,8,8,240,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
     EDITTEXT        IDC_BOUNCE_EDIT1,8,24,220,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BOUNCE_BUTTON3,232,24,16,12
     PUSHBUTTON      "&Start",IDC_BOUNCE_BUTTON1,8,40,64,12
     PUSHBUTTON      "Stop",IDC_BOUNCE_BUTTON2,76,40,64,12
-    CTEXT           "Ready",IDC_BOUNCE_STATUS1,144,40,104,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
+    CTEXT           "Ready",IDC_BOUNCE_STATUS1,144,40,104,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
     GROUPBOX        "",IDC_STATIC,4,56,248,56
-    CTEXT           "Options",IDC_STATIC,8,64,240,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
-    CONTROL         "&Render Cue Range",IDC_BOUNCE_CHECK1,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,8,80,240,12
-    CONTROL         "&Multifile",IDC_BOUNCE_CHECK2,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,8,96,240,12
+    CTEXT           "Options",IDC_STATIC,8,64,240,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
+    CONTROL         "&Render Cue Range",IDC_BOUNCE_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,80,240,12
+    CONTROL         "&Multifile",IDC_BOUNCE_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,96,240,12
     GROUPBOX        "",IDC_STATIC,4,112,248,40
-    CTEXT           "Rendering Progress",IDC_STATIC,8,120,240,12,
-                    SS_CENTERIMAGE,WS_EX_STATICEDGE
-    CONTROL         "",IDC_BOUNCE_PROGRESS1,"msctls_progress32",WS_BORDER,8,
-                    136,240,12
+    CTEXT           "Rendering Progress",IDC_STATIC,8,120,240,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
+    CONTROL         "",IDC_BOUNCE_PROGRESS1,"msctls_progress32",WS_BORDER,8,136,240,12
 END
 
 IDD_CONFIG DIALOGEX 0, 0, 540, 202
-STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Aodix - Configuration"
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     GROUPBOX        "",IDC_STATIC,4,0,264,40
-    CTEXT           "User Information",IDC_STATIC,8,8,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
+    CTEXT           "User Information",IDC_STATIC,8,8,256,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
     CTEXT           "&User Name",IDC_STATIC,8,24,64,12,SS_CENTERIMAGE
     EDITTEXT        IDC_USER_NAME_EDIT,72,24,192,12,ES_AUTOHSCROLL
     GROUPBOX        "",IDC_STATIC,4,40,264,56
-    CTEXT           "ASIO",IDC_STATIC,8,48,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
+    CTEXT           "ASIO",IDC_STATIC,8,48,256,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
     CTEXT           "Current &Driver",IDC_STATIC,8,64,64,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_ASIO_DRIVER_COMBO,72,64,192,60,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_ASIO_DRIVER_COMBO,72,64,192,60,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CTEXT           "Sample &Rate",IDC_STATIC,8,80,64,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_ASIO_RATE_COMBO,72,80,128,188,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_ASIO_RATE_COMBO,72,80,128,188,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Co&ntrol Panel...",IDC_ASIO_CONTROL_PANEL,204,80,60,12
     GROUPBOX        "",IDC_STATIC,4,96,264,88
-    CTEXT           "VST Plugins",IDC_STATIC,8,104,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
+    CTEXT           "VST Plugins",IDC_STATIC,8,104,256,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
     CTEXT           "VST &Path 1",IDC_STATIC,8,120,64,12,SS_CENTERIMAGE
     EDITTEXT        IDC_VST_PATH_EDIT1,72,120,172,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_VST_PATH_BUTTON1,248,120,16,12
@@ -181,35 +161,25 @@ BEGIN
     EDITTEXT        IDC_VST_PATH_EDIT4,72,168,172,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_VST_PATH_BUTTON4,248,168,16,12
     GROUPBOX        "",IDC_STATIC,272,0,264,72
-    CTEXT           "User Interface",IDC_STATIC,276,8,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
+    CTEXT           "User Interface",IDC_STATIC,276,8,256,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
     CTEXT           "&Keyboard Layout",IDC_STATIC,276,24,64,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_KBD_LAYOUT_COMBO,340,24,192,60,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CTEXT           "&Skin Bitmaps Path *",IDC_STATIC,276,40,64,12,
-                    SS_CENTERIMAGE
+    COMBOBOX        IDC_KBD_LAYOUT_COMBO,340,24,192,60,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "&Skin Bitmaps Path *",IDC_STATIC,276,40,64,12,SS_CENTERIMAGE
     EDITTEXT        IDC_SKIN_PATH_EDIT,340,40,172,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_SKIN_PATH_BUTTON,516,40,16,12
-    AUTOCHECKBOX    "&Instance To Master Autolink",IDC_AUTOLINK_CHECK,
-                    276,56,128,12
-    AUTOCHECKBOX    "Run In &Fullscreen Mode *",IDC_FULLSCREEN_CHECK,
-                    404,56,128,12
+    CONTROL         "&Instance To Master Autolink",IDC_AUTOLINK_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,276,56,128,12
+    CONTROL         "Run In &Fullscreen Mode *",IDC_FULLSCREEN_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,404,56,128,12
     GROUPBOX        "",IDC_STATIC,272,72,264,112
-    CTEXT           "MIDI Input",IDC_STATIC,276,80,256,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
-    LISTBOX         IDC_MIDI_IN_LIST,276,96,256,52,LBS_NOINTEGRALHEIGHT | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Open &MIDI In Devices",IDC_CHECK_MIDI_IN_OPEN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,276,152,128,12
+    CTEXT           "MIDI Input",IDC_STATIC,276,80,256,12,SS_CENTERIMAGE,WS_EX_STATICEDGE
+    LISTBOX         IDC_MIDI_IN_LIST,276,96,256,52,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Open &MIDI In Devices",IDC_CHECK_MIDI_IN_OPEN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,276,152,128,12
     CONTROL         "Override &Channel Messages",IDC_CHECK_MIDI_CH_ROUT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,404,152,128,12
-    CONTROL         "Override Note &Velocity Messages",
-                    IDC_CHECK_MIDI_VL_ROUT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,276,168,128,12
+    CONTROL         "Override Note &Velocity Messages",IDC_CHECK_MIDI_VL_ROUT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,276,168,128,12
     DEFPUSHBUTTON   "&Apply Changes",IDC_APPLY_BUTTON,4,188,128,12
     PUSHBUTTON      "Cancel",IDC_CANCEL_BUTTON,136,188,128,12
-    CTEXT           "* Changes Will Take Effect After Restarting Aodix",
-                    IDC_STATIC,272,188,260,12,SS_CENTERIMAGE
+    CTEXT           "* Changes Will Take Effect After Restarting Aodix",IDC_STATIC,272,188,260,12,SS_CENTERIMAGE
 END
 
 
@@ -219,11 +189,10 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
-        BOTTOMMARGIN, 95
     END
 
     IDD_BOUNCE, DIALOG
@@ -251,19 +220,19 @@ END
 //
 
 IDC_HO                  CURSOR                  "ho.cur"
+
 IDC_HC                  CURSOR                  "hc.cur"
+
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -278,7 +247,9 @@ END
 
 2 TEXTINCLUDE 
 BEGIN
-    "#include ""winres.h""\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
     "\0"
 END
 
@@ -290,7 +261,7 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

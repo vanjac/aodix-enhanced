@@ -77,6 +77,7 @@
 #define ID_FILE_IMPORT                  40044
 #define ID_IMPORT_WAVEFILE              40045
 #define ID_EDIT_INTERPOLATE             40046
+#define IDC_STATIC                      -1
 
 // Next default values for new objects
 // 
