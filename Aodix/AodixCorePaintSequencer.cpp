@@ -21,6 +21,9 @@ char note_name[128][4]=
 	"C-A","C#A","D-A","D#A","E-A","F-A","F#A","G-A"
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+char midi_name[8][4]={"Off","On ","Aft","CC ","Prg","Prs","Pit","Sys"};
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int const h)
 {
@@ -334,7 +337,13 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 					// midi automation event
 					if(pe->typ==3)
 					{
-						sprintf(buf_a,"Mid %.2X %.2X %.2X %.2X",pe->da0,pe->da1,pe->da2,pe->da3);
+						int msg=pe->da1>>4;
+						char *name;
+						if(msg>=8)
+							name=midi_name[msg-8];
+						else
+							name="Mid";
+						sprintf(buf_a,"%s %.2X %.2X %.2X %.2X",name,pe->da0,pe->da1,pe->da2,pe->da3);
 						paint_event(hdc,e_x,e_y,TRACK_WIDTH,NR_EVENT_HEIGHT,0x00FFFFFF,0x00606080,buf_a);
 					}
 
