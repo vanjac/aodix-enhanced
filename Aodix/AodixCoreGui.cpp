@@ -480,7 +480,7 @@ int CAodixCore::gui_vst_search(HMENU const pa_hmenu,char* pfolder)
 				int const fstrl=strlen(ffd.cFileName);
 
 				// lowercase extension
-				strlwr(ffd.cFileName+fstrl-4);
+				_strlwr(ffd.cFileName+fstrl-4);
 
 				// check for dll extension
 				if(ffd.cFileName[fstrl-4]=='.' && ffd.cFileName[fstrl-3]=='d' && ffd.cFileName[fstrl-2]=='l' && ffd.cFileName[fstrl-1]=='l')
