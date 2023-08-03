@@ -147,7 +147,7 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 
 	// success instance, init plugin 
 	pi->peffect->dispatcher(pi->peffect,effOpen,0,0,NULL,0.0f);
-	pi->peffect->dispatcher(pi->peffect,effSetSampleRate,0,0,NULL,cfg.asio_driver_sample_rate);
+	pi->peffect->dispatcher(pi->peffect,effSetSampleRate,0,0,NULL,(float)cfg.asio_driver_sample_rate);
 	pi->peffect->dispatcher(pi->peffect,effSetBlockSize,0,dsp_block_size,NULL,0.0f);
 	pi->peffect->dispatcher(pi->peffect,effMainsChanged,0,1,NULL,0.0f);
 }

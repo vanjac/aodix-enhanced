@@ -429,7 +429,7 @@ float arg_dsp_conv(float* psamples,float* pfir,int const num_taps)
 void arg_dsp_limiter(float& sl,float &sr,float &l_env,float const l_att,float const l_rel)
 {
 	// limiter get peak
-	float const peak=max(fabs(sl),fabs(sr));
+	float const peak=max(fabsf(sl),fabsf(sr));
 
 	// limiter envelope (level detection)
 	if(peak>l_env)

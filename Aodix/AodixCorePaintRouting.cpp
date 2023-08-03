@@ -109,8 +109,8 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 				pi->peffect->dispatcher(pi->peffect,effGetProgramName,0,0,buf_a,0.0f);
 
 				// paint instance labels
-				TextOut(hdc,i_x+36,i_y+12,pi->alias,min(strlen(pi->alias),(i_w-40)/6));
-				TextOut(hdc,i_x+4,i_y+28,buf_a,min(strlen(buf_a),(i_w-8)/6));
+				TextOut(hdc,i_x+36,i_y+12,pi->alias,min((int)strlen(pi->alias),(i_w-40)/6));
+				TextOut(hdc,i_x+4,i_y+28,buf_a,min((int)strlen(buf_a),(i_w-8)/6));
 
 				// paint machine audio inputs
 				for(int in=0;in<pi->peffect->numInputs;in++)
@@ -215,7 +215,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 			AlphaBlend(hdc,user_pressed_wire_x-18,user_pressed_wire_y-66,37,133,hdc_gfx,576,0,37,133,bf);
 			
 			// get inversed gain
-			float const inv_gain=1.0-user_pressed_wire->value;
+			float const inv_gain=1.0f-user_pressed_wire->value;
 
 			// integer gain offset
 			int const i_gain=int(inv_gain*112.0f);

@@ -34,7 +34,7 @@ void CAodixCore::paint_master_vumeter(HDC const hdc)
 			float const peak_wd=(db_range+peak_db)*(213.0f/db_range);
 
 			// set vu width
-			vumeter_width=arg_tool_clipped_assign(peak_wd,0,213);
+			vumeter_width=arg_tool_clipped_assign((int)peak_wd,0,213);
 		}
 
 		// vumeter y position
@@ -214,12 +214,12 @@ void CAodixCore::paint_wire(HDC const hdc,int const x1,int const y1,int const x2
 		POINT pnt[3];
 
 		// get the three arrow coordinates
-		pnt[0].x=d_cx+d_xr;
-		pnt[0].y=d_cy+d_yr;
-		pnt[1].x=d_cx+d_yr;
-		pnt[1].y=d_cy-d_xr;
-		pnt[2].x=d_cx-d_yr;
-		pnt[2].y=d_cy+d_xr;
+		pnt[0].x=(long)(d_cx+d_xr);
+		pnt[0].y=(long)(d_cy+d_yr);
+		pnt[1].x=(long)(d_cx+d_yr);
+		pnt[1].y=(long)(d_cy-d_xr);
+		pnt[2].x=(long)(d_cx-d_yr);
+		pnt[2].y=(long)(d_cy+d_xr);
 
 		// point polygon
 		Polygon(hdc,pnt,3);

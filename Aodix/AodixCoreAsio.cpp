@@ -165,7 +165,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 
 					// cast and mix transfer
 					for(int s=0;s<dsp_num_samples;s++)
-						pdst[s]+=double(psrc[s])*d_sc_inv;
+						pdst[s]+=(float)(double(psrc[s])*d_sc_inv);
 				}
 			}
 		}
@@ -190,7 +190,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 
 					// cast and mix transfer
 					for(int s=0;s<dsp_num_samples;s++)
-						pdst[s]+=double(psrc[s])*d_sc_inv;
+						pdst[s]+=(float)(double(psrc[s])*d_sc_inv);
 				}
 			}
 		}
@@ -281,7 +281,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 	double const d_per_cent=(elapsed_cycles*100.0)/d_system_cycles_per_dsp_block_frame;
 
 	// lowpass cpu meter
-	gl_padx->dsp_cpu_cost+=(d_per_cent-gl_padx->dsp_cpu_cost)*0.01f;
+	gl_padx->dsp_cpu_cost+=(float)((d_per_cent-gl_padx->dsp_cpu_cost)*0.01);
 
 	// return
 	return 0L;

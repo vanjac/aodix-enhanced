@@ -17,7 +17,7 @@ HWND		gl_hwnd_main=NULL;
 int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdLine,int nCmdShow)
 {
 	// random time sed
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	// call coinitialize (wave-shell plugins will not work otherwise)
 	CoInitialize(NULL);

@@ -652,7 +652,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 
 				// if effect instanced, add midi program change message event (with current instance program index else first program)
 				if(pi->peffect!=NULL)
-					seq_add_event(pp->usr_pos,user_pat,user_trk,3,user_instance,0xC0+user_midi_ch,pi->peffect->dispatcher(pi->peffect,effGetProgram,0,0,NULL,0.0f),0,user_edit_overwrite);
+					seq_add_event(pp->usr_pos,user_pat,user_trk,3,user_instance,0xC0+user_midi_ch,(unsigned char)pi->peffect->dispatcher(pi->peffect,effGetProgram,0,0,NULL,0.0f),0,user_edit_overwrite);
 				else
 					seq_add_event(pp->usr_pos,user_pat,user_trk,3,user_instance,0xC0+user_midi_ch,0,0,user_edit_overwrite);
 

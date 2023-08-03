@@ -88,10 +88,10 @@ long VSTCALLBACK host_audiomaster(AEffect *effect, long opcode, long index, long
 	if(opcode==audioMasterGetSampleRate)
 	{
 		// set dsp sample rate
-		effect->dispatcher(effect,effSetSampleRate,0,0,NULL,gl_padx->cfg.asio_driver_sample_rate);
+		effect->dispatcher(effect,effSetSampleRate,0,0,NULL,(float)gl_padx->cfg.asio_driver_sample_rate);
 
 		// return host sample rate
-		return gl_padx->cfg.asio_driver_sample_rate;
+		return (long)gl_padx->cfg.asio_driver_sample_rate;
 	}
 
 	// instance wants to know host block size
