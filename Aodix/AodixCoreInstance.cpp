@@ -125,7 +125,7 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 	}
 
 	// init effect name
-	char effect_name[64]; // in VST 2.3 the limit was 32 bytes, in 2.4 it was raised to 64 bytes
+	char effect_name[65]; // in VST 2.3 the limit was 32 bytes, in 2.4 it was raised to 64 bytes
 	memset(effect_name,0,sizeof(effect_name));
 	pi->peffect->dispatcher(pi->peffect,effGetEffectName,0,0,effect_name,0.0f);
 
