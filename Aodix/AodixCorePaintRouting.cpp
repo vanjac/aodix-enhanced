@@ -83,7 +83,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 		SetTextColor(hdc,0);
 
 		// paint all instance boxes
-		for(i=0;i<MAX_INSTANCES;i++)
+		for(int i=0;i<MAX_INSTANCES;i++)
 		{
 			// get instance pointer
 			ADX_INSTANCE* pi=&instance[i];
@@ -117,14 +117,14 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 					BitBlt(hdc,i_x+in*8,i_y,8,8,hdc_gfx,64,0,SRCCOPY);
 
 				// paint machine midi input pin
-				BitBlt(hdc,i_x+in*8,i_y,8,8,hdc_gfx,80,0,SRCCOPY);
+				BitBlt(hdc,i_x+pi->peffect->numInputs*8,i_y,8,8,hdc_gfx,80,0,SRCCOPY);
 
 				// paint machine audio outputs
 				for(int ou=0;ou<pi->peffect->numOutputs;ou++)
 					BitBlt(hdc,i_x+ou*8,i_y+40,8,8,hdc_gfx,72,0,SRCCOPY);
 
 				// paint machine midi output pin
-				BitBlt(hdc,i_x+ou*8,i_y+40,8,8,hdc_gfx,80,0,SRCCOPY);
+				BitBlt(hdc,i_x+pi->peffect->numOutputs*8,i_y+40,8,8,hdc_gfx,80,0,SRCCOPY);
 
 				// instance list mute
 				if(pi->process_mute)
@@ -149,7 +149,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 				for(int w=0;w<pi->mout_pin.num_wires;w++)
 				{
 					// midi-out link source-destination screen coordinates
-					int const mol_x1=i_x+ou*8;
+					int const mol_x1=i_x+pi->peffect->numOutputs*8;
 					int const mol_y1=i_y+40;
 
 					// get midi-out wire

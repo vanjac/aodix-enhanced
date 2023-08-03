@@ -242,7 +242,7 @@ void CAodixCore::dsp_work(void)
 	}
 
 	// master input work
-	for(i=0;i<NUM_DSP_INPUTS;i++)
+	for(int i=0;i<NUM_DSP_INPUTS;i++)
 	{
 		// get pin pointer
 		ADX_PIN* pp=&master_input_pin[i];
@@ -284,7 +284,7 @@ void CAodixCore::dsp_work(void)
 		any_worked=false;
 
 		// scan all instances
-		for(i=0;i<MAX_INSTANCES;i++)
+		for(int i=0;i<MAX_INSTANCES;i++)
 		{
 			// get working candidate machine
 			ADX_INSTANCE* pi=&instance[i];
@@ -443,7 +443,7 @@ void CAodixCore::dsp_work(void)
 	}
 
 	// drive master vumeter
-	for(mo=0;mo<NUM_DSP_OUTPUTS;mo++)
+	for(int mo=0;mo<NUM_DSP_OUTPUTS;mo++)
 		dsp_vumeter_drive(dsp_output_buffer[mo],dsp_output_vumeter[mo],dsp_block_size);
 
 	// clear changed flag
@@ -475,7 +475,7 @@ void CAodixCore::dsp_work(void)
 		if(trn_cycle && master_transport_sampleframe>=cue_end_sample)
 		{
 			// all sounds off thru all instances
-			for(i=0;i<MAX_INSTANCES;i++)
+			for(int i=0;i<MAX_INSTANCES;i++)
 				instance_midi_panic(&instance[i],true,false);
 
 			// wrap master sampleframe pos

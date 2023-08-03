@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\DlgProcs">
+      <UniqueIdentifier>{9f63f800-42e0-4438-befc-0704fceacc1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AsioSdk">
+      <UniqueIdentifier>{778b86b4-fbac-4c3b-bef0-b1e0feeb9d65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\WndProcs">
+      <UniqueIdentifier>{5745bf2e-7c27-466c-bd28-f7b583328768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MouseInput">
+      <UniqueIdentifier>{5f86167f-ea64-4957-80d4-48f1b1e000c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\KeyInput">
+      <UniqueIdentifier>{7e0cf6f8-f470-4065-96a7-41dd355e0ef0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Paint">
+      <UniqueIdentifier>{50e722c3-4962-4a62-9990-134d7716bdb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\VstSdk">
+      <UniqueIdentifier>{f36bc81c-b4d6-4ca5-8955-31f636bff1dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AsioSdk">
+      <UniqueIdentifier>{83f9d982-453d-4f39-8ad6-eaede3accb86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{20f1e649-2c58-4073-a8dd-e7228369d383}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Aodix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreAsio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreDsp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreExport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreHost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreImport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreMidiIn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreSequencer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Argulib\Argulib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixAbout.cpp">
+      <Filter>Source Files\DlgProcs</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixBounce.cpp">
+      <Filter>Source Files\DlgProcs</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixConfig.cpp">
+      <Filter>Source Files\DlgProcs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AsioSdk2\common\asio.cpp">
+      <Filter>Source Files\AsioSdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AsioSdk2\common\asiodrivers.cpp">
+      <Filter>Source Files\AsioSdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AsioSdk2\common\asiolist.cpp">
+      <Filter>Source Files\AsioSdk</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixMainWnd.cpp">
+      <Filter>Source Files\WndProcs</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixPlug.cpp">
+      <Filter>Source Files\WndProcs</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiMouseDown.cpp">
+      <Filter>Source Files\MouseInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiMouseMove.cpp">
+      <Filter>Source Files\MouseInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiMousePin.cpp">
+      <Filter>Source Files\MouseInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiMouseUp.cpp">
+      <Filter>Source Files\MouseInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiMouseWheel.cpp">
+      <Filter>Source Files\MouseInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiKeyDown.cpp">
+      <Filter>Source Files\KeyInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiKeyPiano.cpp">
+      <Filter>Source Files\KeyInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCoreGuiKeyUp.cpp">
+      <Filter>Source Files\KeyInput</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCorePaint.cpp">
+      <Filter>Source Files\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCorePaintRouting.cpp">
+      <Filter>Source Files\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="AodixCorePaintSequencer.cpp">
+      <Filter>Source Files\Paint</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Aodix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AodixCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Argulib\Argulib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\VstSdk2.3\source\common\aeffectx.h">
+      <Filter>Header Files\VstSdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\VstSdk2.3\source\common\AEffEditor.hpp">
+      <Filter>Header Files\VstSdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\VstSdk2.3\source\common\audioeffectx.h">
+      <Filter>Header Files\VstSdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AsioSdk2\common\asio.h">
+      <Filter>Header Files\AsioSdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AsioSdk2\common\asiodrivers.h">
+      <Filter>Header Files\AsioSdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AsioSdk2\common\asiolist.h">
+      <Filter>Header Files\AsioSdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AsioSdk2\common\asiosys.h">
+      <Filter>Header Files\AsioSdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AsioSdk2\common\iasiodrv.h">
+      <Filter>Header Files\AsioSdk</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="aodix.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Aodix.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hc.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ho.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

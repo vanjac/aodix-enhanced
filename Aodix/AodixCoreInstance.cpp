@@ -98,7 +98,7 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 		pi->pout_pin=new ADX_PIN[pi->peffect->numOutputs];
 
 		// init pin output array
-		for(o=0;o<pi->peffect->numOutputs;o++)
+		for(int o=0;o<pi->peffect->numOutputs;o++)
 		{
 			// get pin pointer
 			ADX_PIN* pp=&pi->pout_pin[o];

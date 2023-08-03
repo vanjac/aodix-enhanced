@@ -231,7 +231,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 					float* psrc=gl_padx->dsp_output_buffer[po];
 
 					// cast and mix transfer
-					for(s=0;s<dsp_num_samples;s++)
+					for(int s=0;s<dsp_num_samples;s++)
 						pdst[s]=int(asio_cb_double_clip(double(pdst[s])+double(psrc[s])*32768.0,32767.0));
 				}
 			}
@@ -257,7 +257,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 					float* psrc=gl_padx->dsp_output_buffer[po];
 
 					// cast and mix transfer
-					for(s=0;s<dsp_num_samples;s++)
+					for(int s=0;s<dsp_num_samples;s++)
 						pdst[s]=int(asio_cb_double_clip(double(pdst[s])+double(psrc[s])*2147483648.0,2147483647.0));
 				}
 			}
@@ -494,7 +494,7 @@ void CAodixCore::asio_init(HWND const hwnd)
 	// prepare inputs
 	asio_num_inputs=asio_driver_info.inputBuffers=asio_driver_info.inputChannels;
 
-	for(i=0;i<asio_driver_info.inputBuffers;i++,info++)
+	for(long i=0;i<asio_driver_info.inputBuffers;i++,info++)
 	{
 		info->isInput=ASIOTrue;
 		info->channelNum=i;
@@ -504,7 +504,7 @@ void CAodixCore::asio_init(HWND const hwnd)
 	// prepare outputs
 	asio_num_outputs=asio_driver_info.outputBuffers=asio_driver_info.outputChannels;
 
-	for(i=0;i<asio_driver_info.outputBuffers;i++,info++)
+	for(long i=0;i<asio_driver_info.outputBuffers;i++,info++)
 	{
 		info->isInput=ASIOFalse;
 		info->channelNum=i;
@@ -522,7 +522,7 @@ void CAodixCore::asio_init(HWND const hwnd)
 	}
 
 	// now get all the buffer details, sample word length, name, word clock group and activation
-	for(i=0;i<asio_num_buffers;i++)
+	for(long i=0;i<asio_num_buffers;i++)
 	{
 		asio_driver_info.channelInfos[i].channel=asio_driver_info.bufferInfos[i].channelNum;
 		asio_driver_info.channelInfos[i].isInput=asio_driver_info.bufferInfos[i].isInput;

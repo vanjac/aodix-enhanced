@@ -141,7 +141,7 @@ void arg_tool_get_filetitle(char* pfilename,char* pfiletitle)
 	}
 
 	// find right slashdots
-	for(i=strlen(buf)-1;i>=0;i--)
+	for(int i=strlen(buf)-1;i>=0;i--)
 	{
 		// check dot
 		if(buf[i]=='\\' || buf[i]=='/')

@@ -271,7 +271,7 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 				gl_padx->master_time_info.flags|=kVstTransportCycleActive;
 
 			// send all notes off/all sounds off
-			for(i=0;i<MAX_INSTANCES;i++)
+			for(int i=0;i<MAX_INSTANCES;i++)
 				gl_padx->instance_midi_panic(&gl_padx->instance[i],true,true);
 
 			// re-enable controls

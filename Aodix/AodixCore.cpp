@@ -77,7 +77,7 @@ CAodixCore::CAodixCore(HINSTANCE const hinstance)
 	master_transport_last_y=0;
 
 	// set all instances to null state during initialization
-	for(i=0;i<MAX_INSTANCES;i++)
+	for(int i=0;i<MAX_INSTANCES;i++)
 	{
 		// get instance pointer
 		ADX_INSTANCE* pi=&instance[i];
@@ -101,7 +101,7 @@ CAodixCore::CAodixCore(HINSTANCE const hinstance)
 	}
 
 	// initalize master input pin array
-	for(i=0;i<NUM_DSP_INPUTS;i++)
+	for(int i=0;i<NUM_DSP_INPUTS;i++)
 	{
 		master_input_pin[i].pwire=NULL;
 		master_input_pin[i].num_wires=0;
@@ -391,7 +391,7 @@ void CAodixCore::reset_project(void)
 	undo_combine=false;
 
 	// reset master input pins
-	for(p=0;p<NUM_DSP_INPUTS;p++)
+	for(int p=0;p<NUM_DSP_INPUTS;p++)
 		edit_clr_pin(&master_input_pin[p]);
 
 	// reset master i/o module screen coordinates
@@ -489,7 +489,7 @@ void CAodixCore::config_read(void)
 	cfg.midi_in_dv_open=1;
 
 	// init reserved fields 2
-	for(r=0;r<14;r++)
+	for(int r=0;r<14;r++)
 		cfg.reserved2[r]=0;
 
 	// init user registration
@@ -561,7 +561,7 @@ void CAodixCore::recent_files_push(char* new_file)
 	}
 
 	// update recent file list
-	for(rf=(last_index-1);rf>=0;rf--)
+	for(int rf=(last_index-1);rf>=0;rf--)
 		memcpy(cfg.recent_file[rf+1],cfg.recent_file[rf],_MAX_PATH);
 
 	// copy new file

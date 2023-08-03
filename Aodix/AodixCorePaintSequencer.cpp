@@ -233,7 +233,7 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 		}
 
 		// piano roll octaves
-		for(prn=0;prn<pr_vn;prn++)
+		for(int prn=0;prn<pr_vn;prn++)
 		{
 			int const pr_ni=pr_no+prn;
 
@@ -246,7 +246,7 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 		}
 
 		// draw back track frames
-		for(t=1;t<seq_visi_t;t++)
+		for(int t=1;t<seq_visi_t;t++)
 		{
 			int const tfx=TRACK_WIDTH+user_pr_width+t*TRACK_WIDTH;
 			arg_gdi_paint_solid_rect(hdc,tfx-1,seq_area_y,1,seq_area_h,bck_color-0x00202020);
@@ -264,7 +264,7 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 		BitBlt(hdc,TRACK_WIDTH+user_pr_width-4,seq_area_y+seq_area_h-16,4,16,hdc_gfx,200,572,SRCCOPY);
 
 		// paint piano roll separator bars
-		for(t=(seq_area_y+16);t<(seq_area_y+seq_area_h-16);t+=16)
+		for(int t=(seq_area_y+16);t<(seq_area_y+seq_area_h-16);t+=16)
 		{
 			BitBlt(hdc,TRACK_WIDTH,t,4,16,hdc_gfx,196,572,SRCCOPY);
 			BitBlt(hdc,TRACK_WIDTH+user_pr_width-4,t,4,16,hdc_gfx,196,572,SRCCOPY);

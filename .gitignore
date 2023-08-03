@@ -4,8 +4,10 @@
 *.res
 *.chm
 *.exe
-*/Debug/*
-*/Release/*
+*.user
+Debug/
+Release/
+.vs/
 /AsioSdk2/*
 !/AsioSdk2/README.md
 /VstSdk2.3/*
