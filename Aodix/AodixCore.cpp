@@ -18,7 +18,7 @@ CAodixCore::CAodixCore(HINSTANCE const hinstance)
 	hwnd_edit=NULL;
 
 	// aodix version
-	aodix_version=4202;
+	aodix_version=4203;
 
 	// id of effect currently loading
 	instance_eff_id_currently_loading=0;

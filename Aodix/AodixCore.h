@@ -268,6 +268,8 @@ struct ADX_PROJECT
 	int	master_numerator;
 	int	master_denominator;
 	int master_ppqn;
+
+	int ext_offset; // ADX file extended data offset
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -422,6 +424,7 @@ public:
 public:
 	void export_adx_file_dlg(HWND const hwnd);
 	void export_adx_pin(ADX_PIN* pin_array,int num_pins,FILE* pfile);
+	void export_adx_program(ADX_INSTANCE* pi,FILE* pfile);
 	void export_adx_file(HWND const hwnd,char* filename);
 	void export_cub_file_dlg(HWND const hwnd,int const is_fxp);
 	void export_cub_file(HWND const hwnd,char* filename,int const is_fxp);

@@ -80,6 +80,7 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 		{
 			// close file, not adx4 fileformat and return
 			fclose(pfile);
+			MessageBox(hwnd,"Unrecognized file format","Aodix - Import ADX",MB_OK | MB_ICONERROR);
 			return;
 		}
 
@@ -95,6 +96,13 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 		{
 			// unsupported old format, close file, return
 			fclose(pfile);
+			MessageBox(hwnd,"Unsupported old project format","Aodix - Import ADX",MB_OK | MB_ICONERROR);
+			return;
+		}
+		else if(project_version>=4300)
+		{
+			fclose(pfile);
+			MessageBox(hwnd,"This project requires a newer version of Aodix","Aodix - Import ADX",MB_OK | MB_ICONERROR);
 			return;
 		}
 
@@ -209,6 +217,7 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 				else
 				{
 					// get safe number of programs
+					// BUG: this should be max(), but for backwards compatibility it can't be changed
 					int const safe_num_programs=min(pi->peffect->numPrograms,1);
 
 					// program / param scanning

@@ -35,6 +35,27 @@ void CAodixCore::export_adx_pin(ADX_PIN* pin_array,int num_pins,FILE* pfile)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::export_adx_program(ADX_INSTANCE* pi,FILE* pfile)
+{
+	// program name
+	char buf_prg[32];
+	buf_prg[0]=0;
+
+	// get program name
+	pi->peffect->dispatcher(pi->peffect,effGetProgramName,0,0,buf_prg,0.0f);
+
+	// write program name
+	fwrite(buf_prg,sizeof(char),32,pfile);
+
+	// write all parameters
+	for(int pa=0;pa<pi->peffect->numParams;pa++)
+	{
+		float const pa_value=pi->peffect->getParameter(pi->peffect,pa);
+		fwrite(&pa_value,sizeof(float),1,pfile);
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::export_adx_file(HWND const hwnd,char* filename)
 {
 	// set wait cursor
@@ -61,6 +82,9 @@ void CAodixCore::export_adx_file(HWND const hwnd,char* filename)
 		// write project version id (host version)
 		fwrite(&aodix_version,sizeof(int),1,pfile);
 
+		// clear extended data offset (will be overwritten)
+		project.ext_offset = 0;
+
 		// write project track structure
 		fwrite(&project,sizeof(ADX_PROJECT),1,pfile);
 
@@ -79,8 +103,15 @@ void CAodixCore::export_adx_file(HWND const hwnd,char* filename)
 			// write instance data if plugin is instanced
 			if(pi->peffect!=NULL)
 			{
-				// flag on
-				fputc(1,pfile);
+				// write instance format type (since 4.2.0.3, previously flag = 1)
+				char fmt;
+				if(pi->peffect->flags & effFlagsProgramChunks)
+					fmt = 2; // chunk format
+				else if(pi->peffect->numPrograms <= 0)
+					fmt = 3; // no programs stored here, single program in extended region
+				else
+					fmt = 4; // 1 program here, additional programs in extended region
+				fputc(fmt,pfile);
 
 				// write instance path
 				fwrite(pi->dll_path,sizeof(char),_MAX_PATH,pfile);
@@ -129,6 +160,7 @@ void CAodixCore::export_adx_file(HWND const hwnd,char* filename)
 				else
 				{
 					// get safe number of programs
+					// BUG: this should be max(), but for backwards compatibility it can't be changed
 					int const safe_num_programs=min(pi->peffect->numPrograms,1);
 
 					// program / param scanning
@@ -137,22 +169,8 @@ void CAodixCore::export_adx_file(HWND const hwnd,char* filename)
 						// set program
 						pi->peffect->dispatcher(pi->peffect,effSetProgram,0,p,NULL,0.0f);
 
-						// write program name
-						char buf_prg[32];
-						buf_prg[0]=0;
-
-						// get program name
-						pi->peffect->dispatcher(pi->peffect,effGetProgramName,0,0,buf_prg,0.0f);
-
-						// write program name
-						fwrite(buf_prg,sizeof(char),32,pfile);
-
-						// write all parameters
-						for(int pa=0;pa<pi->peffect->numParams;pa++)
-						{
-							float const pa_value=pi->peffect->getParameter(pi->peffect,pa);
-							fwrite(&pa_value,sizeof(float),1,pfile);
-						}
+						// write program
+						export_adx_program(pi,pfile);
 					}
 
 					// set current program
@@ -182,6 +200,76 @@ void CAodixCore::export_adx_file(HWND const hwnd,char* filename)
 		// write user routing view offset
 		fwrite(&user_rout_offset_x,sizeof(int),1,pfile);
 		fwrite(&user_rout_offset_y,sizeof(int),1,pfile);
+
+		// extended region (since v4.2.0.3)
+		int ext_offset = ftell(pfile);
+
+		// write instance fallback data. this is only used if the instance can't be loaded!
+		for(int i=0;i<MAX_INSTANCES;i++)
+		{
+			// get instance pointer
+			ADX_INSTANCE* pi=&instance[i];
+
+			// check if plugin is instanced
+			if(pi->peffect!=NULL)
+			{
+				// write num outputs (truncated to 1 byte)
+				fwrite(&pi->peffect->numOutputs,1,1,pfile);
+
+				// write num programs (truncated to 1 byte)
+				fwrite(&pi->peffect->numPrograms,1,1,pfile);
+
+				// write num parameters (truncated to 2 bytes)
+				fwrite(&pi->peffect->numParams,2,1,pfile);
+			}
+			else
+			{
+				// padding
+				int zero = 0;
+				fwrite(&zero,4,1,pfile);
+			}
+		}
+
+		// write instance additional programs
+		for(int i=0;i<MAX_INSTANCES;i++)
+		{
+			// get instance pointer
+			ADX_INSTANCE* pi=&instance[i];
+
+			// check if plugin is instanced and parameters must be written
+			if(pi->peffect!=NULL && !(pi->peffect->flags & effFlagsProgramChunks))
+			{
+				if(pi->peffect->numPrograms <= 0)
+				{
+					// zero programs reported, write current program since it wasn't written earlier
+					export_adx_program(pi,pfile);
+				}
+				else if(pi->peffect->numPrograms > 1)
+				{
+					// get current instance program index
+					int const curr_prg_index=pi->peffect->dispatcher(pi->peffect,effGetProgram,0,0,NULL,0.0f);
+
+					// write all programs after 0
+					for(int p=1;p<pi->peffect->numPrograms;p++)
+					{
+						// set program
+						pi->peffect->dispatcher(pi->peffect,effSetProgram,0,p,NULL,0.0f);
+
+						// write program
+						export_adx_program(pi,pfile);
+					}
+
+					// set current program
+					pi->peffect->dispatcher(pi->peffect,effSetProgram,0,curr_prg_index,NULL,0.0f);
+				}
+			}
+		}
+
+		// seek to ext_offset field
+		fseek(pfile,0x2C605C,SEEK_SET);
+
+		// overwrite with actual ext_offset
+		fwrite(&ext_offset,sizeof(int),1,pfile);
 
 		// close file
 		fclose(pfile);
