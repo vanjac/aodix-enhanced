@@ -37,7 +37,7 @@ void CAodixCore::export_adx_pin(ADX_PIN* pin_array,int num_pins,FILE* pfile)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::export_adx_program(ADX_INSTANCE* pi,FILE* pfile)
 {
-	// program name
+	// program name buffer
 	char buf_prg[32];
 	buf_prg[0]=0;
 

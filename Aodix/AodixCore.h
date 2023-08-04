@@ -408,6 +408,7 @@ public:
 public:
 	void import_adx_file_dlg(HWND const hwnd);
 	void import_adx_pin(ADX_PIN* pp,int num_pins,FILE* pfile);
+	void import_adx_program(ADX_INSTANCE* pi,FILE* pfile);
 	void import_adx_file(HWND const hwnd,char* filename);
 	void import_search_file(char* pfolder,char* pfilename,char* pmatchfile);
 	int  import_localize_vst_dll(HWND const hwnd,int index,char* pfilename);

@@ -57,6 +57,28 @@ void CAodixCore::import_adx_pin(ADX_PIN* pin_array,int num_pins,FILE* pfile)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::import_adx_program(ADX_INSTANCE* pi,FILE* pfile)
+{
+	// program name buffer
+	char buf_prg[32];
+	buf_prg[0]=0;
+
+	// read program name
+	fread(buf_prg,sizeof(char),32,pfile);
+
+	// set program name
+	pi->peffect->dispatcher(pi->peffect,effSetProgramName,0,0,buf_prg,0.0f);
+
+	// read all parameters
+	for(int pa=0;pa<pi->peffect->numParams;pa++)
+	{
+		float pa_value=0.0f;
+		fread(&pa_value,sizeof(float),1,pfile);
+		pi->peffect->setParameter(pi->peffect,pa,pa_value);
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 {
 	// reset master position
@@ -122,20 +144,26 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 		edit_undo_snapshot();
 		edit_undo_combine_next();
 
+		// instance format codes
+		char inst_fmt[MAX_INSTANCES];
+
 		// read instance data
 		for(int i=0;i<MAX_INSTANCES;i++)
 		{
 			// get instance pointer
 			ADX_INSTANCE* pi=&instance[i];
 
-			// get instance flag
-			int const instance_flag=fgetc(pfile);
+			// get instance format
+			char const fmt=fgetc(pfile);
+
+			// store format in table
+			inst_fmt[i] = fmt;
 
 			// reset instance eff id currently loading
 			instance_eff_id_currently_loading=0;
 
 			// read instance data if plugin is instanced
-			if(instance_flag)
+			if(fmt)
 			{
 				// read instance path
 				fread(pi->dll_path,sizeof(char),_MAX_PATH,pfile);
@@ -233,23 +261,8 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 						// set program
 						pi->peffect->dispatcher(pi->peffect,effSetProgram,0,p,NULL,0.0f);
 
-						// program name buffer
-						char buf_prg[32];
-						buf_prg[0]=0;
-
-						// read program name
-						fread(buf_prg,sizeof(char),32,pfile);
-
-						// set program name
-						pi->peffect->dispatcher(pi->peffect,effSetProgramName,0,0,buf_prg,0.0f);
-
-						// read all parameters
-						for(int pa=0;pa<pi->peffect->numParams;pa++)
-						{
-							float pa_value=0.0f;
-							fread(&pa_value,sizeof(float),1,pfile);
-							pi->peffect->setParameter(pi->peffect,pa,pa_value);
-						}
+						// read program
+						import_adx_program(pi,pfile);
 					}
 				}
 
@@ -274,6 +287,44 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 		// read user routing view offset
 		fread(&user_rout_offset_x,sizeof(int),1,pfile);
 		fread(&user_rout_offset_y,sizeof(int),1,pfile);
+
+		// extended file format
+		if (project_version>=4203)
+		{
+			// seek to additional instance programs
+			fseek(pfile,project.ext_offset+0x400,SEEK_SET);
+
+			// read additional instance programs
+			for(int i=0;i<MAX_INSTANCES;i++)
+			{
+				// get instance pointer
+				ADX_INSTANCE* pi=&instance[i];
+
+				if(inst_fmt[i]==3)
+				{
+					// read current program
+					import_adx_program(pi,pfile);
+				}
+				else if(inst_fmt[i]==4)
+				{
+					// get current instance program index
+					int const curr_prg_index=pi->peffect->dispatcher(pi->peffect,effGetProgram,0,0,NULL,0.0f);
+
+					// read all programs after 0
+					for(int p=1;p<pi->peffect->numPrograms;p++)
+					{
+						// set program
+						pi->peffect->dispatcher(pi->peffect,effSetProgram,0,p,NULL,0.0f);
+
+						// read program
+						import_adx_program(pi,pfile);
+					}
+
+					// set current program
+					pi->peffect->dispatcher(pi->peffect,effSetProgram,0,curr_prg_index,NULL,0.0f);
+				}
+			}
+		}
 
 		// close file
 		fclose(pfile);
