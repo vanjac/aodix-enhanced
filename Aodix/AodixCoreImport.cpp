@@ -6,6 +6,15 @@
 #include "./aodixcore.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// instance fallback data struct definition
+struct ADX_INST_FALLBACK
+{
+	unsigned char numOutputs;
+	unsigned char numPrograms;
+	unsigned short numParams;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::import_adx_file_dlg(HWND const hwnd)
 {
 	// filename holder
@@ -112,6 +121,7 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 		// read version
 		long project_version=0;
 		fread(&project_version,sizeof(int),1,pfile);
+		bool extended = project_version>=4203;
 
 		// compare header project version
 		if(project_version<4010)
@@ -144,6 +154,25 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 		edit_undo_snapshot();
 		edit_undo_combine_next();
 
+		// table of instance fallback data (only valid for extended file format)
+		ADX_INST_FALLBACK inst_fallback[MAX_INSTANCES];
+
+		// extended file format
+		if (extended)
+		{
+			// store position of instance table
+			int inst_table_offset = ftell(pfile);
+
+			// seek to extended region
+			fseek(pfile,project.ext_offset,SEEK_SET);
+
+			// read instance fallback table
+			fread(inst_fallback,sizeof(ADX_INST_FALLBACK),MAX_INSTANCES,pfile);
+
+			// return to previous position
+			fseek(pfile,inst_table_offset,SEEK_SET);
+		}
+
 		// instance format codes
 		char inst_fmt[MAX_INSTANCES];
 
@@ -168,6 +197,9 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 				// read instance path
 				fread(pi->dll_path,sizeof(char),_MAX_PATH,pfile);
 
+				// read effect id
+				fread(&instance_eff_id_currently_loading,sizeof(long),1,pfile);
+
 				// check if corrupted path saved with Aodix v4.2.0.1 or earlier
 				if(pi->dll_path[0]==0)
 				{
@@ -186,92 +218,118 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 				}
 
 				// localize dll file
-				if(import_localize_vst_dll(hwnd,i,pi->dll_path)==0)
+				if(import_localize_vst_dll(hwnd,i,pi->dll_path))
 				{
-					// close file, dll not found
-					fclose(pfile);
-					MessageBox(hwnd,"Project loading stopped. Not all instances were loaded.","Aodix - Import ADX",MB_OK | MB_ICONERROR);
-					return;
+					// instance plugin
+					instance_dll(hwnd,pi,pi->dll_path,0,0);
 				}
 
-				// read effect id
-				fread(&instance_eff_id_currently_loading,sizeof(long),1,pfile);
-
-				// instance plugin
-				instance_dll(hwnd,pi,pi->dll_path,0,0);
-
-				// read instance coordinates in dsp routing
-				fread(&pi->x,sizeof(int),1,pfile);
-				fread(&pi->y,sizeof(int),1,pfile);
-
-				// read instance properties
-				fread(&pi->process_mute,sizeof(unsigned char),1,pfile);
-				fread(&pi->process_thru,sizeof(unsigned char),1,pfile);
-
-				// read instance label alias
-				fread(pi->alias,sizeof(char),32,pfile);
-
-				if(pi->peffect==NULL)
+				if (pi->peffect!=NULL)
 				{
-					// close file, instance couldn't be loaded
-					fclose(pfile);
-					return;
-				}
+					// read instance coordinates in dsp routing
+					fread(&pi->x,sizeof(int),1,pfile);
+					fread(&pi->y,sizeof(int),1,pfile);
 
-				// read instance output pin data
-				import_adx_pin(pi->pout_pin,pi->peffect->numOutputs,pfile);
+					// read instance properties
+					fread(&pi->process_mute,sizeof(unsigned char),1,pfile);
+					fread(&pi->process_thru,sizeof(unsigned char),1,pfile);
 
-				// read instance midi output pin data
-				import_adx_pin(&pi->mout_pin,1,pfile);
+					// read instance label alias
+					fread(pi->alias,sizeof(char),32,pfile);
 
-				// current program index holder
-				int curr_prg_index=0;
+					// read instance output pin data
+					import_adx_pin(pi->pout_pin,pi->peffect->numOutputs,pfile);
 
-				// read current selected program
-				fread(&curr_prg_index,sizeof(int),1,pfile);
+					// read instance midi output pin data
+					import_adx_pin(&pi->mout_pin,1,pfile);
 
-				// read instance chunk
-				if(pi->peffect->flags & effFlagsProgramChunks)
-				{
-					// read chunk bytesize
-					int chk_byte_size=0;
-					fread(&chk_byte_size,sizeof(int),1,pfile);
+					// current program index holder
+					int curr_prg_index=0;
 
-					// bank chunk data pointer
-					void* pchkdata=malloc(chk_byte_size);
+					// read current selected program
+					fread(&curr_prg_index,sizeof(int),1,pfile);
 
-					// read chunk data
-					fread(pchkdata,chk_byte_size,1,pfile);
-
-					// dispatch
-					pi->peffect->dispatcher(pi->peffect,effSetChunk,0,chk_byte_size,pchkdata,0.0f);
-
-					// free
-					free(pchkdata);
-				}
-				else
-				{
-					// get safe number of programs
-					// BUG: this should be max(), but for backwards compatibility it can't be changed
-					int const safe_num_programs=min(pi->peffect->numPrograms,1);
-
-					// program / param scanning
-					for(int p=0;p<safe_num_programs;p++)
+					// read instance chunk
+					if((extended && fmt==2) || (!extended && (pi->peffect->flags & effFlagsProgramChunks)))
 					{
-						// set program
-						pi->peffect->dispatcher(pi->peffect,effSetProgram,0,p,NULL,0.0f);
+						// read chunk bytesize
+						int chk_byte_size=0;
+						fread(&chk_byte_size,sizeof(int),1,pfile);
 
-						// read program
+						// bank chunk data pointer
+						void* pchkdata=malloc(chk_byte_size);
+
+						// read chunk data
+						fread(pchkdata,chk_byte_size,1,pfile);
+
+						// dispatch
+						pi->peffect->dispatcher(pi->peffect,effSetChunk,0,chk_byte_size,pchkdata,0.0f);
+
+						// free
+						free(pchkdata);
+					}
+					else if((extended && fmt==4) || (!extended && pi->peffect->numPrograms > 0))
+					{
+						// set program zero
+						pi->peffect->dispatcher(pi->peffect,effSetProgram,0,0,NULL,0.0f);
+
+						// read single program
 						import_adx_program(pi,pfile);
 					}
+					// else format 3 (no data)
+
+					// read midi cc array
+					if(pi->peffect->numParams)
+						fread(pi->pmidi_cc,sizeof(unsigned char),pi->peffect->numParams,pfile);
+
+					// set current program
+					pi->peffect->dispatcher(pi->peffect,effSetProgram,0,curr_prg_index,NULL,0.0f);
 				}
+				else // pi->peffect==NULL
+				{
+					if(!extended)
+					{
+						// can't continue loading, close file
+						fclose(pfile);
+						MessageBox(hwnd,"Project loading stopped. Not all instances were loaded.","Aodix - Import ADX",MB_OK | MB_ICONERROR);
+						return;
+					}
 
-				// read midi cc array
-				if(pi->peffect->numParams)
-					fread(pi->pmidi_cc,sizeof(unsigned char),pi->peffect->numParams,pfile);
+					// skip instance data
+					fseek(pfile,42,SEEK_CUR);
 
-				// set current program
-				pi->peffect->dispatcher(pi->peffect,effSetProgram,0,curr_prg_index,NULL,0.0f);
+					// skip pin data
+					for(int p=0; p<inst_fallback[i].numOutputs+1; p++)
+					{
+						// read num wires
+						int num_wires;
+						fread(&num_wires,sizeof(int),1,pfile);
+
+						// skip wires
+						fseek(pfile,num_wires*sizeof(ADX_WIRE),SEEK_CUR);
+					}
+
+					// skip selected program
+					fseek(pfile,sizeof(int),SEEK_CUR);
+
+					if(fmt==2)
+					{
+						// read chunk bytesize
+						int chk_byte_size=0;
+						fread(&chk_byte_size,sizeof(int),1,pfile);
+
+						// skip chunk
+						fseek(pfile,chk_byte_size,SEEK_CUR);
+					}
+					else if(fmt==4)
+					{
+						// skip program data
+						fseek(pfile,32+(inst_fallback[i].numParams*sizeof(float)),SEEK_CUR);
+					}
+
+					// skip midi cc array
+					fseek(pfile,inst_fallback[i].numParams,SEEK_CUR);
+				}
 			}
 		}
 
@@ -289,7 +347,7 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 		fread(&user_rout_offset_y,sizeof(int),1,pfile);
 
 		// extended file format
-		if (project_version>=4203)
+		if (extended)
 		{
 			// seek to additional instance programs
 			fseek(pfile,project.ext_offset+0x400,SEEK_SET);
@@ -300,7 +358,18 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 				// get instance pointer
 				ADX_INSTANCE* pi=&instance[i];
 
-				if(inst_fmt[i]==3)
+				if (pi->peffect==NULL)
+				{
+					// calculate size of program data
+					int program_size = 32+(inst_fallback[i].numParams*sizeof(float));
+
+					// skip program data
+					if(inst_fmt[i]==3)
+						fseek(pfile,program_size,SEEK_CUR);
+					else if(inst_fmt[i]==4)
+						fseek(pfile,program_size*(inst_fallback[i].numPrograms-1),SEEK_CUR);
+				}
+				else if(inst_fmt[i]==3)
 				{
 					// read current program
 					import_adx_program(pi,pfile);
