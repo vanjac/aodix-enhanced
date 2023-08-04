@@ -183,6 +183,13 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 				// read instance label alias
 				fread(pi->alias,sizeof(char),32,pfile);
 
+				if(pi->peffect==NULL)
+				{
+					// close file, instance couldn't be loaded
+					fclose(pfile);
+					return;
+				}
+
 				// read instance output pin data
 				import_adx_pin(pi->pout_pin,pi->peffect->numOutputs,pfile);
 
