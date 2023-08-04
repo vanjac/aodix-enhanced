@@ -182,6 +182,9 @@ struct ADX_INSTANCE
 	// dll path (where the vst dll is stored)
 	char dll_path[_MAX_PATH];
 
+	// handle to vst module
+	HMODULE h_dll;
+
 	// counter of midi events queue size in processing block
 	int midi_queue_size;
 

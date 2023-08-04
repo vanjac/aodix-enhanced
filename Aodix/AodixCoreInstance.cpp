@@ -12,9 +12,9 @@ typedef AEffect* (*PVSTMAIN)(audioMasterCallback audioMaster);
 void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,int const param_x,int const param_y)
 {
 	// load dll file
-	HMODULE	h_dll=LoadLibrary(filename);
+	pi->h_dll=LoadLibrary(filename);
 
-	if(h_dll==NULL)
+	if(pi->h_dll==NULL)
 	{
 		MessageBox(hwnd,"Error: LoadLibrary() Failed","Aodix - VST Host",MB_OK | MB_ICONERROR);
 		return;
@@ -22,16 +22,17 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 
 	// get proc main address
 	PVSTMAIN _pMain = NULL;
-	_pMain=(PVSTMAIN)GetProcAddress(h_dll,"main");
+	_pMain=(PVSTMAIN)GetProcAddress(pi->h_dll,"main");
 
 	// VST 2.4 SDK adds "VSTPluginMain"
 	if (!_pMain)
-		_pMain=(PVSTMAIN)GetProcAddress(h_dll,"VSTPluginMain");
+		_pMain=(PVSTMAIN)GetProcAddress(pi->h_dll,"VSTPluginMain");
 
 	// no plug's main entry function?
 	if(!_pMain)
 	{
 		MessageBox(hwnd,"Error: GetProcAddress() Failed","Aodix - VST Host",MB_OK | MB_ICONERROR);
+		pi->h_dll = NULL;
 		return;
 	}
 
@@ -208,6 +209,9 @@ void CAodixCore::instance_free(ADX_INSTANCE* pi)
 		// close plugin's instance
 		pi->peffect->dispatcher(pi->peffect,effMainsChanged,0,0,0,0.0f);
 		pi->peffect->dispatcher(pi->peffect,effClose,0,0,0,0.0f);
+
+		// decrement reference count
+		FreeLibrary(pi->h_dll);
 
 		// set null vst aeffect plug
 		pi->peffect=NULL;
