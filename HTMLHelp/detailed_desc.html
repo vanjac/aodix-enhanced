@@ -600,10 +600,13 @@ of the parameter (hex)<br><br>
 <p align="left">
 <font face="Verdana" size="2"><b>Light-brown event = generic Midi Event (mostly 
 used for program change)<br>
-syntax: Mid II MC P1 P2&nbsp;&nbsp; 
+syntax: MMM II MC P1 P2&nbsp;&nbsp; 
 </b></font></p>
 <p align="left">
-<font face="Verdana" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; II = Instance number (hex)<br>
+<font face="Verdana" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMM = Message name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+e.g. "Prg" is a program change<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; II = Instance number (hex)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MC = M midi 
 message number and C midi channel (both hex)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -615,21 +618,21 @@ e.g. C0 is a program change<br>
 <br>
 &nbsp;&nbsp;&nbsp; In detail (according to the value of M) :<br>
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = 8 : note-off command : Aodix 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = 8 "Off" : note-off command : Aodix 
 doesn't show these commands, but it is materialized<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 by the object's bottom.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = 9 : note-on command : P1 is key, and P2 is velocity<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = A : aftertouch : P1 is key, and 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = 9 "On " : note-on command : P1 is key, and P2 is velocity<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = A "Aft" : aftertouch : P1 is key, and 
 P2 is touch<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = B : midi CC : P1 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = B "CC " : midi CC : P1 
 is the controller number, and P2 is the controller value<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = C : program change : P1 is the new program. P2 is nothing<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = D : channel pressure : P1 is 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = C "Prg" : program change : P1 is the new program. P2 is nothing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = D "Prs" : channel pressure : P1 is 
 pressure, P2 is nothing<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = E : pitch bend : P1 is lsb 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = E "Pit" : pitch bend : P1 is lsb 
 (7bit), and P2 is msb (7bit)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = F : System (non-musical) messages 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M = F "Sys" : System (non-musical) messages 
 such as keep alive (&quot;Active Sensing&quot;) etc...</font></p>
 <p align="left">
 <font face="Verdana" size="2"><b>Green event = Pattern call<br>
@@ -789,8 +792,7 @@ Items</a></font></b></p>
 <u>Save as (Ctrl + Shift + S) :</u> saves project as... (Aodix v4 format).<br>
 <br>
 <u><a name="bounce">Bounce (Ctrl + W) :</a></u> renders the 
-project to one or several 
-32-bit float IEEE file.<b><br>
+project to one or several WAV files.<b><br>
 Only Master Output pins that have at least one incoming wire will 
 be rendered. </b>It doesn't matter if they are blue or green.<br>
 <br>
@@ -805,20 +807,15 @@ Start/End cues.<br>
 In all cases, it stops at the STOP Marker.<br>
 &nbsp;&nbsp;&nbsp; - &quot;Multifile&quot; : tick this option if you want the 
 bouncing results to be stored in several<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32-bit float IEEE mono-channel files. In 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32-bit float mono-channel WAV files. In 
 this case, there will be one file for<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; each wired Master Output pin. Otherwise, 
 the results will be stored 
 in<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; one single 32-bit IEEE&nbsp;interleaved file.</font></p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; one single 32-bit WAV file.</font></p>
 <p align="left"><font face="Verdana" size="2">&nbsp;&nbsp;&nbsp; The output format of the rendered 
-file is Raw IEEE 32-bit float :<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - resolution : 32-bit float<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - endianness : none<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - start position of audio data : 0<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - rate : the one used when rendering<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - number of channels : depends on 
-&quot;Multi-file&quot; status and on pin wiring :<br>
+file is 32-bit float WAV.<br>
+&nbsp;&nbsp;&nbsp; The number of channels depends on &quot;Multi-file&quot; status and on pin wiring:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 If &quot;Multi-file Rendering&quot; was not ticked, then the number of channels is the<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -920,9 +917,9 @@ with Ctrl+B and Ctrl+E and not with mouse.</font></p>
 <p align="left">&nbsp;</p>
 <p align="left"><b><font face="Verdana" size="2">Help menu</font></b></p>
 <p align="left"><img border="0" src="images/menu3.jpg" width="179" height="85"></p>
-<p align="left"><font face="Verdana" size="2"><u>Contents :</u> opens this help file<br>
+<p align="left"><font face="Verdana" size="2"><u>Content :</u> opens this help file<br>
 <u>About :</u> information about Arguru Software.<br>
-<u>Arguru Software Website :</u> link to the website</font></p>
+<u>Website :</u> link to the website</font></p>
 
 </body>
 
