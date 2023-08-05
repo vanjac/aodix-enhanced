@@ -693,6 +693,16 @@ void CAodixCore::edit_toggle_solo(int pat,int trk)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::edit_add_wire(ADX_PIN* pp,int const instance_index,int const pin_index,float const gain)
 {
+	// search for existing wire to same pin
+	for(int w=0;w<pp->num_wires;w++)
+	{
+		ADX_WIRE* pw=&pp->pwire[w];
+
+		// wire already exists
+		if (pw->instance_index==instance_index && pw->pin_index==pin_index)
+			return;
+	}
+
 	// enter critical section
 	asio_enter_cs();
 
