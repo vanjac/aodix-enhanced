@@ -6,6 +6,9 @@ InstallDir "$PROGRAMFILES\Arguru Software\Aodix"
 InstallDirRegKey HKLM "Software\Arguru Software\Aodix" Installdir
 
 !include MUI2.nsh
+!include StrFunc.nsh
+${Using:StrFunc} StrRep
+!include WordFunc.nsh
 
 !define REG_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aodix"
 
@@ -56,6 +59,21 @@ Section "Aodix" SecBase
     SetOutPath $INSTDIR\Skins\Night
     File ..\Aodix\Skins\Night\*.bmp
 
+    ; config file directory
+    SetShellVarContext current
+    CreateDirectory "$LocalAppData\Arguru Software"
+
+    ; find location of VirtualStore    
+    ${WordFind} "$PROGRAMFILES" "\" "-1" $R0
+    ${StrRep} $R1 "$INSTDIR" "$PROGRAMFILES" "$LocalAppData\VirtualStore\$R0"
+
+    ; move old config files
+    Rename "$R1\Aodix.cfg" "$LocalAppData\Arguru Software\Aodix.cfg"
+    Delete "$R1\Aodix.cfg"
+    Rename $INSTDIR\Aodix.cfg "$LocalAppData\Arguru Software\Aodix.cfg"
+    Delete $INSTDIR\Aodix.cfg
+    SetShellVarContext all
+
     ; remove old uninstall files
     Delete $INSTDIR\uninst.bmp
     Delete $INSTDIR\uninst.dat
@@ -67,13 +85,16 @@ SectionEnd
 Section "un.Uninstall"
     Delete $INSTDIR\Aodix.exe
     Delete $INSTDIR\Aodix.chm
-    Delete $INSTDIR\Aodix.cfg
     Delete $INSTDIR\LICENSE.txt
     Delete $INSTDIR\Skins\Blue\*.bmp
     RMDir $INSTDIR\Skins\Blue
     Delete $INSTDIR\Skins\Night\*.bmp
     RMDir $INSTDIR\Skins\Night
     RMDir $INSTDIR\Skins
+
+    SetShellVarContext current
+    Delete "$LocalAppData\Arguru Software\Aodix.cfg"
+    RMDir "$LocalAppData\Arguru Software"
 
     SetShellVarContext all
     !insertmacro MUI_STARTMENU_GETFOLDER "PageStartMenu" $StartMenuFolder
