@@ -527,7 +527,7 @@ public:
 	VstTimeInfo	master_time_info;
 
 public:
-	char app_dir[_MAX_PATH];
+	char cfg_fil[_MAX_PATH];
 	char hlp_fil[_MAX_PATH];
 
 public:

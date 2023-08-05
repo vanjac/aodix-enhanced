@@ -33,24 +33,37 @@ CAodixCore::CAodixCore(HINSTANCE const hinstance)
 	// assign instance
 	hinstance_app=hinstance;
 
+	// path buffer
+	char path[_MAX_PATH];
+
 	// get application executable path
-	GetModuleFileName((HMODULE)hinstance,app_dir,_MAX_PATH);
+	GetModuleFileName((HMODULE)hinstance,hlp_fil,_MAX_PATH);
 
 	// get application path string length
-	int const adl=strlen(app_dir);
+	int const adl=strlen(hlp_fil);
 
 	// extract dir
 	for(int i=adl;i>0;i--)
 	{
-		if(app_dir[i]=='\\')
+		if(hlp_fil[i]=='\\')
 		{
-			app_dir[i]=0;
+			hlp_fil[i]=0;
 			i=0;
 		}
 	}
 
 	// set html help file path
-	sprintf(hlp_fil,"%s\\aodix.chm",app_dir);
+	strcat(hlp_fil,"\\aodix.chm");
+
+	// get local app data folder
+	SHGetFolderPath(NULL,CSIDL_LOCAL_APPDATA,NULL,0,cfg_fil);
+
+	// create containing directory
+	strcat(cfg_fil,"\\Arguru Software");
+	CreateDirectory(cfg_fil, NULL);
+
+	// set config file path
+	strcat(cfg_fil, "\\Aodix.cfg");
 
 	// read configuration
 	config_read();
@@ -504,12 +517,8 @@ void CAodixCore::config_read(void)
 	for(int o=0;o<NUM_DSP_OUTPUTS;o++)
 		cfg.asio_output_pin[o]=o;
 
-	// format config file
-	char cfg_filename[_MAX_PATH];
-	sprintf(cfg_filename,"%s\\Aodix.cfg",app_dir);
-
 	// open config file
-	FILE* pfile=fopen(cfg_filename,"rb");
+	FILE* pfile=fopen(cfg_fil,"rb");
 
 	// read config file if opened
 	if(pfile!=NULL)
@@ -527,12 +536,8 @@ void CAodixCore::config_read(void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::config_write(void)
 {
-	// format config file
-	char cfg_filename[_MAX_PATH];
-	sprintf(cfg_filename,"%s\\Aodix.cfg",app_dir);
-
 	// open config file for write
-	FILE* pfile=fopen(cfg_filename,"wb");
+	FILE* pfile=fopen(cfg_fil,"wb");
 
 	// write config file if opened
 	if(pfile!=NULL)
