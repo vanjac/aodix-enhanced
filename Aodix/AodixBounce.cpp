@@ -6,6 +6,45 @@
 #include "./aodixcore.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void write_int32(int value,FILE* pfile)
+{
+	fwrite(&value,sizeof(value),1,pfile);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void write_int16(short value,FILE* pfile)
+{
+	fwrite(&value,sizeof(value),1,pfile);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void write_wav_header(FILE* pfile,int num_samples,int num_channels,int sample_rate)
+{
+	long const fmt_chunk_size=16;
+	int const data_chunk_size = num_samples * num_channels * sizeof(float);
+	int const riff_size = 4 + (8 + fmt_chunk_size) + (8 + data_chunk_size);
+
+	write_int32('FFIR',pfile);
+	write_int32(riff_size,pfile);
+
+	write_int32('EVAW',pfile);
+
+	// format chunk
+	write_int32(' tmf',pfile);
+	write_int32(fmt_chunk_size,pfile);
+	write_int16(3,pfile); // format code: IEEE float
+	write_int16(num_channels,pfile);
+	write_int32(sample_rate,pfile);
+	write_int32(sample_rate * num_channels * sizeof(float), pfile); // data rate
+	write_int16(num_channels * sizeof(float), pfile); // block size
+	write_int16(sizeof(float) * 8, pfile); // bits per sample
+
+	// data chunk
+	write_int32('atad',pfile);
+	write_int32(data_chunk_size,pfile);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lparam)
 {
 	// extern aodix core pointer
@@ -29,8 +68,8 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 		// disable stop button
 		EnableWindow(hwnd_butt2,FALSE);
 
-		// set project name raw file
-		sprintf(buf,"%s.raw",gl_padx->project.name);
+		// set project name wav file
+		sprintf(buf,"%s.wav",gl_padx->project.name);
 		SetWindowText(hwnd_edit1,buf);
 
 		// set focus to user name field
@@ -59,10 +98,10 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 		if(command_id==IDC_BOUNCE_BUTTON3)
 		{
 			// filename holder
-			sprintf(buf,"%s.raw",gl_padx->project.name);
+			sprintf(buf,"%s.wav",gl_padx->project.name);
 
 			// save file dialog
-			if(arg_file_dialog_save(gl_padx->hinstance_app,hdlg,"Export RAW File",buf,"RAW Files (IEEE-754 32-Bit Float Stereo) (*.raw)\0*.raw\0\0","raw",""))
+			if(arg_file_dialog_save(gl_padx->hinstance_app,hdlg,"Export WAV File",buf,"WAV Files (32-Bit Float Stereo) (*.wav)\0*.wav\0\0","wav",""))
 				SetWindowText(hwnd_edit1,buf);
 
 			return TRUE;
@@ -161,6 +200,33 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 				}
 			}
 
+			// store current pattern cycle state
+			int const curr_cycle_state=gl_padx->master_time_info.flags & kVstTransportCycleActive;
+
+			// number of samples to write
+			int num_samples=0;
+
+			// rendering to stop marker
+			if(check_cue_range==0)
+			{
+				SendMessage(hwnd_prog1,PBM_SETRANGE32,0,pp->cue_stp);
+				num_samples=gl_padx->seq_pos_to_sample(pp->cue_stp);
+				pp->usr_pos=0;
+				gl_padx->master_transport_sampleframe=0;
+				gl_padx->gui_is_dirty=1;
+			}
+
+			// rendering cue range
+			if(check_cue_range==1)
+			{
+				int end = min(pp->cue_end,pp->cue_stp);
+				SendMessage(hwnd_prog1,PBM_SETRANGE32,pp->cue_sta,end);
+				num_samples=gl_padx->seq_pos_to_sample(end - pp->cue_sta);
+				pp->usr_pos=pp->cue_sta;
+				gl_padx->master_transport_sampleframe=gl_padx->seq_pos_to_sample(pp->cue_sta);
+				gl_padx->gui_is_dirty=1;
+			}
+
 			// check rendering method
 			if(check_multifile==1)
 			{
@@ -176,42 +242,30 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 
 						// open file(s)
 						pfiles[fi]=fopen(track_file,"wb");
+						write_wav_header(pfiles[fi], num_samples, 1, gl_padx->cfg.asio_driver_sample_rate);
 					}
 				}
 			}
 			else
 			{
+				int num_channels = 0;
+				for(int o=0;o<NUM_DSP_OUTPUTS;o++)
+					if(master_output_wired[o])
+						num_channels++;
+
 				// single interleaved file
 				pfiles[0]=fopen(buf,"wb");
-			}
-
-			// store current pattern cycle state
-			int const curr_cycle_state=gl_padx->master_time_info.flags & kVstTransportCycleActive;
-
-			// rendering to stop marker
-			if(check_cue_range==0)
-			{
-				SendMessage(hwnd_prog1,PBM_SETRANGE32,0,pp->cue_stp);
-				pp->usr_pos=0;
-				gl_padx->master_transport_sampleframe=0;
-				gl_padx->gui_is_dirty=1;
-			}
-
-			// rendering cue range
-			if(check_cue_range==1)
-			{
-				SendMessage(hwnd_prog1,PBM_SETRANGE32,pp->cue_sta,pp->cue_end);
-				pp->usr_pos=pp->cue_sta;
-				gl_padx->master_transport_sampleframe=gl_padx->seq_pos_to_sample(pp->cue_sta);
-				gl_padx->gui_is_dirty=1;
+				write_wav_header(pfiles[0], num_samples, num_channels, gl_padx->cfg.asio_driver_sample_rate);
 			}
 
 			// disable transport cycle, launch transport
 			gl_padx->master_time_info.flags&=~kVstTransportCycleActive;
 			gl_padx->master_time_info.flags|=kVstTransportPlaying;
 
+			int cur_sample=0;
+
 			// render while transport dont wrap
-			while(gl_padx->master_time_info.flags & kVstTransportPlaying)
+			while(cur_sample<num_samples)
 			{
 				// clear dsp input buffers
 				gl_padx->dsp_clear_input_buffers();
@@ -220,7 +274,7 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 				gl_padx->dsp_work();
 
 				// write out to file stream
-				for(int s=0;s<gl_padx->dsp_block_size;s++)
+				for(int s=0;s<gl_padx->dsp_block_size && cur_sample<num_samples;s++,cur_sample++)
 				{
 					// write interleaved samples of each output
 					for(int o=0;o<NUM_DSP_OUTPUTS;o++)
@@ -237,14 +291,13 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 				// set progress
 				SendMessage(hwnd_prog1,PBM_SETPOS,c_s_pos,0);
 
-				// cycle stop
-				if(check_cue_range==1 && c_s_pos>=pp->cue_end)
-					gl_padx->master_time_info.flags&=~kVstTransportPlaying;
-
 				// server pending mesages (only paint and timer)
 				while(PeekMessage(&msg,NULL,NULL,NULL,PM_REMOVE))
 					DispatchMessage(&msg);
 			}
+
+			// stop transport
+			gl_padx->master_time_info.flags&=~kVstTransportPlaying;
 
 			// finalize file(s)
 			if(check_multifile==1)
