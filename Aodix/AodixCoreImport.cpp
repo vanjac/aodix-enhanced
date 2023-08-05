@@ -183,7 +183,11 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 			ADX_INSTANCE* pi=&instance[i];
 
 			// get instance format
-			char const fmt=fgetc(pfile);
+			char fmt=fgetc(pfile);
+
+			// normalize format
+			if (!extended && fmt!=0)
+				fmt = 1;
 
 			// store format in table
 			inst_fmt[i] = fmt;
@@ -250,7 +254,7 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 					fread(&curr_prg_index,sizeof(int),1,pfile);
 
 					// read instance chunk
-					if((extended && fmt==2) || (!extended && (pi->peffect->flags & effFlagsProgramChunks)))
+					if(fmt==2 || (fmt==1 && (pi->peffect->flags & effFlagsProgramChunks)))
 					{
 						// read chunk bytesize
 						int chk_byte_size=0;
@@ -268,7 +272,7 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 						// free
 						free(pchkdata);
 					}
-					else if((extended && fmt==4) || (!extended && pi->peffect->numPrograms > 0))
+					else if(fmt==4 || (fmt==1 && pi->peffect->numPrograms > 0))
 					{
 						// set program zero
 						pi->peffect->dispatcher(pi->peffect,effSetProgram,0,0,NULL,0.0f);
@@ -287,7 +291,7 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 				}
 				else // pi->peffect==NULL
 				{
-					if(!extended)
+					if(fmt==1)
 					{
 						// can't continue loading, close file
 						fclose(pfile);
