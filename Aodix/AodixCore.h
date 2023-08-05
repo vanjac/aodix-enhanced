@@ -347,6 +347,7 @@ public:
 	void dsp_clear_input_buffers(void);
 	void dsp_transport_play(void);
 	void dsp_transport_stop(void);
+	void dsp_stop_playing_notes(int pat,int trk,bool check_muted);
 	void dsp_vumeter_drive(float* psrc,float& vum,int const num_samples);
 
 public:
@@ -392,6 +393,13 @@ public:
 	void edit_transpose(int const amt,int const apply_quantize);
 	void edit_randomize(void);
 	void edit_add_new_marker(ADX_PATTERN* pp,int const position);
+
+public:
+	bool edit_is_solo_mode(int pat);
+	void edit_toggle_mute(int pat,int trk);
+	void edit_toggle_solo(int pat,int trk);
+
+public:
 	void edit_add_wire(ADX_PIN* pp,int const instance_index,int const pin_index,float const gain);
 	void edit_del_wire(ADX_PIN* pp,int const index);
 	void edit_clr_pin(ADX_PIN* pp);

@@ -575,6 +575,77 @@ void CAodixCore::dsp_transport_stop(void)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::dsp_stop_playing_notes(int pat,int trk,bool check_muted)
+{
+	if(master_time_info.flags & kVstTransportPlaying)
+	{
+		// enter critical section
+		asio_enter_cs();
+
+		// get pattern pointer
+		ADX_PATTERN* pp=&project.pattern[pat];
+
+		// current playback position
+		int play_pos = seq_sample_to_pos(master_transport_sampleframe);
+
+		// scan all sequencer events
+		for(int e=0;e<seq_num_events;e++)
+		{
+			// get event pointer
+			ADX_EVENT* pe=&seq_event[e];
+
+			// event overlaps playback position
+			if(pe->pat==pat && pe->szd
+				&& (check_muted ^ (pe->trk==trk)) && (!check_muted || !pp->track[pe->trk].mute)
+				&& pe->pos <= play_pos && pe->pos+pe->par > play_pos)
+			{
+				// note event
+				if (pe->typ==0)
+				{
+					// send note off message
+					instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,0);
+				}
+				// pattern event
+				else if (pe->typ==1)
+				{
+					// get referred marker
+					ADX_MARKER* pm=&project.pattern[pe->da0].marker[pe->da1];
+
+					// get marker offset
+					int const pe_marker_offset=pm->flg*pm->pos;
+
+					// get note tranpose amount
+					int const pe_note_transpose=int(pe->da2)-128;
+
+					// scan all called pattern (sub-events)
+					for(int se=0;se<seq_num_events;se++)
+					{
+						// get sub-event
+						ADX_EVENT* pse=&seq_event[se];
+
+						// sub-event position
+						int sub_pos = (pe->pos+pse->pos)-pe_marker_offset;
+
+						if (pse->pat==pe->da0 && pse->szd && pse->typ==0
+							&& sub_pos <= play_pos && sub_pos+pse->par > play_pos)
+						{
+							// calculate transposed note
+							int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
+
+							// send sub note-off message
+							instance_add_midi_event(&instance[pse->da0],pe->trk,0x80+(pse->da1&0xF),transposed_note,0x40,0,0);
+						}
+					}
+				}
+			}
+		}
+
+		// leave critical section
+		asio_leave_cs();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::dsp_vumeter_drive(float* psrc,float& vum,int const num_samples)
 {
 	// drive vu

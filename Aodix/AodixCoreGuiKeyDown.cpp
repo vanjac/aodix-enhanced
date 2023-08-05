@@ -330,8 +330,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 		// track mute toggle
 		if(keycode=='M')
 		{
-			ADX_TRACK *pt = &pp->track[user_trk];
-			pt->mute=!pt->mute;
+			edit_toggle_mute(user_pat, user_trk);
 			gui_is_dirty=1;
 		}
 	}

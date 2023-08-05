@@ -639,6 +639,58 @@ void CAodixCore::edit_randomize(void)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CAodixCore::edit_is_solo_mode(int pat)
+{
+	// get pattern pointer
+	ADX_PATTERN* pp=&project.pattern[pat];
+
+	// scan tracks
+	for(int t=0;t<MAX_TRACKS;t++)
+	{
+		if(pp->track[t].solo)
+			return true;
+	}
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::edit_toggle_mute(int pat,int trk)
+{
+	// get pattern pointer
+	ADX_PATTERN* pp=&project.pattern[pat];
+
+	// toggle track mute
+	ADX_TRACK *pt = &pp->track[trk];
+	pt->mute=!pt->mute;
+
+	// stop muted notes
+	if(pt->mute && !edit_is_solo_mode(pat))
+		dsp_stop_playing_notes(pat,trk,false);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::edit_toggle_solo(int pat,int trk)
+{
+	// get pattern pointer
+	ADX_PATTERN* pp=&project.pattern[pat];
+
+	// get track pointer
+	ADX_TRACK *pt = &pp->track[trk];
+
+	// if this is the first solo track, mute all other non-muted tracks
+	if(!pt->solo && !edit_is_solo_mode(pat))
+		dsp_stop_playing_notes(pat,trk,true);
+
+	// toggle track mute
+	pt->solo=!pt->solo;
+
+	// if this isn't the last solo track, mute this track
+	if(!pt->solo && edit_is_solo_mode(pat))
+		dsp_stop_playing_notes(pat,trk,false);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::edit_add_wire(ADX_PIN* pp,int const instance_index,int const pin_index,float const gain)
 {
 	// enter critical section

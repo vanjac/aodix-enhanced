@@ -857,30 +857,27 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 
 			if(ti<MAX_TRACKS)
 			{
-				// get track pointer
-				ADX_TRACK* pt=&pp->track[user_trk_offset+t];
-
 				// track coord x
 				int const trk_x=TRACK_WIDTH+user_pr_width+t*TRACK_WIDTH;
 
 				// track mute
 				if(arg_tool_check_plane_xy(xm,ym,trk_x,seq_area_y-32,16,16))
 				{
-					pt->mute=!pt->mute;
+					edit_toggle_mute(user_pat,ti);
 					gui_is_dirty=1;
 				}
 
 				// track solo
 				if(arg_tool_check_plane_xy(xm,ym,trk_x+16,seq_area_y-32,16,16))
 				{
-					pt->solo=!pt->solo;
+					edit_toggle_solo(user_pat,ti);
 					gui_is_dirty=1;
 				}
 
 				// track label
 				if(arg_tool_check_plane_xy(xm,ym,trk_x,seq_area_y-16,TRACK_WIDTH,16))
 				{
-					gui_create_edit(hwnd,trk_x,seq_area_y-16,TRACK_WIDTH,16,pt->name,2+ti);
+					gui_create_edit(hwnd,trk_x,seq_area_y-16,TRACK_WIDTH,16,pp->track[ti].name,2+ti);
 					gui_is_dirty=1;
 				}
 			}
