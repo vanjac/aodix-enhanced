@@ -30,7 +30,7 @@ All values are little-endian
     +0x002C6048     4B  Time signature numerator (UI allows 3, 4, or 5)
     +0x002C604C     4B  Time signature denominator (UI only allows 4)
     +0x002C6050     4B  PPQN
-    +0x002C6054     4B  RESERVED
+    +0x002C6054     4B  File offset of Extended region (since 4.2.0.3)
 
 0x002C6060  4B  Num events
 0x002C6064  ADX_EVENT table. 0x10 bytes per event. Not sorted.
@@ -43,7 +43,10 @@ All values are little-endian
     +0x000C     4B  Event data
 
 0xXXXXXXXX  VST instance table. 256 instances, min 1 byte each.
-    +0x0000     1B  Instance exists (0 or 1)
+    +0x0000     1B  Instance flag / data format type
+        0 = instance does not exist
+        1 = instance exists, detect format from VST (default behavior pre 4.2.0.3)
+        2, 3, 4 = instance exists, use specified data format (see below; since 4.2.0.3)
     === If instance doesn't exist, rest of this data is skipped ===
     +0x0001     260 chars: Path to DLL
     +0x0105     4B  VST unique ID
@@ -59,16 +62,17 @@ All values are little-endian
             +0x0002     2B  Input pin # (separate indices for audio and midi)
             +0x0004     float: Gain (0.0 to 1.0)
     +0xXXXX     4B  Program number
-    +0xXXXX     VST data. Format depends on if the VST has the effFlagsProgramChunks flag.
-        Chunks available:
+    +0xXXXX     VST data. Format depends on the specified format code, or VST settings if format=1.
+        Format 2 (chunk data; VST has effFlagsProgramChunks flag):
             +0x0000     4B  Chunk size (bytes)
             +0x0004     Chunk data
-        Chunks not available:
-            Parameters are stored for the first program only, if available (this is a bug!)
-            Some VSTs report 0 or -1 programs, in which case no data is written.
-            +0x0000     32 chars: Program name
-            +0x0020     Parameter table. 4 bytes per parameter.
-                +0x0000     float: Parameter value
+        Format 3 (VST reports 0 or <0 programs):
+            No data
+        Format 4 (VST reports 1+ programs):
+            Only program 0 is stored here:
+                +0x0000     32 chars: Program name
+                +0x0020     Parameter table. 4 bytes per parameter.
+                    +0x0000     float: Parameter value
     +0xXXXX     Parameter midi mapping table. 1 byte per parameter.
         +0x0000     1B  Assigned midi controller. 0xFF for no controller.
 
@@ -80,5 +84,19 @@ All values are little-endian
     +0x000C     4B  Master Output Y position
     +0x0010     4B  Scroll X
     +0x0014     4B  Scroll Y
+
+== Extended Region (since 4.2.0.3) ==
+
++0x00000000 VST instance fallback data. 256 instances x 4 bytes = 0x400 bytes.
+    (only used if plugin can't be loaded)
+    +0x0000     1B  Num outputs
+    +0x0001     1B  Num programs (only used if format=4)
+    +0x0002     2B  Num parameters
+
++0xXXXXXXXX VST instance additional program table.
+    Data for each instance depends on format code specified in VST instance table:
+        Format 2: no data
+        Format 3: single program stored here, with same format as instance table
+        Format 4: all programs after 0 stored here, with same format as instance table
 
 Data past this point is reserved.
