@@ -151,8 +151,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 		// get channel info type
 		int const ch_type=asio_driver_info.channelInfos[asio_input_index].type;
 
-		// from 16-bit signed integer LSB to 32-bit float
-		if(ch_type==ASIOSTInt16LSB)
+		if(ch_type==ASIOSTInt16LSB) // from 16-bit signed integer LSB to 32-bit float
 		{
 			// get asio input buffer pointer
 			short* psrc=(short*)pbi->buffers[index];
@@ -175,9 +174,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 				}
 			}
 		}
-
-		// from 32-bit signed integer LSB to 32-bit float
-		if(ch_type==ASIOSTInt32LSB)
+		else if(ch_type==ASIOSTInt32LSB) // from 32-bit signed integer LSB to 32-bit float
 		{
 			// get asio input buffer pointer
 			int* psrc=(int*)pbi->buffers[index];
@@ -200,6 +197,26 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 				}
 			}
 		}
+		else if(ch_type==ASIOSTFloat32LSB) // 32-bit float direct
+		{
+			// get asio input buffer pointer
+			float* psrc=(float*)pbi->buffers[index];
+
+			// mix dsp inputs
+			for(int pi=0;pi<NUM_DSP_INPUTS;pi++)
+			{
+				// check if dsp input pin is assigned to this asio input index
+				if(gl_padx->cfg.asio_input_pin[pi]==i)
+				{
+					// get input dsp buffer
+					float* pdst=gl_padx->dsp_input_buffer[pi];
+
+					// cast and mix transfer
+					for(int s=0;s<dsp_num_samples;s++)
+						pdst[s]+=psrc[s];
+				}
+			}
+		}
 	}
 
 	// main asio host dsp process
@@ -217,8 +234,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 		// get channel info type
 		int const ch_type=asio_driver_info.channelInfos[asio_output_index].type;
 
-		// from 32-bit float to 16-bit signed integer LSB
-		if(ch_type==ASIOSTInt16LSB)
+		if(ch_type==ASIOSTInt16LSB) // from 32-bit float to 16-bit signed integer LSB
 		{
 			// get asio output buffer pointer
 			short* pdst=(short*)pbi->buffers[index];
@@ -242,9 +258,7 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 				}
 			}
 		}
-
-		// from 32-bit float to 32-bit signed integer LSB
-		if(ch_type==ASIOSTInt32LSB)
+		else if(ch_type==ASIOSTInt32LSB) // from 32-bit float to 32-bit signed integer LSB
 		{
 			// get asio output buffer pointer
 			int* pdst=(int*)pbi->buffers[index];
@@ -265,6 +279,30 @@ ASIOTime *asio_cb_buffer_switch_time_info(ASIOTime *timeInfo,long index,ASIOBool
 					// cast and mix transfer
 					for(int s=0;s<dsp_num_samples;s++)
 						pdst[s]=int(asio_cb_double_clip(double(pdst[s])+double(psrc[s])*2147483648.0,2147483647.0));
+				}
+			}
+		}
+		else if(ch_type==ASIOSTFloat32LSB) // 32-bit float direct
+		{
+			// get asio output buffer pointer
+			float* pdst=(float*)pbi->buffers[index];
+
+			// clear buffer
+			for(int s=0;s<asio_driver_info.preferredSize;s++)
+				pdst[s]=0;
+
+			// mix dsp outputs
+			for(int po=0;po<NUM_DSP_OUTPUTS;po++)
+			{
+				// check if dsp output pin is assigned to this asio output index
+				if(gl_padx->cfg.asio_output_pin[po]==o)
+				{
+					// get output dsp buffer
+					float* psrc=gl_padx->dsp_output_buffer[po];
+
+					// cast and mix transfer
+					for(int s=0;s<dsp_num_samples;s++)
+						pdst[s]=float(asio_cb_double_clip(double(pdst[s])+double(psrc[s]),1));
 				}
 			}
 		}

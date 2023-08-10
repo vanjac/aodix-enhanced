@@ -12,4 +12,4 @@ For the first release, I have fixed a number of plugin compatibility issues and 
 
 Aodix Enhanced can be built using Visual Studio 2017.
 
-This repository does not include the [ASIO SDK](https://www.steinberg.net/developers/) (version 2.0) or the VST SDK (version 2.3, no longer available), since they are proprietary.
+This repository does not include the [ASIO SDK](https://www.steinberg.net/developers/) (version 2.3) or the VST SDK (version 2.3, no longer available), since they are proprietary.
