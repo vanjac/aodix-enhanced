@@ -56,12 +56,6 @@
 #include "../vstsdk2.3/source/common/aeffeditor.hpp"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include "../asiosdk2/common/asiosys.h"
-#include "../asiosdk2/common/asio.h"
-#include "../asiosdk2/common/iasiodrv.h"
-#include "../asiosdk2/host/asiodrivers.h"
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // window procedures
 LRESULT CALLBACK main_wnd_proc(HWND,UINT,WPARAM,LPARAM);
 LRESULT CALLBACK plug_wnd_proc(HWND,UINT,WPARAM,LPARAM);
@@ -453,6 +447,7 @@ public:
 	void asio_get_driver_name(int const id,char* buf,int const num_chars);
 	long asio_init_list(void);
 	void asio_fill_pin_menu(HMENU const hmenu,int const fill_inputs,int const init_id);
+	void asio_control_panel(void);
 
 public:
 	// application instance handler

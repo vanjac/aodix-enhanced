@@ -181,7 +181,7 @@ LRESULT CALLBACK conf_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 		// asio control pannel
 		if(lw_par==IDC_ASIO_CONTROL_PANEL)
 		{
-			ASIOControlPanel();
+			gl_padx->asio_control_panel();
 			return TRUE;
 		}
 

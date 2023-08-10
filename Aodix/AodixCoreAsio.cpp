@@ -6,6 +6,12 @@
 #include "./aodixcore.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "../asiosdk2/common/asiosys.h"
+#include "../asiosdk2/common/asio.h"
+#include "../asiosdk2/common/iasiodrv.h"
+#include "../asiosdk2/host/asiodrivers.h"
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #define ASIO_MAX_I_CHANNELS	32
 #define ASIO_MAX_O_CHANNELS	32
 
@@ -674,4 +680,10 @@ void CAodixCore::asio_fill_pin_menu(HMENU const hmenu,int const fill_inputs,int 
 		CheckMenuRadioItem(hmenu,2,3+pin_count,2+asio_pin_assignment,MF_BYPOSITION);
 	else
 		CheckMenuRadioItem(hmenu,2,3+pin_count,3+pin_count,MF_BYPOSITION);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::asio_control_panel(void)
+{
+	ASIOControlPanel();
 }
