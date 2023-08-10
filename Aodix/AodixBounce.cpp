@@ -242,7 +242,7 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 
 						// open file(s)
 						pfiles[fi]=fopen(track_file,"wb");
-						write_wav_header(pfiles[fi], num_samples, 1, gl_padx->cfg.asio_driver_sample_rate);
+						write_wav_header(pfiles[fi], num_samples, 1, (int)gl_padx->cfg.asio_driver_sample_rate);
 					}
 				}
 			}
@@ -255,7 +255,7 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 
 				// single interleaved file
 				pfiles[0]=fopen(buf,"wb");
-				write_wav_header(pfiles[0], num_samples, num_channels, gl_padx->cfg.asio_driver_sample_rate);
+				write_wav_header(pfiles[0], num_samples, num_channels, (int)gl_padx->cfg.asio_driver_sample_rate);
 			}
 
 			// disable transport cycle, launch transport
