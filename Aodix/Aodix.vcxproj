@@ -60,6 +60,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>../AsioSdk2/host;../AsioSdk2/common;../AsioSdk2/host/pc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>winmm.lib;htmlhelp.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -103,8 +104,8 @@
   <ItemGroup>
     <ClCompile Include="..\Argulib\Argulib.cpp" />
     <ClCompile Include="..\AsioSdk2\common\asio.cpp" />
-    <ClCompile Include="..\AsioSdk2\common\asiodrivers.cpp" />
-    <ClCompile Include="..\AsioSdk2\common\asiolist.cpp" />
+    <ClCompile Include="..\AsioSdk2\host\asiodrivers.cpp" />
+    <ClCompile Include="..\AsioSdk2\host\pc\asiolist.cpp" />
     <ClCompile Include="Aodix.cpp" />
     <ClCompile Include="AodixAbout.cpp" />
     <ClCompile Include="AodixBounce.cpp" />
@@ -138,10 +139,10 @@
   <ItemGroup>
     <ClInclude Include="..\Argulib\Argulib.h" />
     <ClInclude Include="..\AsioSdk2\common\asio.h" />
-    <ClInclude Include="..\AsioSdk2\common\asiodrivers.h" />
-    <ClInclude Include="..\AsioSdk2\common\asiolist.h" />
     <ClInclude Include="..\AsioSdk2\common\asiosys.h" />
     <ClInclude Include="..\AsioSdk2\common\iasiodrv.h" />
+    <ClInclude Include="..\AsioSdk2\host\asiodrivers.h" />
+    <ClInclude Include="..\AsioSdk2\host\pc\asiolist.h" />
     <ClInclude Include="..\VstSdk2.3\source\common\aeffectx.h" />
     <ClInclude Include="..\VstSdk2.3\source\common\AEffEditor.hpp" />
     <ClInclude Include="..\VstSdk2.3\source\common\audioeffectx.h" />

@@ -1,1 +1,1 @@
-This repository does not include the ASIO 2.0 SDK. It can be downloaded from [Steinberg](https://www.steinberg.net/developers/).
+This repository does not include the ASIO 2.3 SDK. It can be downloaded from [Steinberg](https://www.steinberg.net/developers/).

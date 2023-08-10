@@ -92,10 +92,10 @@
     <ClCompile Include="..\AsioSdk2\common\asio.cpp">
       <Filter>Source Files\AsioSdk</Filter>
     </ClCompile>
-    <ClCompile Include="..\AsioSdk2\common\asiodrivers.cpp">
+    <ClCompile Include="..\AsioSdk2\host\asiodrivers.cpp">
       <Filter>Source Files\AsioSdk</Filter>
     </ClCompile>
-    <ClCompile Include="..\AsioSdk2\common\asiolist.cpp">
+    <ClCompile Include="..\AsioSdk2\host\pc\asiolist.cpp">
       <Filter>Source Files\AsioSdk</Filter>
     </ClCompile>
     <ClCompile Include="AodixMainWnd.cpp">
@@ -160,10 +160,10 @@
     <ClInclude Include="..\AsioSdk2\common\asio.h">
       <Filter>Header Files\AsioSdk</Filter>
     </ClInclude>
-    <ClInclude Include="..\AsioSdk2\common\asiodrivers.h">
+    <ClInclude Include="..\AsioSdk2\host\asiodrivers.h">
       <Filter>Header Files\AsioSdk</Filter>
     </ClInclude>
-    <ClInclude Include="..\AsioSdk2\common\asiolist.h">
+    <ClInclude Include="..\AsioSdk2\host\pc\asiolist.h">
       <Filter>Header Files\AsioSdk</Filter>
     </ClInclude>
     <ClInclude Include="..\AsioSdk2\common\asiosys.h">
