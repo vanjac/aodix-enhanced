@@ -33,9 +33,6 @@ CAodixCore::CAodixCore(HINSTANCE const hinstance)
 	// assign instance
 	hinstance_app=hinstance;
 
-	// path buffer
-	char path[_MAX_PATH];
-
 	// get application executable path
 	GetModuleFileName((HMODULE)hinstance,hlp_fil,_MAX_PATH);
 
