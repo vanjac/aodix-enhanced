@@ -71,6 +71,7 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <EnableUAC>false</EnableUAC>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>Aodix.exe.manifest</AdditionalManifestFiles>
@@ -97,6 +98,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
       <EnableUAC>false</EnableUAC>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
     </Link>
     <ResourceCompile>
       <ShowProgress>true</ShowProgress>
