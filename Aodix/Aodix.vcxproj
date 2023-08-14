@@ -87,6 +87,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>../AsioSdk2/host;../AsioSdk2/common;../AsioSdk2/host/pc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>winmm.lib;htmlhelp.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
