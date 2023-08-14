@@ -70,6 +70,7 @@
       <ProgramDatabaseFile>$(OutDir)Aodix.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <EnableUAC>false</EnableUAC>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>Aodix.exe.manifest</AdditionalManifestFiles>
@@ -95,6 +96,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
+      <EnableUAC>false</EnableUAC>
     </Link>
     <ResourceCompile>
       <ShowProgress>true</ShowProgress>
