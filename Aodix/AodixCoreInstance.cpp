@@ -210,9 +210,6 @@ void CAodixCore::instance_free(ADX_INSTANCE* pi)
 		pi->peffect->dispatcher(pi->peffect,effMainsChanged,0,0,0,0.0f);
 		pi->peffect->dispatcher(pi->peffect,effClose,0,0,0,0.0f);
 
-		// decrement reference count
-		FreeLibrary(pi->h_dll);
-
 		// set null vst aeffect plug
 		pi->peffect=NULL;
 
@@ -230,6 +227,9 @@ void CAodixCore::instance_free(ADX_INSTANCE* pi)
 		// resest alias
 		memset(pi->alias,0,32);
 		sprintf(pi->alias,"---");
+
+		// decrement reference count
+		FreeLibrary(pi->h_dll);
 	}
 }
 
