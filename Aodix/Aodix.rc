@@ -262,6 +262,30 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATORS ACCELERATORS
+BEGIN
+    "N",            ID_FILE_NEW40001,       VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN40002,      VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE40025,      VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVEAS,         VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "W",            ID_FILE_BOUNCE40029,    VIRTKEY, CONTROL, NOINVERT
+    VK_OEM_COMMA,   ID_FILE_CONFIGURATION,  VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDOCLIPBOARDOPERATION, VIRTKEY, CONTROL, NOINVERT
+    "X",            ID_EDIT_CUT40012,       VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_EDIT_COPY40013,      VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE40014,     VIRTKEY, CONTROL, NOINVERT
+    "A",            ID_EDIT_SELECTALL,      VIRTKEY, CONTROL, NOINVERT
+    "Q",            ID_EDIT_QUANTIZENOTES,  VIRTKEY, CONTROL, NOINVERT
+    "R",            ID_EDIT_RANDOMIZE,      VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_EDIT_INTERPOLATE,    VIRTKEY, CONTROL, NOINVERT
+END
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

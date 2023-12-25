@@ -20,10 +20,6 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 	// shift pressed, control pressed
 	if(shift && control)
 	{
-		// file save as aodix project
-		if(keycode=='S')
-			gui_command(hwnd,ID_FILE_SAVEAS);
-
 		// track solo toggle
 		if(keycode=='M')
 		{
@@ -210,26 +206,6 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			gui_is_dirty=1;
 		}
 
-		// file new
-		if(keycode=='N')
-			gui_command(hwnd,ID_FILE_NEW40001);
-
-		// file open
-		if(keycode=='O')
-			gui_command(hwnd,ID_FILE_OPEN40002);
-
-		// file save(as) aodix project
-		if(keycode=='S')
-			gui_command(hwnd,ID_FILE_SAVE40025);
-
-		// configuration dialog
-		if(keycode==VK_OEM_COMMA)
-			gui_command(hwnd,ID_FILE_CONFIGURATION);
-
-		// bounce dialog
-		if(keycode=='W')
-			gui_command(hwnd,ID_FILE_BOUNCE40029);
-
 		// sequencer mark block start
 		if(keycode=='B')
 		{
@@ -245,38 +221,6 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			user_block_trk_end=arg_tool_clipped_assign(user_trk+1,0,MAX_SIGNED_INT);
 			gui_is_dirty=1;
 		}
-
-		// sequencer undo
-		if(keycode=='Z')
-			gui_command(hwnd,ID_EDIT_UNDOCLIPBOARDOPERATION);
-
-		// sequencer cut to clipboard
-		if(keycode=='X')
-			gui_command(hwnd,ID_EDIT_CUT40012);
-
-		// sequencer copy to clipboard
-		if(keycode=='C')
-			gui_command(hwnd,ID_EDIT_COPY40013);
-
-		// sequencer paste from clipboard
-		if(keycode=='V')
-			gui_command(hwnd,ID_EDIT_PASTE40014);
-
-		// sequencer edit select all
-		if(keycode=='A')
-			gui_command(hwnd,ID_EDIT_SELECTALL);
-		
-		// sequencer edit interpolate
-		if(keycode=='I')
-			gui_command(hwnd,ID_EDIT_INTERPOLATE);
-
-		// sequencer edit quantize notes
-		if(keycode=='Q')
-			gui_command(hwnd,ID_EDIT_QUANTIZENOTES);
-
-		// sequencer edit randomize
-		if(keycode=='R')
-			gui_command(hwnd,ID_EDIT_RANDOMIZE);
 
 		// current pattern set start cue
 		if(keycode==VK_HOME)
@@ -573,6 +517,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			gui_is_dirty=1;
 		}
 
+		// edit mode switch
 		if(keycode==VK_F9)
 		{
 			pp->usr_mod=!pp->usr_mod;
