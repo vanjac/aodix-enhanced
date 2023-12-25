@@ -29,51 +29,51 @@ void CAodixCore::gui_mouse_up(HWND const hwnd)
 	ADX_PATTERN* pp=&project.pattern[user_pat];
 
 	// master transport cycle switch button released
-	if(user_pressed==1)
+	if(user_pressed==PRESS_CYCLE)
 		master_time_info.flags^=kVstTransportCycleActive;
 
 	// master live-rec switch button released
-	if(user_pressed==2)
+	if(user_pressed==PRESS_LIVE)
 		cfg.rec_live=!cfg.rec_live;
 
 	// master stop-wrap switch button released
-	if(user_pressed==3)
+	if(user_pressed==PRESS_STOP_WRAP)
 		cfg.stop_wrap=!cfg.stop_wrap;
 
 	// master transport play button released
-	if(user_pressed==7)
+	if(user_pressed==PRESS_PLAY)
 		dsp_transport_play();	
 
 	// master transport stop button released
-	if(user_pressed==8)
+	if(user_pressed==PRESS_STOP)
 		dsp_transport_stop();
 
 	// master transport rec-events button released
-	if(user_pressed==9)
+	if(user_pressed==PRESS_REC)
 		user_record=!user_record;
 
 	// master transport rec-automation button released
-	if(user_pressed==10)
+	if(user_pressed==PRESS_AUTO)
 		master_time_info.flags^=kVstAutomationWriting;
 
 	// edit rec-step button released
-	if(user_pressed==11)
+	if(user_pressed==PRESS_STEP)
 		user_edit_step=!user_edit_step;
 
 	// edit overwrite button released
-	if(user_pressed==12)
+	if(user_pressed==PRESS_OVER)
 		user_edit_overwrite=!user_edit_overwrite;
 
 	// edit page button released
-	if(user_pressed==13)
+	if(user_pressed==PRESS_PAGE)
 		user_page=!user_page;
 
 	// edit mode button released
-	if(user_pressed==15)
+	if(user_pressed==PRESS_SEQ_MODE)
 		pp->usr_mod=!pp->usr_mod;
 
 	// routing midi-out link wire released
-	if(user_pressed==25)
+	if(user_pressed==PRESS_MIDI_WIRE)
 	{
 		// check if midi link wire is placed in any other instance midi link input
 		for(int i=0;i<MAX_INSTANCES;i++)
@@ -99,32 +99,32 @@ void CAodixCore::gui_mouse_up(HWND const hwnd)
 	if(GetKeyState(VK_CONTROL)>=0)
 	{
 		// sequencer current pattern cue-stop marker released, quantize it
-		if(user_pressed==6)
+		if(user_pressed==PRESS_CUE_STOP)
 			pp->cue_stp=edit_quantize(pp->cue_stp);
 
 		// sequencer current pattern cue-start marker released, quantize it
-		if(user_pressed==28)
+		if(user_pressed==PRESS_CUE_START)
 			pp->cue_sta=edit_quantize(pp->cue_sta);
 
 		// sequencer current pattern cue-end marker released, quantize it
-		if(user_pressed==29)
+		if(user_pressed==PRESS_CUE_END)
 			pp->cue_end=edit_quantize(pp->cue_end);
 
 		// sequencer current pattern marker released, quantize it
-		if(user_pressed==30)
+		if(user_pressed==PRESS_MARKER)
 			pp->marker[user_marker_drag].pos=edit_quantize(pp->marker[user_marker_drag].pos);
 
 		// sequencer edit position drag released, quantize user position if control is not pressed
-		if(user_pressed==31)
+		if(user_pressed==PRESS_SEQ_DRAG)
 			pp->usr_pos=edit_quantize(pp->usr_pos);
 
 		// sequencer edit event relocated, quantize event position if control and shift are unpressed
-		if((user_pressed==32 || user_pressed==40) && GetKeyState(VK_SHIFT)>=0)
+		if((user_pressed==PRESS_EVENT_MOVE || user_pressed==PRESS_PR_EVENT_MOVE) && GetKeyState(VK_SHIFT)>=0)
 			seq_event[user_event_drag].pos=edit_quantize(seq_event[user_event_drag].pos);
 	}
 
 	// sequencer edit event finished, send note-off to instance if event was a note
-	if(user_pressed==32 || user_pressed==33 || user_pressed==40)
+	if(user_pressed==PRESS_EVENT_MOVE || user_pressed==PRESS_EVENT_SIZE || user_pressed==PRESS_PR_EVENT_MOVE)
 	{
 		// get dragging event
 		ADX_EVENT* pe=&seq_event[user_event_drag];
@@ -135,11 +135,11 @@ void CAodixCore::gui_mouse_up(HWND const hwnd)
 	}
 
 	// sequencer block mark released, quantize user position
-	if(user_pressed==34)
+	if(user_pressed==PRESS_BLOCK_MARK)
 		pp->usr_pos=edit_quantize(pp->usr_pos);
 
 	// routing wire drag released
-	if(user_pressed==36)
+	if(user_pressed==PRESS_AUDIO_WIRE)
 	{
 		// draggin number of pin(s)
 		int num_master_output_pins=0;
@@ -243,7 +243,7 @@ void CAodixCore::gui_mouse_up(HWND const hwnd)
 	// release gadget press and refresh
 	if(user_pressed)
 	{
-		user_pressed=0;
+		user_pressed=PRESS_NONE;
 		gui_is_dirty=1;
 	}
 

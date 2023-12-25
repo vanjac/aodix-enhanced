@@ -338,18 +338,18 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 	paint_txt(hdc,159,37,buf_a,4,2);
 
 	// master transport cycle switch
-	BitBlt(hdc,195,17,32,16,hdc_gfx,64,240+(user_pressed==1)*16+(master_time_info.flags & kVstTransportCycleActive)*8,SRCCOPY);
+	BitBlt(hdc,195,17,32,16,hdc_gfx,64,240+(user_pressed==PRESS_CYCLE)*16+(master_time_info.flags & kVstTransportCycleActive)*8,SRCCOPY);
 
 	// master config rec-live switch
-	BitBlt(hdc,227,17,32,16,hdc_gfx,96,240+(user_pressed==2)*16+cfg.rec_live*32,SRCCOPY);
+	BitBlt(hdc,227,17,32,16,hdc_gfx,96,240+(user_pressed==PRESS_LIVE)*16+cfg.rec_live*32,SRCCOPY);
 
 	// master config stop wrap
-	BitBlt(hdc,195,33,64,16,hdc_gfx,128,240+(user_pressed==3)*16+cfg.stop_wrap*32,SRCCOPY);
+	BitBlt(hdc,195,33,64,16,hdc_gfx,128,240+(user_pressed==PRESS_STOP_WRAP)*16+cfg.stop_wrap*32,SRCCOPY);
 
 	// master tempo
 	sprintf(buf_a,"%.3d.%.1d",int(project.master_tempo),int(project.master_tempo*10.0)%10);
 	paint_txt(hdc,71,53,buf_a,5,0);
-	BitBlt(hdc,115,49,16,16,hdc_gfx,16+(user_pressed==4)*16,32,SRCCOPY);
+	BitBlt(hdc,115,49,16,16,hdc_gfx,16+(user_pressed==PRESS_TEMPO)*16,32,SRCCOPY);
 
 	// master ppqn
 	sprintf(buf_a,"%.3d",project.master_ppqn);
@@ -367,16 +367,16 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 	paint_seq_pos_big(hdc,10,25,i_master_play_pos);
 
 	// master transport play
-	BitBlt(hdc,3,85,64,28,hdc_gfx,64,96+(user_pressed==7)*28+(master_time_info.flags & kVstTransportPlaying)*28,SRCCOPY);
+	BitBlt(hdc,3,85,64,28,hdc_gfx,64,96+(user_pressed==PRESS_PLAY)*28+(master_time_info.flags & kVstTransportPlaying)*28,SRCCOPY);
 
 	// master transport stop
-	BitBlt(hdc,67,85,64,28,hdc_gfx,128,96+(user_pressed==8)*28,SRCCOPY);
+	BitBlt(hdc,67,85,64,28,hdc_gfx,128,96+(user_pressed==PRESS_STOP)*28,SRCCOPY);
 
 	// master transport record events
-	BitBlt(hdc,131,85,64,28,hdc_gfx,192,96+(user_pressed==9)*28+user_record*56,SRCCOPY);
+	BitBlt(hdc,131,85,64,28,hdc_gfx,192,96+(user_pressed==PRESS_REC)*28+user_record*56,SRCCOPY);
 
 	// master transport record automation
-	BitBlt(hdc,195,85,64,28,hdc_gfx,256,96+(user_pressed==10)*28+((master_time_info.flags & kVstAutomationWriting)>0)*56,SRCCOPY);
+	BitBlt(hdc,195,85,64,28,hdc_gfx,256,96+(user_pressed==PRESS_AUTO)*28+((master_time_info.flags & kVstAutomationWriting)>0)*56,SRCCOPY);
 
 	// edit pos
 	paint_seq_pos_big(hdc,10,141,pp->usr_pos);
@@ -390,13 +390,13 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 	paint_txt(hdc,135,153,buf_a,6,2);
 
 	// edit step switch
-	BitBlt(hdc,195,133,32,16,hdc_gfx,192,240+(user_pressed==11)*16+user_edit_step*32,SRCCOPY);
+	BitBlt(hdc,195,133,32,16,hdc_gfx,192,240+(user_pressed==PRESS_STEP)*16+user_edit_step*32,SRCCOPY);
 
 	// edit overwrite switch
-	BitBlt(hdc,227,133,32,16,hdc_gfx,224,240+(user_pressed==12)*16+user_edit_overwrite*32,SRCCOPY);
+	BitBlt(hdc,227,133,32,16,hdc_gfx,224,240+(user_pressed==PRESS_OVER)*16+user_edit_overwrite*32,SRCCOPY);
 
 	// edit sequencer/routing page switch
-	BitBlt(hdc,195,149,64,16,hdc_gfx,256,240+(user_pressed==13)*16+user_page*32,SRCCOPY);
+	BitBlt(hdc,195,149,64,16,hdc_gfx,256,240+(user_pressed==PRESS_PAGE)*16+user_page*32,SRCCOPY);
 
 	// edit quantization
 	sprintf(buf_a,"%.4d",i_quantize);
@@ -417,7 +417,7 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 	// edit pattern sequencer zoom
 	sprintf(buf_a,"1:%.3d",pp->usr_ppp);
 	paint_txt(hdc,199,169,buf_a,5,0);
-	BitBlt(hdc,243,165,16,16,hdc_gfx,16+(user_pressed==14)*16,32,SRCCOPY);
+	BitBlt(hdc,243,165,16,16,hdc_gfx,16+(user_pressed==PRESS_SEQ_ZOOM)*16,32,SRCCOPY);
 
 	// edit mode switch (notes or patterns)
 	if(pp->usr_mod==0)
@@ -426,17 +426,17 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 		paint_txt(hdc,199,185,"Pattern",7,0);
 
 	// edit mode switch button
-	BitBlt(hdc,243,181,16,16,hdc_gfx,16+(user_pressed==15)*16,80,SRCCOPY);
+	BitBlt(hdc,243,181,16,16,hdc_gfx,16+(user_pressed==PRESS_SEQ_MODE)*16,80,SRCCOPY);
 
 	// edit note velocity
 	sprintf(buf_a,"%.2X(%.3d)",user_kbd_velo,user_kbd_velo);
 	paint_txt(hdc,199,201,buf_a,7,0);
-	BitBlt(hdc,243,197,16,16,hdc_gfx,16+(user_pressed==16)*16,32,SRCCOPY);
+	BitBlt(hdc,243,197,16,16,hdc_gfx,16+(user_pressed==PRESS_VELOCITY)*16,32,SRCCOPY);
 
 	// edit note pre-release
 	sprintf(buf_a,"%.4d",pp->usr_pre);
 	paint_txt(hdc,199,217,buf_a,4,0);
-	BitBlt(hdc,243,213,16,16,hdc_gfx,16+(user_pressed==17)*16,32,SRCCOPY);
+	BitBlt(hdc,243,213,16,16,hdc_gfx,16+(user_pressed==PRESS_PRE_RELEASE)*16,32,SRCCOPY);
 
 	// edit display current instance index
 	sprintf(buf_a,"%.2X",user_instance);
@@ -446,8 +446,8 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 	paint_txt(hdc,353,201,pi->alias,19,0);
 
 	// edit current instance spinners
-	BitBlt(hdc,473,197,16,16,hdc_gfx,16+(user_pressed==18)*16,0,SRCCOPY);
-	BitBlt(hdc,489,197,16,16,hdc_gfx,16+(user_pressed==19)*16,16,SRCCOPY);
+	BitBlt(hdc,473,197,16,16,hdc_gfx,16+(user_pressed==PRESS_INST_PREV)*16,0,SRCCOPY);
+	BitBlt(hdc,489,197,16,16,hdc_gfx,16+(user_pressed==PRESS_INST_NEXT)*16,16,SRCCOPY);
 
 	// edit current instance ghosted program spinners and program menu arrow
 	BitBlt(hdc,473,213,16,16,hdc_gfx,48,0,SRCCOPY);
@@ -470,8 +470,8 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 		if(pi->peffect->numPrograms>1)
 		{
 			// edit current instance program spinners and program menu arrow
-			BitBlt(hdc,473,213,16,16,hdc_gfx,16+(user_pressed==20)*16,0,SRCCOPY);
-			BitBlt(hdc,489,213,16,16,hdc_gfx,16+(user_pressed==21)*16,16,SRCCOPY);
+			BitBlt(hdc,473,213,16,16,hdc_gfx,16+(user_pressed==PRESS_PROG_PREV)*16,0,SRCCOPY);
+			BitBlt(hdc,489,213,16,16,hdc_gfx,16+(user_pressed==PRESS_PROG_NEXT)*16,16,SRCCOPY);
 			BitBlt(hdc,505,213,16,16,hdc_gfx,16,48,SRCCOPY);
 		}
 	}
@@ -484,7 +484,7 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 
 	// blit instance list scrollbar
 	BitBlt(hdc,265,17,16,176,hdc_gfx,48,96,SRCCOPY);
-	BitBlt(hdc,265,17+(user_instance_list_offset*32)/49,16,16,hdc_gfx,16+(user_pressed==22)*16,96,SRCCOPY);
+	BitBlt(hdc,265,17+(user_instance_list_offset*32)/49,16,16,hdc_gfx,16+(user_pressed==PRESS_INST_SCROLL)*16,96,SRCCOPY);
 	
 	// vst instance list entries
 	for(int i=0;i<11;i++)
@@ -543,7 +543,10 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 
 		// get parameter list slider screen position
 		if(pi->peffect->numParams>11)
-			BitBlt(hdc,527,17+(user_parameter_list_offset*160)/(pi->peffect->numParams-11),16,16,hdc_gfx,16+(user_pressed==23)*16,96,SRCCOPY);
+		{
+			int const scroll_y = 17+(user_parameter_list_offset*160)/(pi->peffect->numParams-11);
+			BitBlt(hdc,527,scroll_y,16,16,hdc_gfx,16+(user_pressed==PRESS_PARAM_SCROLL)*16,96,SRCCOPY);
+		}
 
 		// display parameter(s) entries
 		for(int pil=0;pil<11;pil++)

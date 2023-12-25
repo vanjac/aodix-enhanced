@@ -156,7 +156,7 @@ void CAodixCore::gui_mouse_scan_pin(HWND const hwnd,int const xm,int const ym,AD
 							}
 
 							// notify and return
-							user_pressed=45;
+							user_pressed=PRESS_WIRE_DELETE;
 							return;
 						}
 						else
@@ -165,7 +165,7 @@ void CAodixCore::gui_mouse_scan_pin(HWND const hwnd,int const xm,int const ym,AD
 							user_pressed_wire=pw;
 							user_pressed_wire_x=i_cx;
 							user_pressed_wire_y=i_cy;
-							user_pressed=44;
+							user_pressed=PRESS_WIRE_GAIN;
 							return;
 						}
 					}

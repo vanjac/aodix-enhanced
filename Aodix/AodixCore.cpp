@@ -324,7 +324,7 @@ void CAodixCore::reset_user(void)
 	user_midi_learn=0;
 	user_trk=0;
 	user_trk_offset=0;
-	user_pressed=0;
+	user_pressed=PRESS_NONE;
 	user_instance=0;
 	user_instance_list_offset=0;
 	user_parameter=0;

@@ -57,7 +57,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 		int const m_o_y=rout_area_y+master_o_y-user_rout_offset_y;
 
 		// paint master input box
-		BitBlt(hdc,m_i_x,m_i_y,256,16,hdc_gfx,64,16+(user_pressed==37)*16,SRCCOPY);
+		BitBlt(hdc,m_i_x,m_i_y,256,16,hdc_gfx,64,16+(user_pressed==PRESS_MASTER_IN)*16,SRCCOPY);
 
 		// paint master input connection panel
 		for(int i=0;i<NUM_DSP_INPUTS;i++)
@@ -70,7 +70,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 		paint_pin_array(hdc,m_i_x,m_i_y+28,NUM_DSP_INPUTS,master_input_pin,m_o_x,m_o_y,rout_area_y);
 
 		// paint master output box
-		BitBlt(hdc,m_o_x,m_o_y+8,256,16,hdc_gfx,64,48+(user_pressed==38)*16,SRCCOPY);
+		BitBlt(hdc,m_o_x,m_o_y+8,256,16,hdc_gfx,64,48+(user_pressed==PRESS_MASTER_OUT)*16,SRCCOPY);
 
 		// paint master output connection panel
 		for(int o=0;o<NUM_DSP_OUTPUTS;o++)
@@ -172,7 +172,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 		}
 
 		// paint dragging midi-out link wire
-		if(user_pressed==25)
+		if(user_pressed==PRESS_MIDI_WIRE)
 		{
 			// get instance wire source
 			ADX_INSTANCE* pi=&instance[user_dragging_rout_instance_index];
@@ -186,7 +186,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 		}
 
 		// paint dragging instance audio wire
-		if(user_pressed==36)
+		if(user_pressed==PRESS_AUDIO_WIRE)
 		{
 			// instance wire
 			if(user_dragging_rout_instance_index<MAX_INSTANCES)
@@ -208,7 +208,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 		}
 
 		// paint wire gain bar
-		if(user_pressed==44)
+		if(user_pressed==PRESS_WIRE_GAIN)
 		{
 			// fill ab struct
 			bf.SourceConstantAlpha=128;

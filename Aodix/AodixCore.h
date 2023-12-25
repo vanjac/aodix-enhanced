@@ -570,24 +570,18 @@ public:
 	int user_trk;
 	int user_trk_offset;
 	int	user_row;
-	int user_pressed;
 	int user_instance;
 	int user_instance_list_offset;
 	int user_parameter;
 	int user_parameter_list_offset;
 	int user_lxm;
 	int user_lym;
-	int user_dragging_rout_instance_index;
-	int user_dragging_rout_pin_index;
 	int	user_edit_overwrite;
 	int user_edit_step;
 	int	user_block_pos_sta;
 	int	user_block_trk_sta;
 	int	user_block_pos_end;
 	int	user_block_trk_end;
-	int user_event_drag;
-	int	user_marker_drag;
-	int user_drag_offset;
 	int user_input_pin;
 	int user_output_pin;
 	int	user_edit_text_action_id;
@@ -596,6 +590,64 @@ public:
 	int user_pr_width;
 	int user_pr_note_width;
 	int user_pat_prev;
+
+public:
+	enum {
+		PRESS_NONE,
+		PRESS_CYCLE,
+		PRESS_LIVE,
+		PRESS_STOP_WRAP,
+		PRESS_TEMPO,
+		PRESS_PR_SEP,
+		PRESS_CUE_STOP,
+		PRESS_PLAY,
+		PRESS_STOP,
+		PRESS_REC,
+		PRESS_AUTO,
+		PRESS_STEP,
+		PRESS_OVER,
+		PRESS_PAGE,
+		PRESS_SEQ_ZOOM,
+		PRESS_SEQ_MODE,
+		PRESS_VELOCITY,
+		PRESS_PRE_RELEASE,
+		PRESS_INST_PREV,
+		PRESS_INST_NEXT,
+		PRESS_PROG_PREV,
+		PRESS_PROG_NEXT,
+		PRESS_INST_SCROLL,
+		PRESS_PARAM_SCROLL,
+		PRESS_PARAM_TWEAK,
+		PRESS_MIDI_WIRE,
+		PRESS_PAT_PREV,
+		PRESS_PAT_NEXT,
+		PRESS_CUE_START,
+		PRESS_CUE_END,
+		PRESS_MARKER,
+		PRESS_SEQ_DRAG,
+		PRESS_EVENT_MOVE,
+		PRESS_EVENT_SIZE,
+		PRESS_BLOCK_MARK,
+		PRESS_INST_MOVE,
+		PRESS_AUDIO_WIRE,
+		PRESS_MASTER_IN,
+		PRESS_MASTER_OUT,
+		PRESS_ROUTING_PAN,
+		PRESS_PR_EVENT_MOVE,
+		PRESS_PR_BLOCK_MARK,
+		PRESS_RESERVED1,
+		PRESS_RESERVED2,
+		PRESS_WIRE_GAIN,
+		PRESS_WIRE_DELETE,
+	} user_pressed;
+
+public:
+	int user_event_drag;
+	int	user_marker_drag;
+	int user_drag_offset;
+
+	int user_dragging_rout_instance_index;
+	int user_dragging_rout_pin_index;
 
 	// draggin wire
 	ADX_WIRE* user_pressed_wire;

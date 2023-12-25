@@ -37,7 +37,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	int const ym_seq_pos=pp->usr_pos+int(ym-seq_cent_y)*pp->usr_ppp;
 
 	// master change / automate tempo
-	if(user_pressed==4)
+	if(user_pressed==PRESS_TEMPO)
 	{
 		// get tempo value
 		double d_tempo=project.master_tempo;
@@ -85,43 +85,43 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 		gui_is_dirty=1;
 	}
 
-	// sequencer drag current position
-	if(user_pressed==5)
+	// sequencer drag pr separator
+	if(user_pressed==PRESS_PR_SEP)
 	{
 		user_pr_width=arg_tool_clipped_assign(xm-user_drag_offset,104,768);
 		gui_is_dirty=1;
 	}
 
 	// edit change sequencer zoom
-	if(user_pressed==14)
+	if(user_pressed==PRESS_SEQ_ZOOM)
 	{
 		pp->usr_ppp=arg_tool_clipped_assign(pp->usr_ppp-i_my_dif,1,project.master_ppqn/4);
 		gui_is_dirty=1;
 	}
 
 	// edit change kbd velocity
-	if(user_pressed==16)
+	if(user_pressed==PRESS_VELOCITY)
 	{
 		user_kbd_velo=arg_tool_clipped_assign(user_kbd_velo-i_my_dif,1,127);
 		gui_is_dirty=1;
 	}
 
 	// edit change note pre-release
-	if(user_pressed==17)
+	if(user_pressed==PRESS_PRE_RELEASE)
 	{
 		pp->usr_pre=arg_tool_clipped_assign(pp->usr_pre-i_my_dif,1,MAX_SIGNED_INT);
 		gui_is_dirty=1;
 	}
 
 	// vst instance list slider change
-	if(user_pressed==22)
+	if(user_pressed==PRESS_INST_SCROLL)
 	{
 		user_instance_list_offset=arg_tool_clipped_assign(user_instance_list_offset+i_my_dif,0,245);
 		gui_is_dirty=1;
 	}
 
 	// vst parameter list drag move
-	if(user_pressed==23)
+	if(user_pressed==PRESS_PARAM_SCROLL)
 	{
 		// get current instance pointer
 		ADX_INSTANCE* pi=&instance[user_instance];
@@ -136,7 +136,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// vst parameter list tweak
-	if(user_pressed==24)
+	if(user_pressed==PRESS_PARAM_TWEAK)
 	{
 		ADX_INSTANCE* pi=&instance[user_instance];
 
@@ -166,7 +166,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// sequencer drag current pattern cue start marker
-	if(user_pressed==28)
+	if(user_pressed==PRESS_CUE_START)
 	{
 		pp->cue_sta=arg_tool_clipped_assign(ym_seq_pos+user_drag_offset,0,pp->cue_end);
 		gui_scroll_iterate(hwnd,ym,seq_area_y,h);
@@ -174,7 +174,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// sequencer drag current pattern cue end marker
-	if(user_pressed==29)
+	if(user_pressed==PRESS_CUE_END)
 	{
 		pp->cue_end=arg_tool_clipped_assign(ym_seq_pos+user_drag_offset,pp->cue_sta,MAX_SIGNED_INT);
 		gui_scroll_iterate(hwnd,ym,seq_area_y,h);
@@ -182,7 +182,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// sequencer drag current pattern position marker
-	if(user_pressed==30)
+	if(user_pressed==PRESS_MARKER)
 	{
 		pp->marker[user_marker_drag].pos=arg_tool_clipped_assign(ym_seq_pos+user_drag_offset,0,MAX_SIGNED_INT);
 		gui_scroll_iterate(hwnd,ym,seq_area_y,h);
@@ -190,7 +190,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// sequencer drag current pattern stop marker
-	if(user_pressed==6)
+	if(user_pressed==PRESS_CUE_STOP)
 	{
 		pp->cue_stp=arg_tool_clipped_assign(ym_seq_pos+user_drag_offset,0,MAX_SIGNED_INT);
 		gui_scroll_iterate(hwnd,ym,seq_area_y,h);
@@ -198,14 +198,14 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// sequencer drag current position
-	if(user_pressed==31)
+	if(user_pressed==PRESS_SEQ_DRAG)
 	{
 		pp->usr_pos=arg_tool_clipped_assign(pp->usr_pos-i_my_dif*pp->usr_ppp,0,MAX_SIGNED_INT);
 		gui_is_dirty=1;
 	}
 
 	// sequencer relocate event
-	if(user_pressed==32 || user_pressed==40)
+	if(user_pressed==PRESS_EVENT_MOVE || user_pressed==PRESS_PR_EVENT_MOVE)
 	{
 		// get sequencer event beign relocated
 		ADX_EVENT* pe=&seq_event[user_event_drag];
@@ -215,11 +215,11 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 			pe->pos=arg_tool_clipped_assign(ym_seq_pos+user_drag_offset,0,MAX_SIGNED_INT);
 
 		// set event track or event
-		if(user_pressed==32)
+		if(user_pressed==PRESS_EVENT_MOVE)
 			pe->trk=arg_tool_clipped_assign(user_trk_offset+(xm-(TRACK_WIDTH+user_pr_width))/TRACK_WIDTH,0,MAX_TRACKS-1);
 
 		// transpose event note in piano roll (horizontal move)
-		if(user_pressed==40)	
+		if(user_pressed==PRESS_PR_EVENT_MOVE)	
 		{
 			// get piano roll screen port and new note
 			int const pr_vn=(user_pr_width-8)/user_pr_note_width;
@@ -246,7 +246,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// sequencer resize event
-	if(user_pressed==33)
+	if(user_pressed==PRESS_EVENT_SIZE)
 	{
 		// get sequencer event beign resized
 		ADX_EVENT* pe=&seq_event[user_event_drag];
@@ -262,7 +262,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// sequencer mark block
-	if(user_pressed==34)
+	if(user_pressed==PRESS_BLOCK_MARK)
 	{
 		// mark block length
 		user_block_pos_end=arg_tool_clipped_assign(ym_seq_pos,0,MAX_SIGNED_INT);
@@ -276,7 +276,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// sequencer view mouse cursor hoovering
-	if(user_page==0 && user_pressed==0)
+	if(user_page==0 && user_pressed==PRESS_NONE)
 	{
 		// sequencer piano roll separator check
 		if(arg_tool_check_plane_xy(xm,ym,TRACK_WIDTH+user_pr_width-4,seq_area_y-32,4,32+seq_area_h))
@@ -384,7 +384,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// routing instance module dragging
-	if(user_pressed==35)
+	if(user_pressed==PRESS_INST_MOVE)
 	{
 		ADX_INSTANCE* pi=&instance[user_instance];
 		pi->x+=i_mx_dif;
@@ -393,11 +393,11 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// refresh while routing wire dragging or midi out link wire dragging
-	if(user_pressed==25 || user_pressed==36)
+	if(user_pressed==PRESS_MIDI_WIRE || user_pressed==PRESS_AUDIO_WIRE)
 		gui_is_dirty=1;
 
 	// routing master input module dragging
-	if(user_pressed==37)
+	if(user_pressed==PRESS_MASTER_IN)
 	{
 		master_i_x+=i_mx_dif;
 		master_i_y+=i_my_dif;
@@ -405,7 +405,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// routing master output module dragging
-	if(user_pressed==38)
+	if(user_pressed==PRESS_MASTER_OUT)
 	{
 		master_o_x+=i_mx_dif;
 		master_o_y+=i_my_dif;
@@ -413,7 +413,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// routing view offset dragging
-	if(user_pressed==39)
+	if(user_pressed==PRESS_ROUTING_PAN)
 	{
 		user_rout_offset_x-=i_mx_dif;
 		user_rout_offset_y-=i_my_dif;
@@ -421,7 +421,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// block mark in piano-roll
-	if(user_pressed==41)
+	if(user_pressed==PRESS_PR_BLOCK_MARK)
 	{
 		// mark block length
 		user_block_pos_end=arg_tool_clipped_assign(ym_seq_pos,0,MAX_SIGNED_INT);
@@ -435,7 +435,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 	}
 
 	// tweak gain value
-	if(user_pressed==44)
+	if(user_pressed==PRESS_WIRE_GAIN)
 	{
 		// get wire value
 		float wire_value=user_pressed_wire->value;

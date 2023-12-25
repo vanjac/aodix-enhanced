@@ -76,11 +76,11 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 		paint_txt(hdc,32,236,buf_a,2,0);
 
 		// draw pattern selector dec spin
-		if(user_pressed==26)
+		if(user_pressed==PRESS_PAT_PREV)
 			BitBlt(hdc,TRACK_WIDTH-48,seq_area_y-32,16,16,hdc_gfx,32,0,SRCCOPY);
 
 		// draw pattern selector inc spin
-		if(user_pressed==27)
+		if(user_pressed==PRESS_PAT_NEXT)
 			BitBlt(hdc,TRACK_WIDTH-32,seq_area_y-32,16,16,hdc_gfx,32,16,SRCCOPY);
 
 		// paint pattern label
@@ -391,23 +391,27 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 			if(pm->flg)
 			{
 				sprintf(buf_a," Index %.2X",m);
-				paint_marker(hdc,0x0088C8C8+(user_pressed==30)*(user_marker_drag==m)*0x00101010,2,buf_a,seq_cent_y+(pm->pos-pp->usr_pos)/pp->usr_ppp,w,-16,(user_pressed==30)*(user_marker_drag==m));
+				int const drag_marker=(user_pressed==PRESS_MARKER)*(user_marker_drag==m);
+				paint_marker(hdc,0x0088C8C8+drag_marker*0x00101010,2,buf_a,seq_cent_y+(pm->pos-pp->usr_pos)/pp->usr_ppp,w,-16,drag_marker);
 			}
 		}
 
 		// paint pattern cue-loop start marker
 		gui_format_pos(pp->cue_sta,buf_a);
-		paint_marker(hdc,0x00A0B0A0+(user_pressed==28)*0x00101010,0,buf_a,seq_cent_y+(pp->cue_sta-pp->usr_pos)/pp->usr_ppp,w,-16,(user_pressed==28));
+		int const drag_start=(user_pressed==PRESS_CUE_START);
+		paint_marker(hdc,0x00A0B0A0+drag_start*0x00101010,0,buf_a,seq_cent_y+(pp->cue_sta-pp->usr_pos)/pp->usr_ppp,w,-16,drag_start);
 
 		// paint pattern cue-loop end marker
 		gui_format_pos(pp->cue_end,buf_a);
-		paint_marker(hdc,0x00A0B0A0+(user_pressed==29)*0x00101010,3,buf_a,seq_cent_y+(pp->cue_end-pp->usr_pos)/pp->usr_ppp,w,1,(user_pressed==29));
+		int const drag_end=(user_pressed==PRESS_CUE_END);
+		paint_marker(hdc,0x00A0B0A0+drag_end*0x00101010,3,buf_a,seq_cent_y+(pp->cue_end-pp->usr_pos)/pp->usr_ppp,w,1,drag_end);
 
 		// paint pattern cue-stop marker
 		if(pp->cue_stp>0)
 		{
 			gui_format_pos(pp->cue_stp,buf_a);
-			paint_marker(hdc,0x0060C0A0+(user_pressed==6)*0x00101010,1,buf_a,seq_cent_y+(pp->cue_stp-pp->usr_pos)/pp->usr_ppp,w,-16,(user_pressed==6));
+			int const drag_stop=(user_pressed==PRESS_CUE_STOP);
+			paint_marker(hdc,0x0060C0A0+drag_stop*0x00101010,1,buf_a,seq_cent_y+(pp->cue_stp-pp->usr_pos)/pp->usr_ppp,w,-16,drag_stop);
 		}
 
 		// get block length

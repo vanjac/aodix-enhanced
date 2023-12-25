@@ -50,28 +50,28 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	// master pattern cue-loop switch
 	if(arg_tool_check_plane_xy(xm,ym,195,17,32,16))
 	{
-		user_pressed=1;
+		user_pressed=PRESS_CYCLE;
 		gui_is_dirty=1;
 	}
 
 	// master cfg live-rec switch
 	if(arg_tool_check_plane_xy(xm,ym,227,17,32,16))
 	{
-		user_pressed=2;
+		user_pressed=PRESS_LIVE;
 		gui_is_dirty=1;
 	}
 
 	// master cfg play-scroll follow
 	if(arg_tool_check_plane_xy(xm,ym,195,33,64,16))
 	{
-		user_pressed=3;
+		user_pressed=PRESS_STOP_WRAP;
 		gui_is_dirty=1;
 	}
 
 	// master change tempo
 	if(arg_tool_check_plane_xy(xm,ym,3,49,128,16))
 	{
-		user_pressed=4;
+		user_pressed=PRESS_TEMPO;
 		gui_is_dirty=1;
 	}
 
@@ -107,49 +107,49 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	// master transport play
 	if(arg_tool_check_plane_xy(xm,ym,3,85,64,28))
 	{
-		user_pressed=7;
+		user_pressed=PRESS_PLAY;
 		gui_is_dirty=1;
 	}
 
 	// master transport stop
 	if(arg_tool_check_plane_xy(xm,ym,67,85,64,28))
 	{
-		user_pressed=8;
+		user_pressed=PRESS_STOP;
 		gui_is_dirty=1;
 	}
 
 	// master transport rec-events
 	if(arg_tool_check_plane_xy(xm,ym,131,85,64,28))
 	{
-		user_pressed=9;
+		user_pressed=PRESS_REC;
 		gui_is_dirty=1;
 	}
 
 	// master transport rec-automation
 	if(arg_tool_check_plane_xy(xm,ym,195,85,64,28))
 	{
-		user_pressed=10;
+		user_pressed=PRESS_AUTO;
 		gui_is_dirty=1;
 	}
 
 	// edit step switch
 	if(arg_tool_check_plane_xy(xm,ym,195,133,32,16))
 	{
-		user_pressed=11;
+		user_pressed=PRESS_STEP;
 		gui_is_dirty=1;
 	}
 
 	// edit overwrite switch
 	if(arg_tool_check_plane_xy(xm,ym,227,133,32,16))
 	{
-		user_pressed=12;
+		user_pressed=PRESS_OVER;
 		gui_is_dirty=1;
 	}
 
 	// edit page switch
 	if(arg_tool_check_plane_xy(xm,ym,195,149,64,16))
 	{
-		user_pressed=13;
+		user_pressed=PRESS_PAGE;
 		gui_is_dirty=1;
 	}
 
@@ -193,7 +193,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	// edit pattern sequencer zoom
 	if(arg_tool_check_plane_xy(xm,ym,131,165,128,16))
 	{
-		user_pressed=14;
+		user_pressed=PRESS_SEQ_ZOOM;
 
 		// default zooming
 		if(is_double_click)
@@ -206,14 +206,14 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	// edit sequencer mode
 	if(arg_tool_check_plane_xy(xm,ym,131,181,128,16))
 	{
-		user_pressed=15;
+		user_pressed=PRESS_SEQ_MODE;
 		gui_is_dirty=1;
 	}
 
 	// edit default note velocity
 	if(arg_tool_check_plane_xy(xm,ym,131,197,128,16))
 	{
-		user_pressed=16;
+		user_pressed=PRESS_VELOCITY;
 
 		// default velocity if double click
 		if(is_double_click)
@@ -225,7 +225,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	// edit default note pre-release
 	if(arg_tool_check_plane_xy(xm,ym,131,213,128,16))
 	{
-		user_pressed=17;
+		user_pressed=PRESS_PRE_RELEASE;
 
 		// default pre-release if double click
 		if(is_double_click)
@@ -269,7 +269,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 
 		// set new index
 		user_instance=arg_tool_clipped_assign(user_instance+(spin_index*2)-1,0,MAX_INSTANCES-1);
-		user_pressed=18+spin_index;
+		user_pressed=(spin_index?PRESS_INST_NEXT:PRESS_INST_PREV);
 
 		// scroll to instance
 		gui_scroll_to_instance();
@@ -354,7 +354,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 		}
 
 		// press button and refresh
-		user_pressed=20+spin_index;
+		user_pressed=(spin_index?PRESS_PROG_NEXT:PRESS_PROG_PREV);
 
 		// post refresh
 		gui_is_dirty=1;
@@ -363,7 +363,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	// vst instance list slider
 	if(arg_tool_check_plane_xy(xm,ym,265,17,16,176))
 	{
-		user_pressed=22;
+		user_pressed=PRESS_INST_SCROLL;
 
 		// post refresh
 		gui_is_dirty=1;
@@ -434,7 +434,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 	// vst parameter list offset drag
 	if(arg_tool_check_plane_xy(xm,ym,527,17,16,176))
 	{
-		user_pressed=23;
+		user_pressed=PRESS_PARAM_SCROLL;
 
 		// post refresh
 		gui_is_dirty=1;
@@ -463,7 +463,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				user_midi_learn=1;
 
 			// set parameter tweaking flag
-			user_pressed=24;
+			user_pressed=PRESS_PARAM_TWEAK;
 
 			// post refresh
 			gui_is_dirty=1;
@@ -521,7 +521,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 			user_pat=arg_tool_clipped_assign(user_pat+(spin_index*2)-1,0,MAX_PATTERNS-1);
 
 			// set spin pressed button flag index
-			user_pressed=26+spin_index;
+			user_pressed=(spin_index?PRESS_PAT_NEXT:PRESS_PAT_PREV);
 
 			// post refresh	
 			gui_is_dirty=1;
@@ -531,7 +531,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 		if(arg_tool_check_plane_xy(xm,ym,0,y_cue_sta-16,40,17))
 		{
 			user_drag_offset=(y_cue_sta-ym)*pp->usr_ppp;
-			user_pressed=28;
+			user_pressed=PRESS_CUE_START;
 			gui_is_dirty=1;
 			return;
 		}
@@ -540,7 +540,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 		if(arg_tool_check_plane_xy(xm,ym,0,y_cue_end,40,17))
 		{
 			user_drag_offset=(y_cue_end-ym)*pp->usr_ppp;
-			user_pressed=29;
+			user_pressed=PRESS_CUE_END;
 			gui_is_dirty=1;
 			return;
 		}
@@ -563,7 +563,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				else
 				{
 					user_drag_offset=(sy-ym)*pp->usr_ppp;
-					user_pressed=6;
+					user_pressed=PRESS_CUE_STOP;
 					gui_is_dirty=1;
 					return;
 				}
@@ -598,7 +598,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 						// set drag marker mode
 						user_marker_drag=m;
 						user_drag_offset=(my-ym)*pp->usr_ppp;
-						user_pressed=30;
+						user_pressed=PRESS_MARKER;
 
 						// post refresh
 						gui_is_dirty=1;
@@ -634,7 +634,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 			SetCursor(hcursor_szwe);
 
 			// set pr separator drag action
-			user_pressed=5;
+			user_pressed=PRESS_PR_SEP;
 			user_drag_offset=xm-(user_pr_width-3);
 			gui_is_dirty=1;
 			return;
@@ -647,7 +647,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 			SetCursor(hcursor_hacl);
 
 			// set position drag action
-			user_pressed=31;
+			user_pressed=PRESS_SEQ_DRAG;
 			gui_is_dirty=1;
 		}
 
@@ -700,14 +700,14 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 							{
 								user_event_drag=e;
 								user_drag_offset=(e_b-ym)*pp->usr_ppp;
-								user_pressed=33;
+								user_pressed=PRESS_EVENT_SIZE;
 								return;
 							}
 
 							// relocate event
 							user_event_drag=e;
 							user_drag_offset=(e_y-ym)*pp->usr_ppp;
-							user_pressed=40;
+							user_pressed=PRESS_PR_EVENT_MOVE;
 							return;
 						}
 					}
@@ -742,7 +742,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				// resize event
 				user_drag_offset=0;
 				user_event_drag=seq_num_events-1;
-				user_pressed=33;
+				user_pressed=PRESS_EVENT_SIZE;
 
 				// post refresh and return
 				gui_is_dirty=1;
@@ -755,7 +755,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 			user_block_trk_end=user_trk+1;
 
 			// set block marking status and refresh
-			user_pressed=41;
+			user_pressed=PRESS_PR_BLOCK_MARK;
 			gui_is_dirty=1;
 		}
 
@@ -805,14 +805,14 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 							{
 								user_event_drag=e;
 								user_drag_offset=(e_b-ym)*pp->usr_ppp;
-								user_pressed=33;
+								user_pressed=PRESS_EVENT_SIZE;
 								return;
 							}
 
 							// relocate event
 							user_event_drag=e;
 							user_drag_offset=(e_y-ym)*pp->usr_ppp;
-							user_pressed=32;
+							user_pressed=PRESS_EVENT_MOVE;
 							return;
 						}
 					}
@@ -837,7 +837,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				user_block_trk_end=user_block_trk_sta=arg_tool_clipped_assign(user_trk_offset+(xm-(TRACK_WIDTH+user_pr_width))/TRACK_WIDTH,0,MAX_TRACKS);
 
 				// set block marking status and refresh
-				user_pressed=34;
+				user_pressed=PRESS_BLOCK_MARK;
 				gui_is_dirty=1;
 			}
 		}
@@ -927,7 +927,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 					// set pin index
 					user_dragging_rout_pin_index=(xm-i_x)/8;
 					user_dragging_rout_instance_index=i;
-					user_pressed=36;
+					user_pressed=PRESS_AUDIO_WIRE;
 					gui_is_dirty=1;
 					return;
 				}
@@ -937,7 +937,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				{
 					user_dragging_rout_instance_index=i;
 					user_dragging_rout_pin_index=0;
-					user_pressed=25;
+					user_pressed=PRESS_MIDI_WIRE;
 					gui_is_dirty=1;
 					return;
 				}
@@ -969,7 +969,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 
 					// set instance box draggin mode, refresh and return
 					if(!is_double_click)
-						user_pressed=35;
+						user_pressed=PRESS_INST_MOVE;
 					gui_is_dirty=1;
 					return;
 				}
@@ -981,7 +981,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				gui_mouse_scan_pin(hwnd,xm,ym,&pi->mout_pin,1,i_x+pi->peffect->numOutputs*8,i_y+40,is_double_click,1);
 
 				// return if pin scan success
-				if(user_pressed==44 || user_pressed==45)
+				if(user_pressed==PRESS_WIRE_GAIN || user_pressed==PRESS_WIRE_DELETE)
 				{
 					gui_is_dirty=1;
 					return;
@@ -996,7 +996,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 		// change master input module position
 		if(arg_tool_check_plane_xy(xm,ym,m_i_x,m_i_y,NUM_DSP_INPUTS*8,16))
 		{
-			user_pressed=37;
+			user_pressed=PRESS_MASTER_IN;
 			gui_is_dirty=1;
 			return;
 		}
@@ -1027,7 +1027,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 			// set pin index
 			user_dragging_rout_pin_index=(xm-m_i_x)/8;
 			user_dragging_rout_instance_index=INPUT_INSTANCE;
-			user_pressed=36;
+			user_pressed=PRESS_AUDIO_WIRE;
 			gui_is_dirty=1;
 			return;
 		}
@@ -1036,7 +1036,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 		gui_mouse_scan_pin(hwnd,xm,ym,master_input_pin,NUM_DSP_INPUTS,m_i_x,m_i_y+24,is_double_click,0);
 
 		// return if pin scan success
-		if(user_pressed==44 || user_pressed==45)
+		if(user_pressed==PRESS_WIRE_GAIN || user_pressed==PRESS_WIRE_DELETE)
 		{
 			gui_is_dirty=1;
 			return;
@@ -1049,7 +1049,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 		// change master output module position
 		if(arg_tool_check_plane_xy(xm,ym,m_o_x,m_o_y+8,NUM_DSP_INPUTS*8,16))
 		{
-			user_pressed=38;
+			user_pressed=PRESS_MASTER_OUT;
 			gui_is_dirty=1;
 			return;
 		}
@@ -1098,7 +1098,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 		else
 		{
 			// drag offset
-			user_pressed=39;
+			user_pressed=PRESS_ROUTING_PAN;
 
 			// post refresh
 			gui_is_dirty=1;
