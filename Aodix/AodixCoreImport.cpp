@@ -808,7 +808,7 @@ void CAodixCore::import_midi_file_dlg(HWND const hwnd)
 			ADX_EVENT* pe=&seq_event[e];
 
 			// check if it's in pattern
-			if(pe->pat==user_pat && pe->typ!=5)
+			if(pe->pat==user_pat && pe->typ!=EVT_TMP)
 			{
 				// spare across channels or use one instance only
 				if(ch_spare)
@@ -1002,23 +1002,23 @@ void CAodixCore::import_midi_file(HWND const hwnd,char* filename)
 
 				// parse polyphonic aftertouch event
 				if((running_stat&0xF0)==0xA0 && user_midi_mask&0x4)
-					seq_add_event(midi_currtime,user_pat,i_track+1,3,0,running_stat,params[0],params[1],0);
+					seq_add_event(midi_currtime,user_pat,i_track+1,EVT_MID,0,running_stat,params[0],params[1],0);
 
 				// parse controller change event
 				if((running_stat&0xF0)==0xB0 && user_midi_mask&0x8)
-					seq_add_event(midi_currtime,user_pat,i_track+1,3,0,running_stat,params[0],params[1],0);
+					seq_add_event(midi_currtime,user_pat,i_track+1,EVT_MID,0,running_stat,params[0],params[1],0);
 
 				// parse program change event
 				if((running_stat&0xF0)==0xC0 && user_midi_mask&0x10)
-					seq_add_event(midi_currtime,user_pat,i_track+1,3,0,running_stat,params[0],0,0);
+					seq_add_event(midi_currtime,user_pat,i_track+1,EVT_MID,0,running_stat,params[0],0,0);
 
 				// parse channel pressure event
 				if((running_stat&0xF0)==0xD0 && user_midi_mask&0x20)
-					seq_add_event(midi_currtime,user_pat,i_track+1,3,0,running_stat,params[0],params[1],0);
+					seq_add_event(midi_currtime,user_pat,i_track+1,EVT_MID,0,running_stat,params[0],params[1],0);
 
 				// parse pitchbend change event
 				if((running_stat&0xF0)==0xE0 && user_midi_mask&0x40)
-					seq_add_event(midi_currtime,user_pat,i_track+1,3,0,running_stat,params[0],params[1],0);
+					seq_add_event(midi_currtime,user_pat,i_track+1,EVT_MID,0,running_stat,params[0],params[1],0);
 
 				// parse system exclusive event
 				if((running_stat&0xF0)==0xF0)
@@ -1184,7 +1184,7 @@ void CAodixCore::import_midi_on_sysex(FILE* pfile,int const pattern_index,int co
 				int const i_ls_tempo=int_tempo&0xFF;
 
 				// add tempo event
-				seq_add_event(i_event_pos,pattern_index,track,5,i_ms_tempo,i_ls_tempo,0,0,0);
+				seq_add_event(i_event_pos,pattern_index,track,EVT_TMP,i_ms_tempo,i_ls_tempo,0,0,0);
 			}
 
 			// free memory

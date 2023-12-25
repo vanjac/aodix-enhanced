@@ -339,7 +339,7 @@ void CAodixCore::host_on_automation(AEffect* peffect,int const param,float const
 			edit_undo_snapshot(true);
 
 			// add automation event
-			seq_add_event(new_event_pos,user_pat,user_trk,4,instance_index,(param>>8)&0xFF,(param&0xFF),int(value*255.0f),user_edit_overwrite);
+			seq_add_event(new_event_pos,user_pat,user_trk,EVT_AUT,instance_index,(param>>8)&0xFF,(param&0xFF),int(value*255.0f),user_edit_overwrite);
 		}
 
 		// get user instance

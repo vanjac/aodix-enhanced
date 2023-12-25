@@ -138,7 +138,7 @@ void CAodixCore::dsp_work(void)
 			if(event_sample_sta<block_sample_end && event_sample_end>=block_sample_sta && pe->pat==user_pat && track_on[pe->trk] && !(trn_cycle && event_sample_sta>=cue_end_sample))
 			{
 				// note event
-				if(pe->typ==0)
+				if(pe->typ==EVT_NOT)
 				{
 					// note on
 					if(event_sample_sta>=block_sample_sta)
@@ -150,7 +150,7 @@ void CAodixCore::dsp_work(void)
 				}
 
 				// pattern event
-				if(pe->typ==1)
+				if(pe->typ==EVT_PAT)
 				{
 					// get referred marker
 					ADX_MARKER* pm=&project.pattern[pe->da0].marker[pe->da1];
@@ -181,7 +181,7 @@ void CAodixCore::dsp_work(void)
 						if(sub_event_sample_sta<block_sample_end && sub_event_sample_end>=block_sample_sta && pse->pat==pe->da0 && !(trn_cycle && sub_event_sample_sta>=cue_end_sample))
 						{
 							// sub note event
-							if(pse->typ==0)
+							if(pse->typ==EVT_NOT)
 							{
 								// check sub note-on
 								if(sub_event_sample_sta>=block_sample_sta && sub_event_sample_sta<event_sample_end)
@@ -208,34 +208,34 @@ void CAodixCore::dsp_work(void)
 							}
 
 							// sub midi automation event
-							if(pse->typ==3)
+							if(pse->typ==EVT_MID)
 								instance_add_midi_event(&instance[pse->da0],pe->trk,pse->da1,pse->da2,pse->da3,0,sub_event_sample_end-block_sample_sta);
 
 							// sub vst automation event
-							if(pse->typ==4)
+							if(pse->typ==EVT_AUT)
 								instance_set_param(&instance[pse->da0],(pse->da1<<8)|(pse->da2),float(pse->da3)/255.0f);
 
 							// sub tempo automation event
-							if(pse->typ==5)
+							if(pse->typ==EVT_TMP)
 								tempo_change=double(pse->da0)+double(pse->da1)*0.00390625;
 						}
 					}
 				}
 
 				// jump event
-				if(pe->typ==2 && master_transport_sampleframe!=event_sample_end)
+				if(pe->typ==EVT_JMP && master_transport_sampleframe!=event_sample_end)
 					jump=event_sample_end;
 
 				// midi automation event
-				if(pe->typ==3)
+				if(pe->typ==EVT_MID)
 					instance_add_midi_event(&instance[pe->da0],pe->trk,pe->da1,pe->da2,pe->da3,0,event_sample_sta-block_sample_sta);
 
 				// vst automation event
-				if(pe->typ==4)
+				if(pe->typ==EVT_AUT)
 					instance_set_param(&instance[pe->da0],(pe->da1<<8)|(pe->da2),float(pe->da3)/255.0f);
 
 				// tempo automation event
-				if(pe->typ==5)
+				if(pe->typ==EVT_TMP)
 					tempo_change=double(pe->da0)+double(pe->da1)*0.00390625;
 			}
 		}
@@ -600,13 +600,13 @@ void CAodixCore::dsp_stop_playing_notes(int pat,int trk,bool check_muted)
 				&& pe->pos <= play_pos && pe->pos+pe->par > play_pos)
 			{
 				// note event
-				if (pe->typ==0)
+				if (pe->typ==EVT_NOT)
 				{
 					// send note off message
 					instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,0);
 				}
 				// pattern event
-				else if (pe->typ==1)
+				else if (pe->typ==EVT_PAT)
 				{
 					// get referred marker
 					ADX_MARKER* pm=&project.pattern[pe->da0].marker[pe->da1];
@@ -626,7 +626,7 @@ void CAodixCore::dsp_stop_playing_notes(int pat,int trk,bool check_muted)
 						// sub-event position
 						int sub_pos = (pe->pos+pse->pos)-pe_marker_offset;
 
-						if (pse->pat==pe->da0 && pse->szd && pse->typ==0
+						if (pse->pat==pe->da0 && pse->szd && pse->typ==EVT_NOT
 							&& sub_pos <= play_pos && sub_pos+pse->par > play_pos)
 						{
 							// calculate transposed note

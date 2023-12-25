@@ -73,9 +73,9 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 
 			// write automation tempo (live else offline)
 			if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
-				seq_add_event(play_pos,user_pat,user_trk,5,(int_tempo>>8)&0xFF,(int_tempo&0xFF),0,0,user_edit_overwrite);
+				seq_add_event(play_pos,user_pat,user_trk,EVT_TMP,(int_tempo>>8)&0xFF,(int_tempo&0xFF),0,0,user_edit_overwrite);
 			else
-				seq_add_event(pp->usr_pos,user_pat,user_trk,5,(int_tempo>>8)&0xFF,(int_tempo&0xFF),0,0,user_edit_overwrite);
+				seq_add_event(pp->usr_pos,user_pat,user_trk,EVT_TMP,(int_tempo>>8)&0xFF,(int_tempo&0xFF),0,0,user_edit_overwrite);
 		}
 
 		// set sequencer position
@@ -300,7 +300,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 				ADX_EVENT* pe=&seq_event[e];
 
 				// check event parameters
-				if(pe->pat==user_pat && pe->trk==user_trk && pe->typ==0)
+				if(pe->pat==user_pat && pe->trk==user_trk && pe->typ==EVT_NOT)
 				{
 					// get event horizontal screen coordinates
 					int const e_x=TRACK_WIDTH+4+(int(pe->da2)-pr_no)*user_pr_note_width;

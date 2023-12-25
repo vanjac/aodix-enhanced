@@ -161,7 +161,7 @@ void CAodixCore::midi_in_process(BYTE const data0,BYTE const data1,BYTE const da
 							edit_undo_snapshot(true);
 
 							// add automation event
-							seq_add_event(new_event_pos,user_pat,user_trk,4,i,(p>>8)&0xFF,p&0xFF,(data2<<1),user_edit_overwrite);
+							seq_add_event(new_event_pos,user_pat,user_trk,EVT_AUT,i,(p>>8)&0xFF,p&0xFF,(data2<<1),user_edit_overwrite);
 						}
 					}
 				}

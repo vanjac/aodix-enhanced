@@ -616,7 +616,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 				ADX_EVENT* pe=&seq_event[e];
 
 				// check event data
-				if(pe->typ==1 && pe->pat==user_pat && pe->pos==pp->usr_pos && pe->trk==user_trk)
+				if(pe->typ==EVT_PAT && pe->pat==user_pat && pe->pos==pp->usr_pos && pe->trk==user_trk)
 				{
 					// get called pattern pointer
 					ADX_PATTERN* pp=&project.pattern[pe->da0];
@@ -651,9 +651,9 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 
 				// if effect instanced, add midi program change message event (with current instance program index else first program)
 				if(pi->peffect!=NULL)
-					seq_add_event(pp->usr_pos,user_pat,user_trk,3,user_instance,0xC0+user_midi_ch,(unsigned char)pi->peffect->dispatcher(pi->peffect,effGetProgram,0,0,NULL,0.0f),0,user_edit_overwrite);
+					seq_add_event(pp->usr_pos,user_pat,user_trk,EVT_MID,user_instance,0xC0+user_midi_ch,(unsigned char)pi->peffect->dispatcher(pi->peffect,effGetProgram,0,0,NULL,0.0f),0,user_edit_overwrite);
 				else
-					seq_add_event(pp->usr_pos,user_pat,user_trk,3,user_instance,0xC0+user_midi_ch,0,0,user_edit_overwrite);
+					seq_add_event(pp->usr_pos,user_pat,user_trk,EVT_MID,user_instance,0xC0+user_midi_ch,0,0,user_edit_overwrite);
 
 				// user position step
 				if(user_edit_step)
@@ -761,7 +761,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 
 					// write jump event
 					if(pc_kbd_not==-2)
-						seq_add_event(t_event_pos,user_pat,user_trk,2,0,0,0,0,user_edit_overwrite);
+						seq_add_event(t_event_pos,user_pat,user_trk,EVT_JMP,0,0,0,0,user_edit_overwrite);
 
 					// user position step if offline
 					if(!t_live && user_edit_step)
@@ -799,12 +799,12 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 						if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
 						{
 							// add midi note on event and refresh
-							seq_add_event(seq_sample_to_pos(master_transport_sampleframe),user_pat,user_trk,0,user_instance,user_midi_ch,note_index,user_kbd_velo,user_edit_overwrite);
+							seq_add_event(seq_sample_to_pos(master_transport_sampleframe),user_pat,user_trk,EVT_NOT,user_instance,user_midi_ch,note_index,user_kbd_velo,user_edit_overwrite);
 						}
 						else
 						{
 							// write midi note on event with transport stopped / offline
-							seq_add_event(pp->usr_pos,user_pat,user_trk,0,user_instance,user_midi_ch,note_index,user_kbd_velo,user_edit_overwrite);
+							seq_add_event(pp->usr_pos,user_pat,user_trk,EVT_NOT,user_instance,user_midi_ch,note_index,user_kbd_velo,user_edit_overwrite);
 
 							// user position step
 							if(user_edit_step)
@@ -874,12 +874,12 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 					if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
 					{
 						// write pattern event with live transport played (quantized)
-						seq_add_event(seq_sample_to_pos(master_transport_sampleframe),user_pat,user_trk,1,pc_kbd_pat,0,0x80,0x80,user_edit_overwrite);
+						seq_add_event(seq_sample_to_pos(master_transport_sampleframe),user_pat,user_trk,EVT_PAT,pc_kbd_pat,0,0x80,0x80,user_edit_overwrite);
 					}
 					else
 					{
 						// write pattern event with transport stopped / offline
-						seq_add_event(pp->usr_pos,user_pat,user_trk,1,pc_kbd_pat,0,0x80,0x80,user_edit_overwrite);
+						seq_add_event(pp->usr_pos,user_pat,user_trk,EVT_PAT,pc_kbd_pat,0,0x80,0x80,user_edit_overwrite);
 
 						// user position step
 						if(user_edit_step)

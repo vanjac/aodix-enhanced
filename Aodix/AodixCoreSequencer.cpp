@@ -54,7 +54,7 @@ void CAodixCore::seq_add_event(int const pos,unsigned char const pat,unsigned ch
 		pe->pat=pat;
 		pe->trk=trk;
 		pe->typ=typ;
-		pe->szd=(typ<3);
+		pe->szd=(typ<EVT_MID);
 
 		// set data
 		pe->da0=da0;
@@ -81,7 +81,7 @@ void CAodixCore::seq_add_evmid(int const pos,unsigned char const pat,unsigned ch
 			ADX_EVENT* pe=&seq_event[e];
 
 			// type is note on, duration is zero, channel match and key match
-			if(pe->typ==0 && pe->par==0 && (da0&0xF)==pe->da1 && da1==pe->da2)
+			if(pe->typ==EVT_NOT && pe->par==0 && (da0&0xF)==pe->da1 && da1==pe->da2)
 				pe->par=arg_tool_clipped_assign(pos-pe->pos,0,MAX_SIGNED_INT);
 		}
 
@@ -91,12 +91,12 @@ void CAodixCore::seq_add_evmid(int const pos,unsigned char const pat,unsigned ch
 	// midi note on
 	if((da0&0xF0)==0x90 && da2>0)
 	{
-		seq_add_event(pos,pat,trk,0,ins,da0&0xF,da1,da2,overwrite);
+		seq_add_event(pos,pat,trk,EVT_NOT,ins,da0&0xF,da1,da2,overwrite);
 		return;
 	}
 
 	// other midi event type
-	seq_add_event(pos,pat,trk,3,ins,da0,da1,da2,overwrite);
+	seq_add_event(pos,pat,trk,EVT_MID,ins,da0,da1,da2,overwrite);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

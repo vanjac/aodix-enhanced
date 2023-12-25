@@ -130,7 +130,7 @@ void CAodixCore::gui_mouse_up(HWND const hwnd)
 		ADX_EVENT* pe=&seq_event[user_event_drag];
 
 		// send note off
-		if(pe->typ==0)
+		if(pe->typ==EVT_NOT)
 			instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,0);
 	}
 

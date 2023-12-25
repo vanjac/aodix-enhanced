@@ -55,7 +55,7 @@ void CAodixCore::gui_key_up(HWND const hwnd,int const keycode)
 						ADX_EVENT* pe=&seq_event[e];
 
 						// check if note event is unfinished and match with released keyboard note
-						if(pe->typ==0 && pe->par==0 && pe->da2==note_index)
+						if(pe->typ==EVT_NOT && pe->par==0 && pe->da2==note_index)
 						{
 							// finish note off event (live else offline)
 							if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
@@ -76,7 +76,7 @@ void CAodixCore::gui_key_up(HWND const hwnd,int const keycode)
 						ADX_EVENT* pe=&seq_event[e];
 
 						// check if jump event is unfinished
-						if(pe->typ==2 && pe->par==0)
+						if(pe->typ==EVT_JMP && pe->par==0)
 						{
 							// finish jump event (live else offline)
 							if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)
@@ -150,7 +150,7 @@ void CAodixCore::gui_key_up(HWND const hwnd,int const keycode)
 				ADX_EVENT* pe=&seq_event[e];
 
 				// check if pattern event is unfinished
-				if(pe->typ==1 && pe->par==0 && pe->da0==pc_kbd_pat)
+				if(pe->typ==EVT_PAT && pe->par==0 && pe->da0==pc_kbd_pat)
 				{
 					// finish pattern event (live else offline)
 					if((master_time_info.flags & kVstTransportPlaying) && cfg.rec_live)

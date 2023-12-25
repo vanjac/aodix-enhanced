@@ -295,7 +295,7 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 				if(e_y<seq_area_b && e_b>seq_area_y)
 				{
 					// note event
-					if(pe->typ==0)
+					if(pe->typ==EVT_NOT)
 					{
 						// paint tracker event
 						sprintf(buf_a,"%s %.2X %.2X %.2X %.2X",note_name[pe->da2],pe->da0,pe->da1,pe->da2,pe->da3);
@@ -318,7 +318,7 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 					}
 
 					// pattern event
-					if(pe->typ==1)
+					if(pe->typ==EVT_PAT)
 					{
 						sprintf(buf_a,"Pat %.2X %.2X %.2X %.2X",pe->da0,pe->da1,pe->da2,pe->da3);
 						paint_event(hdc,e_x,e_y,TRACK_WIDTH,e_h,0x00FFFFFF,0x00608060,buf_a);
@@ -331,11 +331,11 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 					}
 
 					// jump event
-					if(pe->typ==2)
+					if(pe->typ==EVT_JMP)
 						paint_event(hdc,e_x,e_y,TRACK_WIDTH,e_h,0x00FFFFFF,0x00404040,"Jmp           ");
 
 					// midi automation event
-					if(pe->typ==3)
+					if(pe->typ==EVT_MID)
 					{
 						int msg=pe->da1>>4;
 						char *name;
@@ -348,14 +348,14 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 					}
 
 					// vst automation event
-					if(pe->typ==4)
+					if(pe->typ==EVT_AUT)
 					{
 						sprintf(buf_a,"Aut %.2X %.2X %.2X %.2X",pe->da0,pe->da1,pe->da2,pe->da3);
 						paint_event(hdc,e_x,e_y,TRACK_WIDTH,NR_EVENT_HEIGHT,0x00FFFFFF,0x00404040+pe->da3/2,buf_a);
 					}
 
 					// tempo automation event
-					if(pe->typ==5)
+					if(pe->typ==EVT_TMP)
 					{
 						sprintf(buf_a,"Tmp %.2X %.2X %.2X %.2X",pe->da0,pe->da1,pe->da2,pe->da3);
 						paint_event(hdc,e_x,e_y,TRACK_WIDTH,NR_EVENT_HEIGHT,0x00FFFFFF,0x00404040+pe->da0/2,buf_a);

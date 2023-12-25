@@ -665,7 +665,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				ADX_EVENT* pe=&seq_event[e];
 
 				// check event parameters
-				if(pe->pat==user_pat && pe->trk==user_trk && pe->typ==0)
+				if(pe->pat==user_pat && pe->trk==user_trk && pe->typ==EVT_NOT)
 				{
 					// get event horizontal screen coordinates
 					int const e_x=TRACK_WIDTH+4+(int(pe->da2)-pr_no)*user_pr_note_width;
@@ -728,7 +728,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 				edit_undo_snapshot(true);
 
 				// add new event
-				seq_add_event(ne_pos,user_pat,user_trk,0,user_instance,user_midi_ch,ne_not,user_kbd_velo,0);
+				seq_add_event(ne_pos,user_pat,user_trk,EVT_NOT,user_instance,user_midi_ch,ne_not,user_kbd_velo,0);
 
 				// get new sequencer event pointer
 				ADX_EVENT* pe=&seq_event[seq_num_events-1];
@@ -797,7 +797,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 							}
 
 							// send note-on from event
-							if(pe->typ==0)
+							if(pe->typ==EVT_NOT)
 								instance_add_midi_event(&instance[pe->da0],pe->trk,0x90+(pe->da1&0xF),pe->da2,pe->da3,0,0);
 
 							// resize event

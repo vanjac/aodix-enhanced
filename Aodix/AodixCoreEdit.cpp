@@ -327,7 +327,7 @@ void CAodixCore::edit_transpose(int const amt,int const apply_quantize)
 			if(pe->pat==user_pat && pe->pos>=user_block_pos_sta && pe->pos<user_block_pos_end && pe->trk>=user_block_trk_sta && pe->trk<user_block_trk_end)
 			{
 				// transpose note event
-				if(pe->typ==0)
+				if(pe->typ==EVT_NOT)
 				{
 					switch(user_row)
 					{
@@ -344,7 +344,7 @@ void CAodixCore::edit_transpose(int const amt,int const apply_quantize)
 				}
 
 				// transpose pattern, vst automation or tempo automation event
-				if(pe->typ==1 || pe->typ==4 || pe->typ==5)
+				if(pe->typ==EVT_PAT || pe->typ==EVT_AUT || pe->typ==EVT_TMP)
 				{
 					switch(user_row)
 					{
@@ -361,7 +361,7 @@ void CAodixCore::edit_transpose(int const amt,int const apply_quantize)
 				}
 
 				// transpose midi event
-				if(pe->typ==3)
+				if(pe->typ==EVT_MID)
 				{
 					switch(user_row)
 					{
@@ -563,7 +563,7 @@ void CAodixCore::edit_randomize(void)
 			if(pe->pat==user_pat && pe->pos>=user_block_pos_sta && pe->pos<user_block_pos_end && pe->trk>=user_block_trk_sta && pe->trk<user_block_trk_end)
 			{
 				// randomize note event
-				if(pe->typ==0)
+				if(pe->typ==EVT_NOT)
 				{
 					// select row
 					switch(user_row)
@@ -581,7 +581,7 @@ void CAodixCore::edit_randomize(void)
 				}
 
 				// randomize pattern or vst automation event
-				if(pe->typ==1 || pe->typ==4)
+				if(pe->typ==EVT_PAT || pe->typ==EVT_AUT)
 				{
 					// select row
 					switch(user_row)
@@ -598,7 +598,7 @@ void CAodixCore::edit_randomize(void)
 				}
 
 				// randomize midi automation event
-				if(pe->typ==3)
+				if(pe->typ==EVT_MID)
 				{
 					// select row
 					switch(user_row)
@@ -615,7 +615,7 @@ void CAodixCore::edit_randomize(void)
 				}
 
 				// randomize tempo automation event
-				if(pe->typ==5)
+				if(pe->typ==EVT_TMP)
 				{
 					// select row
 					switch(user_row)
