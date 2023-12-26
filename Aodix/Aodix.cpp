@@ -96,9 +96,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	wndcl_adx.hIconSm=LoadIcon(hInstance,(LPCTSTR)IDI_AODIX);
 	RegisterClassEx(&wndcl_adx);
 
-	// load accelerator table
-	HACCEL hAccel = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDR_ACCELERATORS));
-
 	// format aodix version label string
 	char adx_ver_buf[256];
 	sprintf(adx_ver_buf,"%d",gl_padx->aodix_version);
@@ -156,11 +153,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR lpCmdL
 	// main message loop
 	while(GetMessage(&msg,NULL,0,0))
 	{
-		if (!TranslateAccelerator(gl_hwnd_main, hAccel, &msg))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
 	}
 
 	// unregister windows classes
