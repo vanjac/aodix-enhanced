@@ -573,6 +573,9 @@ void CAodixCore::dsp_transport_stop(void)
 	for(int i=0;i<MAX_INSTANCES;i++)
 		instance_midi_panic(&instance[i],true,true);
 
+	// sort events
+	seq_sort();
+
 	// leave critical section
 	asio_leave_cs();
 }
