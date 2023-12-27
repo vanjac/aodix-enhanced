@@ -522,6 +522,9 @@ void CAodixCore::dsp_transport_play(void)
 	// enter critical section
 	asio_enter_cs();
 
+	// sort events
+	seq_sort();
+
 	// undo if recording
 	edit_undo_snapshot();
 	edit_undo_combine_next();

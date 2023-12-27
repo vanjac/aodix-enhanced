@@ -360,6 +360,7 @@ public:
 	void seq_delete_events_at_pattern(int const pat);
 	void seq_add_event(int const pos,unsigned char const pat,unsigned char const trk,unsigned char const typ,unsigned char const da0,unsigned char const da1,unsigned char const da2,unsigned char const da3,int const overwrite);
 	void seq_add_evmid(int const pos,unsigned char const pat,unsigned char const trk,unsigned char const ins,unsigned char const da0,unsigned char const da1,unsigned char const da2,int const overwrite);
+	void seq_sort();
 
 public:
 	void instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,int const param_x,int const param_y);

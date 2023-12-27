@@ -151,3 +151,18 @@ void CAodixCore::seq_delete_events_at_pattern(int const pat)
 		}
 	}
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::seq_sort()
+{
+	// insertion sort
+	for(int i=1, j; i<seq_num_events; i++)
+	{
+		ADX_EVENT tmp=seq_event[i];
+		for(j=(i-1); j>=0 && seq_event[j].pos > tmp.pos; j--)
+		{
+			seq_event[j+1]=seq_event[j];
+		}
+		seq_event[j+1]=tmp;
+	}
+}
