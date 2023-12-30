@@ -252,7 +252,12 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 		ADX_EVENT* pe=&seq_event[user_event_drag];
 
 		// set new event duration
+		int old_size=pe->par;
 		pe->par=arg_tool_clipped_assign((ym_seq_pos+user_drag_offset)-pe->pos,0,MAX_SIGNED_INT);
+
+		// resize all events in selection
+		if(GetKeyState(VK_SHIFT)<0)
+			edit_adjust_size(pe->par-old_size,user_event_drag);
 
 		// scroll iterate
 		gui_scroll_iterate(hwnd,ym,seq_area_y,h);

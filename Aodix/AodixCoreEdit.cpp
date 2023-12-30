@@ -244,6 +244,33 @@ void CAodixCore::edit_resize(int const all_tracks)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAodixCore::edit_adjust_size(int const amt,int const ignore_event)
+{
+	// get block length
+	int const user_block_pos_len=user_block_pos_end-user_block_pos_sta;
+	int const user_block_trk_len=user_block_trk_end-user_block_trk_sta;
+
+	// range selected
+	if(user_block_pos_len>0 && user_block_trk_len>0)
+	{
+		// scan sequencer events
+		for(int e=0; e<seq_num_events;e++)
+		{
+			// get event pointer
+			ADX_EVENT* pe=&seq_event[e];
+
+			// check if event is in block range and resizable
+			if(e!=ignore_event && pe->pat==user_pat && pe->pos>=user_block_pos_sta && pe->pos<user_block_pos_end
+				&& pe->trk>=user_block_trk_sta && pe->trk<user_block_trk_end && pe->szd)
+			{
+				// resize event
+				pe->par=arg_tool_clipped_assign(pe->par+amt,0,MAX_SIGNED_INT);
+			}
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::edit_copy(int const cut)
 {
 	// set wait cursor

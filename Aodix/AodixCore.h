@@ -388,6 +388,7 @@ public:
 	void edit_insert(int const all_tracks);
 	void edit_back(int const all_tracks);
 	void edit_resize(int const all_tracks);
+	void edit_adjust_size(int amt,int ignore_event);
 	void edit_copy(int const cut);
 	void edit_paste(void);
 	void edit_select_all(void);
