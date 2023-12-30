@@ -498,8 +498,11 @@ void CAodixCore::config_read(void)
 	cfg.midi_in_vl_rout=0;
 	cfg.midi_in_dv_open=1;
 
+	// init display settings
+	cfg.note_colors=0;
+
 	// init reserved fields 2
-	for(int r=0;r<14;r++)
+	for(int r=0;r<_countof(cfg.reserved2);r++)
 		cfg.reserved2[r]=0;
 
 	// init user registration

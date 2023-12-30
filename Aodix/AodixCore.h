@@ -93,8 +93,11 @@ struct ADX_CONFIG
 	int midi_in_vl_rout;
 	int midi_in_dv_open;
 
+	// display settings
+	unsigned char note_colors;
+
 	// reserved fields
-	int reserved2[14];
+	char reserved2[55];
 
 	// registration info
 	char user_name[32];
