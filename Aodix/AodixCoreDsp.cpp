@@ -184,7 +184,7 @@ void CAodixCore::dsp_work(void)
 							if(pse->typ==EVT_NOT)
 							{
 								// check sub note-on
-								if(sub_event_sample_sta>=block_sample_sta && sub_event_sample_sta<event_sample_end)
+								if(sub_event_sample_sta>=block_sample_sta && sub_event_sample_sta>=event_sample_sta && sub_event_sample_sta<event_sample_end)
 								{
 									// get transposed note
 									int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
@@ -197,7 +197,7 @@ void CAodixCore::dsp_work(void)
 								}
 
 								// check sub note-off
-								if(sub_event_sample_end<block_sample_end && sub_event_sample_end<event_sample_end)
+								if(sub_event_sample_end<block_sample_end && sub_event_sample_end>event_sample_sta && sub_event_sample_end<=event_sample_end)
 								{
 									// calculate transposed note
 									int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
