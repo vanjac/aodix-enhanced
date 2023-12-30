@@ -124,120 +124,24 @@ void CAodixCore::dsp_work(void)
 		int const block_sample_sta=master_transport_sampleframe;
 		int const block_sample_end=master_transport_sampleframe+dsp_block_size;
 
-		// scan all sequencer events
-		for(int e=0;e<seq_num_events;e++)
+		// check cycle wrap
+		if (trn_cycle && cue_end_sample<block_sample_end)
 		{
-			// get event pointer
-			ADX_EVENT* pe=&seq_event[e];
+			// play events before cycle wrap
+			dsp_play_events(i_samples_per_point,block_sample_sta,cue_end_sample,track_on,&tempo_change);
 
-			// convert event location to 32-bit integer sample index stamp
-			int const event_sample_sta=(pe->pos*i_samples_per_point)>>4;
-			int const event_sample_end=((pe->pos+pe->par*pe->szd)*i_samples_per_point)>>4;
+			// all sounds off thru all instances
+			for(int i=0;i<MAX_INSTANCES;i++)
+				instance_midi_panic(&instance[i],true,false);
 
-			// check if event is in current audio block scope, current pattern and track is active
-			if(event_sample_sta<block_sample_end && event_sample_end>=block_sample_sta && pe->pat==user_pat && track_on[pe->trk] && !(trn_cycle && event_sample_sta>=cue_end_sample))
-			{
-				// note event
-				if(pe->typ==EVT_NOT)
-				{
-					// note on
-					if(event_sample_sta>=block_sample_sta)
-						instance_add_midi_event(&instance[pe->da0],pe->trk,0x90+(pe->da1&0xF),pe->da2,pe->da3,0,event_sample_sta-block_sample_sta);
-
-					// note off
-					if(event_sample_end<block_sample_end)
-						instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,event_sample_end-block_sample_sta);
-				}
-
-				// pattern event
-				if(pe->typ==EVT_PAT)
-				{
-					// get referred marker
-					ADX_MARKER* pm=&project.pattern[pe->da0].marker[pe->da1];
-
-					// get marker offset
-					int const pe_marker_offset=pm->flg*pm->pos;
-
-					// get note tranpose amount
-					int const pe_note_transpose=int(pe->da2)-128;
-
-					// get velo tranpose amount
-					int const pe_velo_transpose=int(pe->da3)-128;
-
-					// scan all called pattern (sub-events)
-					for(int se=0;se<seq_num_events;se++)
-					{
-						// get sub-event
-						ADX_EVENT* pse=&seq_event[se];
-
-						// get sub-event position offset
-						int const i_sub_event_position_off=(pe->pos+pse->pos)-pe_marker_offset;
-
-						// convert sub-event location to 32-bit integer sample index stamp
-						int const sub_event_sample_sta=(i_sub_event_position_off*i_samples_per_point)>>4;
-						int const sub_event_sample_end=((i_sub_event_position_off+pse->par*pse->szd)*i_samples_per_point)>>4;
-
-						// check if event is in current audio block scope, current pattern and track is active
-						if(sub_event_sample_sta<block_sample_end && sub_event_sample_end>=block_sample_sta && pse->pat==pe->da0 && !(trn_cycle && sub_event_sample_sta>=cue_end_sample))
-						{
-							// sub note event
-							if(pse->typ==EVT_NOT)
-							{
-								// check sub note-on
-								if(sub_event_sample_sta>=block_sample_sta && sub_event_sample_sta>=event_sample_sta && sub_event_sample_sta<event_sample_end)
-								{
-									// get transposed note
-									int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
-
-									// get transposed velo
-									int const transposed_velo=arg_tool_clipped_assign(int(pse->da3)+pe_velo_transpose,1,127);
-
-									// send midi sub note-on event
-									instance_add_midi_event(&instance[pse->da0],pe->trk,0x90+(pse->da1&0xF),transposed_note,transposed_velo,0,sub_event_sample_sta-block_sample_sta);
-								}
-
-								// check sub note-off
-								if(sub_event_sample_end<block_sample_end && sub_event_sample_end>event_sample_sta && sub_event_sample_end<=event_sample_end)
-								{
-									// calculate transposed note
-									int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
-
-									// send midi sub note-off event
-									instance_add_midi_event(&instance[pse->da0],pe->trk,0x80+(pse->da1&0xF),transposed_note,0x40,0,sub_event_sample_end-block_sample_sta);
-								}
-							}
-
-							// sub midi automation event
-							if(pse->typ==EVT_MID)
-								instance_add_midi_event(&instance[pse->da0],pe->trk,pse->da1,pse->da2,pse->da3,0,sub_event_sample_end-block_sample_sta);
-
-							// sub vst automation event
-							if(pse->typ==EVT_AUT)
-								instance_set_param(&instance[pse->da0],(pse->da1<<8)|(pse->da2),float(pse->da3)/255.0f);
-
-							// sub tempo automation event
-							if(pse->typ==EVT_TMP)
-								tempo_change=double(pse->da0)+double(pse->da1)*0.00390625;
-						}
-					}
-				}
-
-				// jump event
-				if(pe->typ==EVT_JMP && master_transport_sampleframe!=event_sample_end)
-					jump=event_sample_end;
-
-				// midi automation event
-				if(pe->typ==EVT_MID)
-					instance_add_midi_event(&instance[pe->da0],pe->trk,pe->da1,pe->da2,pe->da3,0,event_sample_sta-block_sample_sta);
-
-				// vst automation event
-				if(pe->typ==EVT_AUT)
-					instance_set_param(&instance[pe->da0],(pe->da1<<8)|(pe->da2),float(pe->da3)/255.0f);
-
-				// tempo automation event
-				if(pe->typ==EVT_TMP)
-					tempo_change=double(pe->da0)+double(pe->da1)*0.00390625;
-			}
+			// play events after cycle wrap
+			int const wrap_sample_end=cue_sta_sample+(block_sample_end-cue_end_sample);
+			jump=dsp_play_events(i_samples_per_point,cue_sta_sample,wrap_sample_end,track_on,&tempo_change);
+		}
+		else
+		{
+			// play block events
+			jump=dsp_play_events(i_samples_per_point,block_sample_sta,block_sample_end,track_on,&tempo_change);
 		}
 	}
 
@@ -474,12 +378,8 @@ void CAodixCore::dsp_work(void)
 		// perform transport cycle
 		if(trn_cycle && master_transport_sampleframe>=cue_end_sample)
 		{
-			// all sounds off thru all instances
-			for(int i=0;i<MAX_INSTANCES;i++)
-				instance_midi_panic(&instance[i],true,false);
-
 			// wrap master sampleframe pos
-			master_transport_sampleframe=cue_sta_sample;
+			master_transport_sampleframe-=cue_end_sample-cue_sta_sample;
 
 			// scroll back if rec live is switched
 			if(cfg.rec_live)
@@ -578,6 +478,131 @@ void CAodixCore::dsp_transport_stop(void)
 
 	// leave critical section
 	asio_leave_cs();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int CAodixCore::dsp_play_events(int const i_samples_per_point,int const block_sample_sta,int const block_sample_end,int const track_on[],double* tempo_change)
+{
+	// jump position
+	int jump=0;
+
+	// scan all sequencer events
+	for(int e=0;e<seq_num_events;e++)
+	{
+		// get event pointer
+		ADX_EVENT* pe=&seq_event[e];
+
+		// convert event location to 32-bit integer sample index stamp
+		int const event_sample_sta=(pe->pos*i_samples_per_point)>>4;
+		int const event_sample_end=((pe->pos+pe->par*pe->szd)*i_samples_per_point)>>4;
+
+		// check if event is in current audio block scope, current pattern and track is active
+		if(event_sample_sta<block_sample_end && event_sample_end>=block_sample_sta && pe->pat==user_pat && track_on[pe->trk])
+		{
+			// note event
+			if(pe->typ==EVT_NOT)
+			{
+				// note on
+				if(event_sample_sta>=block_sample_sta)
+					instance_add_midi_event(&instance[pe->da0],pe->trk,0x90+(pe->da1&0xF),pe->da2,pe->da3,0,event_sample_sta-block_sample_sta);
+
+				// note off
+				if(event_sample_end<block_sample_end)
+					instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,event_sample_end-block_sample_sta);
+			}
+
+			// pattern event
+			if(pe->typ==EVT_PAT)
+			{
+				// get referred marker
+				ADX_MARKER* pm=&project.pattern[pe->da0].marker[pe->da1];
+
+				// get marker offset
+				int const pe_marker_offset=pm->flg*pm->pos;
+
+				// get note tranpose amount
+				int const pe_note_transpose=int(pe->da2)-128;
+
+				// get velo tranpose amount
+				int const pe_velo_transpose=int(pe->da3)-128;
+
+				// scan all called pattern (sub-events)
+				for(int se=0;se<seq_num_events;se++)
+				{
+					// get sub-event
+					ADX_EVENT* pse=&seq_event[se];
+
+					// get sub-event position offset
+					int const i_sub_event_position_off=(pe->pos+pse->pos)-pe_marker_offset;
+
+					// convert sub-event location to 32-bit integer sample index stamp
+					int const sub_event_sample_sta=(i_sub_event_position_off*i_samples_per_point)>>4;
+					int const sub_event_sample_end=((i_sub_event_position_off+pse->par*pse->szd)*i_samples_per_point)>>4;
+
+					// check if event is in current audio block scope, current pattern and track is active
+					if(sub_event_sample_sta<block_sample_end && sub_event_sample_end>=block_sample_sta && pse->pat==pe->da0)
+					{
+						// sub note event
+						if(pse->typ==EVT_NOT)
+						{
+							// check sub note-on
+							if(sub_event_sample_sta>=block_sample_sta && sub_event_sample_sta>=event_sample_sta && sub_event_sample_sta<event_sample_end)
+							{
+								// get transposed note
+								int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
+
+								// get transposed velo
+								int const transposed_velo=arg_tool_clipped_assign(int(pse->da3)+pe_velo_transpose,1,127);
+
+								// send midi sub note-on event
+								instance_add_midi_event(&instance[pse->da0],pe->trk,0x90+(pse->da1&0xF),transposed_note,transposed_velo,0,sub_event_sample_sta-block_sample_sta);
+							}
+
+							// check sub note-off
+							if(sub_event_sample_end<block_sample_end && sub_event_sample_end>event_sample_sta && sub_event_sample_end<=event_sample_end)
+							{
+								// calculate transposed note
+								int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
+
+								// send midi sub note-off event
+								instance_add_midi_event(&instance[pse->da0],pe->trk,0x80+(pse->da1&0xF),transposed_note,0x40,0,sub_event_sample_end-block_sample_sta);
+							}
+						}
+
+						// sub midi automation event
+						if(pse->typ==EVT_MID)
+							instance_add_midi_event(&instance[pse->da0],pe->trk,pse->da1,pse->da2,pse->da3,0,sub_event_sample_end-block_sample_sta);
+
+						// sub vst automation event
+						if(pse->typ==EVT_AUT)
+							instance_set_param(&instance[pse->da0],(pse->da1<<8)|(pse->da2),float(pse->da3)/255.0f);
+
+						// sub tempo automation event
+						if(pse->typ==EVT_TMP)
+							*tempo_change=double(pse->da0)+double(pse->da1)*0.00390625;
+					}
+				}
+			}
+
+			// jump event
+			if(pe->typ==EVT_JMP && block_sample_sta!=event_sample_end)
+				jump=event_sample_end;
+
+			// midi automation event
+			if(pe->typ==EVT_MID)
+				instance_add_midi_event(&instance[pe->da0],pe->trk,pe->da1,pe->da2,pe->da3,0,event_sample_sta-block_sample_sta);
+
+			// vst automation event
+			if(pe->typ==EVT_AUT)
+				instance_set_param(&instance[pe->da0],(pe->da1<<8)|(pe->da2),float(pe->da3)/255.0f);
+
+			// tempo automation event
+			if(pe->typ==EVT_TMP)
+				*tempo_change=double(pe->da0)+double(pe->da1)*0.00390625;
+		}
+	}
+
+	return jump;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

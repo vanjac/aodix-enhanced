@@ -347,6 +347,7 @@ public:
 	void dsp_clear_input_buffers(void);
 	void dsp_transport_play(void);
 	void dsp_transport_stop(void);
+	int  dsp_play_events(int i_samples_per_point,int block_sample_sta,int block_sample_end,int const track_on[],double* tempo_change);
 	void dsp_stop_playing_notes(int pat,int trk,bool check_muted);
 	void dsp_vumeter_drive(float* psrc,float& vum,int const num_samples);
 
