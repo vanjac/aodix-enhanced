@@ -24,12 +24,12 @@ void conf_browse_folder(HWND const hwnd,char* buf)
 		// convert from MIDLISt to real string path
 		SHGetPathFromIDList(pList,buf);
 
-		// global pointer to the shell's IMalloc interface.  
-		LPMALLOC pMalloc; 
+		// global pointer to the shell's IMalloc interface.
+		LPMALLOC pMalloc;
 
 		// Get the shell's allocator and free the PIDL returned by
 		// SHBrowseForFolder.
-		if (SUCCEEDED(SHGetMalloc(&pMalloc))) 
+		if (SUCCEEDED(SHGetMalloc(&pMalloc)))
 			pMalloc->Free(pList);
 	}
 }
@@ -51,7 +51,7 @@ LRESULT CALLBACK conf_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 	{
 		// get user key and license edit pointers
 		HWND const hwnd_user_edit=GetDlgItem(hdlg,IDC_USER_NAME_EDIT);
-		
+
 		// set user key and license key
 		SetWindowText(hwnd_user_edit,gl_padx->cfg.user_name);
 		EnableWindow(hwnd_user_edit,TRUE);
@@ -231,7 +231,7 @@ LRESULT CALLBACK conf_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 		}
 
 		// dialog ok, accept changes
-		if(lw_par==IDC_APPLY_BUTTON || lw_par==IDOK) 
+		if(lw_par==IDC_APPLY_BUTTON || lw_par==IDOK)
 		{
 			// set wait cursor
 			SetCursor(gl_padx->hcursor_wait);

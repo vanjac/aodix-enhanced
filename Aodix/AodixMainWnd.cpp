@@ -12,7 +12,7 @@ LRESULT CALLBACK main_wnd_proc(HWND hwnd,UINT message,WPARAM wparam,LPARAM lpara
 	extern CAodixCore*	gl_padx;
 
 	// command message
-	if(message==WM_COMMAND) 
+	if(message==WM_COMMAND)
 	{
 		gl_padx->gui_command(hwnd,LOWORD(wparam));
 		return 0;
@@ -82,7 +82,7 @@ LRESULT CALLBACK main_wnd_proc(HWND hwnd,UINT message,WPARAM wparam,LPARAM lpara
 	{
 		gl_padx->gui_mouse_up(hwnd);
 		return 0;
-	}	
+	}
 
 	// mouse move
 	if(message==WM_MOUSEMOVE)
@@ -132,7 +132,7 @@ LRESULT CALLBACK main_wnd_proc(HWND hwnd,UINT message,WPARAM wparam,LPARAM lpara
 		{
 			// close asio
 			gl_padx->asio_close(hwnd);
-		
+
 			// kill main timer
 			KillTimer(hwnd,1);
 

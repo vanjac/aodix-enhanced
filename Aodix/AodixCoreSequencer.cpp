@@ -36,7 +36,7 @@ int CAodixCore::seq_pos_to_sample(int const pos)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::seq_add_event(int const pos,unsigned char const pat,unsigned char const trk,unsigned char const typ,unsigned char const da0,unsigned char const da1,unsigned char const da2,unsigned char const da3,int const overwrite)
 {
-	// if overwrite, delete all events at same pattern,position and track	
+	// if overwrite, delete all events at same pattern,position and track
 	if(overwrite)
 		seq_delete_events_at(pat,pos,1,trk,1);
 

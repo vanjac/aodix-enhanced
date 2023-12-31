@@ -799,7 +799,7 @@ void CAodixCore::edit_clr_pin(ADX_PIN* pp)
 {
 	// delete wires
 	delete[] pp->pwire;
-	
+
 	// clear pin
 	pp->num_wires=0;
 	pp->pwire=NULL;

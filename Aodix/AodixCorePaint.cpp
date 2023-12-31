@@ -43,7 +43,7 @@ void CAodixCore::paint_master_vumeter(HDC const hdc)
 		// paint vumeter bar
 		if(vumeter_width>0)
 			BitBlt(hdc,798,vu_y,vumeter_width,vumeter_height-1,hdc_gfx,64,304,SRCCOPY);
-		
+
 		// paint remaining bar
 		if(vumeter_width<213)
 			BitBlt(hdc,798+vumeter_width,vu_y,213-vumeter_width,vumeter_height-1,hdc_gfx,64+vumeter_width,336,SRCCOPY);
@@ -188,8 +188,8 @@ void CAodixCore::paint_marker(HDC const hdc,COLORREF const color,int const type,
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAodixCore::paint_wire(HDC const hdc,int const x1,int const y1,int const x2,int const y2,COLORREF const clr)
-{	
-	// get vector 
+{
+	// get vector
 	double const d_vw=double(x2-x1);
 	double const d_vh=double(y2-y1);
 
@@ -249,7 +249,7 @@ void CAodixCore::paint_pin_array(HDC const hdc,int const x,int const y,int const
 
 			// create and select the brush that will be used to fill the polygon
 			HBRUSH const hbrush=CreateSolidBrush(clr_code);
-			
+
 			// select brush
 			HBRUSH const hbrush_old=(HBRUSH)SelectObject(hdc,hbrush);
 
@@ -329,7 +329,7 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 	// set transparent text mode
 	SetBkMode(hdc,TRANSPARENT);
 
-	// master timer		
+	// master timer
 	gui_format_time(master_transport_sampleframe,buf_a);
 	paint_txt(hdc,135,21,buf_a,9,2);
 
@@ -380,7 +380,7 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 
 	// edit pos
 	paint_seq_pos_big(hdc,10,141,pp->usr_pos);
-	
+
 	// edit timer
 	gui_format_time(seq_pos_to_sample(pp->usr_pos),buf_a);
 	paint_txt(hdc,135,137,buf_a,9,2);
@@ -485,7 +485,7 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 	// blit instance list scrollbar
 	BitBlt(hdc,265,17,16,176,hdc_gfx,48,96,SRCCOPY);
 	BitBlt(hdc,265,17+(user_instance_list_offset*32)/49,16,16,hdc_gfx,16+(user_pressed==PRESS_INST_SCROLL)*16,96,SRCCOPY);
-	
+
 	// vst instance list entries
 	for(int i=0;i<11;i++)
 	{
@@ -555,7 +555,7 @@ void CAodixCore::paint(HWND const hwnd,HDC const hdc,int const w,int const h)
 			int const param_index=user_parameter_list_offset+pil;
 
 			// get parameter y-screen coordinate
-			int const iy=17+pil*16;		
+			int const iy=17+pil*16;
 
 			// get labels (if param is available)
 			if(param_index<pi->peffect->numParams)

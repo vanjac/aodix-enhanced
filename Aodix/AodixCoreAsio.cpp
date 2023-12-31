@@ -530,7 +530,7 @@ void CAodixCore::asio_init(HWND const hwnd)
 	asio_callbacks.asioMessage=&asio_cb_messages;
 	asio_callbacks.bufferSwitchTimeInfo=&asio_cb_buffer_switch_time_info;
 
-	// create buffers for all inputs and outputs of the card with the 
+	// create buffers for all inputs and outputs of the card with the
 	// preferredSize from ASIOGetBufferSize() as buffer size
 	// filling the bufferInfos from the start without a gap
 	ASIOBufferInfo *info=asio_driver_info.bufferInfos;
@@ -698,7 +698,7 @@ void CAodixCore::asio_fill_pin_menu(HMENU const hmenu,int const fill_inputs,int 
 	// no assigned pin
 	if(fill_inputs)
 	{
-		// add no assigned input option 
+		// add no assigned input option
 		arg_menu_add_item(hmenu,"No Input",opt_id++);
 
 		// get pin input selected assignment
@@ -706,7 +706,7 @@ void CAodixCore::asio_fill_pin_menu(HMENU const hmenu,int const fill_inputs,int 
 	}
 	else
 	{
-		// add no assigned output option 
+		// add no assigned output option
 		arg_menu_add_item(hmenu,"No Output",opt_id++);
 
 		// get pin output selected assignment

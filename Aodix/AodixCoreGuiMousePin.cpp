@@ -82,7 +82,7 @@ void CAodixCore::gui_mouse_scan_pin(HWND const hwnd,int const xm,int const ym,AD
 			// check coordinates
 			if(check)
 			{
-				// get vector 
+				// get vector
 				float const d_vw=float(x2-x1);
 				float const d_vh=float(y2-y1);
 

@@ -196,7 +196,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			gui_is_dirty=1;
 		}
 
-		// sequencer backspace (all tracks)			
+		// sequencer backspace (all tracks)
 		if(keycode==VK_BACK)
 		{
 			edit_back(1);
@@ -265,7 +265,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 		// sequencer edit select all
 		if(keycode=='A')
 			gui_command(hwnd,ID_EDIT_SELECTALL);
-		
+
 		// sequencer edit interpolate
 		if(keycode=='I')
 			gui_command(hwnd,ID_EDIT_INTERPOLATE);
@@ -346,7 +346,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 				user_row=0;
 				user_trk++;
 				gui_is_dirty=1;
-			}			
+			}
 		}
 
 		// sequencer go next pattern
@@ -489,7 +489,7 @@ void CAodixCore::gui_key_down(HWND const hwnd,int const keycode,int const flags)
 			}
 
 			// dsp rout delete current instance
-			if(user_page==1)	
+			if(user_page==1)
 			{
 				gui_delete_current_instance(hwnd);
 				gui_is_dirty=1;

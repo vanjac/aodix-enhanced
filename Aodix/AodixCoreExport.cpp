@@ -294,7 +294,7 @@ void CAodixCore::export_cub_file_dlg(HWND const hwnd,int const is_fxp)
 	// save file dialog
 	if(is_fxp)
 		result=arg_file_dialog_save(hinstance_app,hwnd,"Export Cubase Program File",filename,"FXP Program Files (*.fxp)\0*.fxp\0\0","","");
-	else	
+	else
 		result=arg_file_dialog_save(hinstance_app,hwnd,"Export Cubase Bank File",filename,"FXB Program Files (*.fxb)\0*.fxb\0\0","","");
 
 	// dialog success

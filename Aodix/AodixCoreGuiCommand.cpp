@@ -13,7 +13,7 @@ void CAodixCore::gui_command(HWND const hwnd,int const id)
 {
 	// get instance
 	ADX_INSTANCE* pi=&instance[user_instance];
-		
+
 	// ppqn menu
 	if(id>=16384 && id<=16393)
 	{
@@ -255,7 +255,7 @@ void CAodixCore::gui_command(HWND const hwnd,int const id)
 	if(id==ID_FILE_SAVEAS)
 		export_adx_file_dlg(hwnd);
 
-	// import midi file		
+	// import midi file
 	if(id==ID_FILE_IMPORTMIDIFILE)
 		import_midi_file_dlg(hwnd);
 
@@ -351,7 +351,7 @@ void CAodixCore::gui_command(HWND const hwnd,int const id)
 
 	// edit cut
 	if(id==ID_EDIT_CUT40012)
-	{			
+	{
 		edit_copy(1);
 		gui_is_dirty=1;
 	}
@@ -365,7 +365,7 @@ void CAodixCore::gui_command(HWND const hwnd,int const id)
 
 	// edit paste
 	if(id==ID_EDIT_PASTE40014)
-	{		
+	{
 		edit_paste();
 		gui_is_dirty=1;
 	}

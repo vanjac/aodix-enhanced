@@ -523,7 +523,7 @@ void CAodixCore::gui_mouse_down(HWND const hwnd,bool const is_double_click)
 			// set spin pressed button flag index
 			user_pressed=(spin_index?PRESS_PAT_NEXT:PRESS_PAT_PREV);
 
-			// post refresh	
+			// post refresh
 			gui_is_dirty=1;
 		}
 

@@ -411,8 +411,8 @@ void CAodixCore::import_adx_file(HWND const hwnd,char* filename)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CAodixCore::import_search_file(char* pfolder,char* pfilename,char* pmatchfile) 
-{   
+void CAodixCore::import_search_file(char* pfolder,char* pfilename,char* pmatchfile)
+{
 	// set find path
 	char findpath[_MAX_PATH];
 	sprintf(findpath,"%s\\*.*",pfolder);
@@ -422,7 +422,7 @@ void CAodixCore::import_search_file(char* pfolder,char* pfilename,char* pmatchfi
 	HANDLE hFind=FindFirstFile(findpath,&ffd);
 
 	// no files found
-	if(hFind==INVALID_HANDLE_VALUE) 
+	if(hFind==INVALID_HANDLE_VALUE)
 		return;
 
 	// search loop
@@ -962,7 +962,7 @@ void CAodixCore::import_midi_file(HWND const hwnd,char* filename)
 					params[0]=(unsigned char)stat;
 
 					// start reading at 1st param
-					cur_param=1;			
+					cur_param=1;
 				}
 
 				// num params
@@ -1048,7 +1048,7 @@ void CAodixCore::import_midi_file(HWND const hwnd,char* filename)
 	else
 	{
 		// verbose failed
-		MessageBox(hwnd,"Error: Operation Failed","Aodix - MIDI Import",MB_OK | MB_ICONERROR);	
+		MessageBox(hwnd,"Error: Operation Failed","Aodix - MIDI Import",MB_OK | MB_ICONERROR);
 	}
 }
 
@@ -1180,7 +1180,7 @@ void CAodixCore::import_midi_on_sysex(FILE* pfile,int const pattern_index,int co
 				double const d_tempo=256.0*double(60000000.0/double((data[0]<<16) | (data[1]<<8) | (data[2])));
 
 				// get integral tempo
-				int const int_tempo=int(d_tempo);	
+				int const int_tempo=int(d_tempo);
 
 				// get tempo most and less significant amount
 				int const i_ms_tempo=(int_tempo>>8)&0xFF;

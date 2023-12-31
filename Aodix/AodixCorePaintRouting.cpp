@@ -213,7 +213,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 			// fill ab struct
 			bf.SourceConstantAlpha=128;
 			AlphaBlend(hdc,user_pressed_wire_x-18,user_pressed_wire_y-66,37,133,hdc_gfx,576,0,37,133,bf);
-			
+
 			// get inversed gain
 			float const inv_gain=1.0f-user_pressed_wire->value;
 
@@ -226,7 +226,7 @@ void CAodixCore::paint_routing(HWND const hwnd,HDC const hdc,int const w,int con
 
 			// blit gain slider
 			BitBlt(hdc,s_xp,s_yp,32,16,hdc_gfx,613,0,SRCCOPY);
-		
+
 			// format gain text
 			sprintf(buf_a,"%.3d%%",int(user_pressed_wire->value*100.0f));
 			paint_txt(hdc,s_xp+3,s_yp+4,buf_a,4,3);

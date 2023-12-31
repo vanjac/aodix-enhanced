@@ -42,7 +42,7 @@ void CAodixCore::gui_mouse_up(HWND const hwnd)
 
 	// master transport play button released
 	if(user_pressed==PRESS_PLAY)
-		dsp_transport_play();	
+		dsp_transport_play();
 
 	// master transport stop button released
 	if(user_pressed==PRESS_STOP)

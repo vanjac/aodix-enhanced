@@ -192,7 +192,7 @@ struct ADX_INSTANCE
 	int midi_queue_size;
 
 	// vst midi events for processing block
-	VstMidiEvent midi_event[MAX_BLOCK_EVENTS];	
+	VstMidiEvent midi_event[MAX_BLOCK_EVENTS];
 
 	// graphical screen position in routing
 	int	x;
@@ -418,7 +418,7 @@ public:
 public:
 	int	edit_get_quantization(void);
 	int edit_quantize(int const position);
-	
+
 public:
 	void import_adx_file_dlg(HWND const hwnd);
 	void import_adx_pin(ADX_PIN* pp,int num_pins,FILE* pfile);

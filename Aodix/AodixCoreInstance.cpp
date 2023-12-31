@@ -146,7 +146,7 @@ void CAodixCore::instance_dll(HWND const hwnd,ADX_INSTANCE* pi,char* filename,in
 		pi->alias[strlen(pi->alias)-4]=0;
 	}
 
-	// success instance, init plugin 
+	// success instance, init plugin
 	pi->peffect->dispatcher(pi->peffect,effOpen,0,0,NULL,0.0f);
 	pi->peffect->dispatcher(pi->peffect,effSetSampleRate,0,0,NULL,(float)cfg.asio_driver_sample_rate);
 	pi->peffect->dispatcher(pi->peffect,effSetBlockSize,0,dsp_block_size,NULL,0.0f);
@@ -404,7 +404,7 @@ void CAodixCore::instance_midi_panic(ADX_INSTANCE* pi,bool const all_notes_off,b
 		{
 			// all sounds off thru all channels
 			for(int c=0;c<16;c++)
-				instance_add_midi_event(pi,user_trk,0xB0+c,120,0,0,0); 
+				instance_add_midi_event(pi,user_trk,0xB0+c,120,0,0,0);
 		}
 	}
 }

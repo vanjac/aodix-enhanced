@@ -13,7 +13,7 @@ WNDPROC gl_wp_orig_edit_proc;
 char const gl_str_not[]={"C-C#D-D#E-F-F#G-G#A-A#B-"};
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-LRESULT APIENTRY gui_edit_subclass_proc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam) 
+LRESULT APIENTRY gui_edit_subclass_proc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
 	// extern aodix core pointer and window
 	extern CAodixCore*	gl_padx;
@@ -27,7 +27,7 @@ LRESULT APIENTRY gui_edit_subclass_proc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM
 	}
 
 	// original procedure
-	return CallWindowProc(gl_wp_orig_edit_proc,hwnd,uMsg,wParam,lParam); 
+	return CallWindowProc(gl_wp_orig_edit_proc,hwnd,uMsg,wParam,lParam);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,16 +41,16 @@ void CAodixCore::gui_create_edit(HWND const hwnd,int x,int y,int const w,int con
 	hwnd_edit=CreateWindow("EDIT",NULL,WS_CHILD | WS_VISIBLE | ES_LEFT,x+4,y+4,w-8,h-8,hwnd,(HMENU)NULL,(HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE),NULL);
 
 	// subclass the edit control.
-	gl_wp_orig_edit_proc=(WNDPROC)SetWindowLong(hwnd_edit,GWL_WNDPROC,(LONG)gui_edit_subclass_proc); 
+	gl_wp_orig_edit_proc=(WNDPROC)SetWindowLong(hwnd_edit,GWL_WNDPROC,(LONG)gui_edit_subclass_proc);
 
 	// set action id
 	user_edit_text_action_id=text_action_id;
 
 	// add text to the window.
-	SendMessage(hwnd_edit,WM_SETTEXT,0,(LPARAM)default_text); 
+	SendMessage(hwnd_edit,WM_SETTEXT,0,(LPARAM)default_text);
 
 	// set all selection
-	SendMessage(hwnd_edit,EM_SETSEL,0,-1); 
+	SendMessage(hwnd_edit,EM_SETSEL,0,-1);
 
 	// set font
 	SendMessage(hwnd_edit,WM_SETFONT,(UINT)hfont_terminal,TRUE);
@@ -222,7 +222,7 @@ void CAodixCore::gui_timer(HWND const hwnd)
 		// master position display
 		paint_seq_pos_big(hdc,10,25,play_pos);
 
-		// master timer		
+		// master timer
 		gui_format_time(master_transport_sampleframe,buf);
 		paint_txt(hdc,135,21,buf,9,2);
 	}
@@ -276,7 +276,7 @@ void CAodixCore::gui_timer(HWND const hwnd)
 			{
 				// set new position
 				pp->usr_pos=edit_quantize(arg_tool_clipped_assign(play_pos+(seq_area_h/2)*pp->usr_ppp,0,MAX_SIGNED_INT));
-				
+
 				// post refresh
 				gui_is_dirty=1;
 			}
@@ -432,7 +432,7 @@ int CAodixCore::gui_vst_search(HMENU const pa_hmenu,char* pfolder)
 	HANDLE hFind=FindFirstFile(findpath,&ffd);
 
 	// no files found
-	if(hFind==INVALID_HANDLE_VALUE) 
+	if(hFind==INVALID_HANDLE_VALUE)
 		return 0;
 
 	// found items

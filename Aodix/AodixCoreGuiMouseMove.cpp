@@ -219,7 +219,7 @@ void CAodixCore::gui_mouse_move(HWND const hwnd)
 			pe->trk=arg_tool_clipped_assign(user_trk_offset+(xm-(TRACK_WIDTH+user_pr_width))/TRACK_WIDTH,0,MAX_TRACKS-1);
 
 		// transpose event note in piano roll (horizontal move)
-		if(user_pressed==PRESS_PR_EVENT_MOVE)	
+		if(user_pressed==PRESS_PR_EVENT_MOVE)
 		{
 			// get piano roll screen port and new note
 			int const pr_vn=(user_pr_width-8)/user_pr_note_width;

@@ -169,7 +169,7 @@ void CAodixCore::dsp_work(void)
 			if(pw->instance_index==MASTER_INSTANCE)
 			{
 				arg_dsp_gmix(dsp_input_buffer[i],dsp_output_buffer[pw->pin_index],dsp_block_size,pw->value*pw->value);
-							
+
 				// update highest pin count
 				if(pw->pin_index>hpc)
 					hpc=pw->pin_index;
@@ -207,7 +207,7 @@ void CAodixCore::dsp_work(void)
 
 					// skip current machine or uninstanced machine
 					if(pii->peffect!=NULL && ii!=i)
-					{	
+					{
 						// check if any output is connected to our machine
 						for(int io=0;io<pii->peffect->numOutputs;io++)
 						{
@@ -292,7 +292,7 @@ void CAodixCore::dsp_work(void)
 						pi->peffect->processReplacing(pi->peffect,pi->pins,pi->pous,dsp_block_size);
 					else
 						pi->peffect->process(pi->peffect,pi->pins,pi->pous,dsp_block_size);
-				
+
 					// output rout
 					for(int o=0;o<pi->peffect->numOutputs;o++)
 					{
@@ -330,7 +330,7 @@ void CAodixCore::dsp_work(void)
 							if(pw->instance_index==MASTER_INSTANCE)
 							{
 								arg_dsp_gmix(pi->pous[o],dsp_output_buffer[pw->pin_index],dsp_block_size,pw->value*pw->value);
-							
+
 								// update highest pin count
 								if(pw->pin_index>hpc)
 									hpc=pw->pin_index;

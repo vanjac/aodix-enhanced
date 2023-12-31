@@ -483,7 +483,7 @@ void CAodixCore::paint_sequencer(HWND const hwnd,HDC const hdc,int const w,int c
 			// paint play-gridline
 			arg_gdi_paint_invert_rect(hdc,0,i_ty,w,2);
 
-			// update last gridline coordinate 
+			// update last gridline coordinate
 			master_transport_last_y=i_ty;
 		}
 
