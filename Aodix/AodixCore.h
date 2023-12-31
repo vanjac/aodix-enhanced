@@ -350,7 +350,7 @@ public:
 	void dsp_clear_input_buffers(void);
 	void dsp_transport_play(void);
 	void dsp_transport_stop(void);
-	int  dsp_play_events(int i_samples_per_point,int block_sample_sta,int block_sample_end,int const track_on[],double* tempo_change);
+	int  dsp_play_events(int i_samples_per_point,int block_sample_sta,int block_sample_end,int deltaframe,int const track_on[],double* tempo_change);
 	void dsp_stop_playing_notes(int pat,int trk,bool check_muted);
 	void dsp_vumeter_drive(float* psrc,float& vum,int const num_samples);
 
@@ -372,7 +372,7 @@ public:
 	void instance_open_editor(ADX_INSTANCE* pi,HWND const hwnd);
 	void instance_close_editor(ADX_INSTANCE* pi);
 	void instance_add_midi_event(ADX_INSTANCE* pi,int const track,unsigned char const md0,unsigned char const md1,unsigned char const md2,unsigned char const md3,int const deltaframe);
-	void instance_midi_panic(ADX_INSTANCE* pi,bool const all_notes_off,bool const all_sounds_off);
+	void instance_midi_panic(ADX_INSTANCE* pi,bool const all_notes_off,bool const all_sounds_off,int const deltaframe);
 	void instance_set_param(ADX_INSTANCE* pi,int const param_index,float const param_value);
 
 public:

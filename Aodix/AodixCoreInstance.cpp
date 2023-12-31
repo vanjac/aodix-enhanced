@@ -386,7 +386,7 @@ void CAodixCore::instance_add_midi_event(ADX_INSTANCE* pi,int const track,unsign
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CAodixCore::instance_midi_panic(ADX_INSTANCE* pi,bool const all_notes_off,bool const all_sounds_off)
+void CAodixCore::instance_midi_panic(ADX_INSTANCE* pi,bool const all_notes_off,bool const all_sounds_off,int const deltaframe)
 {
 	// check if effect is instanced
 	if(pi->peffect!=NULL)
@@ -396,7 +396,7 @@ void CAodixCore::instance_midi_panic(ADX_INSTANCE* pi,bool const all_notes_off,b
 		{
 			// all notes off thru all channels
 			for(int c=0;c<16;c++)
-				instance_add_midi_event(pi,user_trk,0xB0+c,123,0,0,0);
+				instance_add_midi_event(pi,user_trk,0xB0+c,123,0,0,deltaframe);
 		}
 
 		// check all sounds off flag
@@ -404,7 +404,7 @@ void CAodixCore::instance_midi_panic(ADX_INSTANCE* pi,bool const all_notes_off,b
 		{
 			// all sounds off thru all channels
 			for(int c=0;c<16;c++)
-				instance_add_midi_event(pi,user_trk,0xB0+c,120,0,0,0); 
+				instance_add_midi_event(pi,user_trk,0xB0+c,120,0,0,deltaframe); 
 		}
 	}
 }

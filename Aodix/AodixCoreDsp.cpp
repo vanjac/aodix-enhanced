@@ -128,20 +128,21 @@ void CAodixCore::dsp_work(void)
 		if (trn_cycle && cue_end_sample<block_sample_end)
 		{
 			// play events before cycle wrap
-			dsp_play_events(i_samples_per_point,block_sample_sta,cue_end_sample,track_on,&tempo_change);
+			dsp_play_events(i_samples_per_point,block_sample_sta,cue_end_sample,-block_sample_sta,track_on,&tempo_change);
 
 			// all sounds off thru all instances
 			for(int i=0;i<MAX_INSTANCES;i++)
-				instance_midi_panic(&instance[i],true,false);
+				instance_midi_panic(&instance[i],true,false,cue_end_sample-block_sample_sta-1);
 
 			// play events after cycle wrap
 			int const wrap_sample_end=cue_sta_sample+(block_sample_end-cue_end_sample);
-			jump=dsp_play_events(i_samples_per_point,cue_sta_sample,wrap_sample_end,track_on,&tempo_change);
+			int const wrap_deltaframe=-cue_sta_sample+(cue_end_sample-block_sample_sta);
+			jump=dsp_play_events(i_samples_per_point,cue_sta_sample,wrap_sample_end,wrap_deltaframe,track_on,&tempo_change);
 		}
 		else
 		{
 			// play block events
-			jump=dsp_play_events(i_samples_per_point,block_sample_sta,block_sample_end,track_on,&tempo_change);
+			jump=dsp_play_events(i_samples_per_point,block_sample_sta,block_sample_end,-block_sample_sta,track_on,&tempo_change);
 		}
 	}
 
@@ -437,7 +438,7 @@ void CAodixCore::dsp_transport_play(void)
 	{
 		// scan all instances
 		for(int i=0;i<MAX_INSTANCES;i++)
-			instance_midi_panic(&instance[i],true,true);
+			instance_midi_panic(&instance[i],true,true,0);
 	}
 
 	// set transport sample frame position from user pattern edit position
@@ -471,7 +472,7 @@ void CAodixCore::dsp_transport_stop(void)
 
 	// send all notes off (all sounds off too if transport is stopped)
 	for(int i=0;i<MAX_INSTANCES;i++)
-		instance_midi_panic(&instance[i],true,true);
+		instance_midi_panic(&instance[i],true,true,0);
 
 	// sort events
 	seq_sort();
@@ -481,7 +482,7 @@ void CAodixCore::dsp_transport_stop(void)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int CAodixCore::dsp_play_events(int const i_samples_per_point,int const block_sample_sta,int const block_sample_end,int const track_on[],double* tempo_change)
+int CAodixCore::dsp_play_events(int const i_samples_per_point,int const block_sample_sta,int const block_sample_end,int const deltaframe,int const track_on[],double* tempo_change)
 {
 	// jump position
 	int jump=0;
@@ -504,11 +505,11 @@ int CAodixCore::dsp_play_events(int const i_samples_per_point,int const block_sa
 			{
 				// note on
 				if(event_sample_sta>=block_sample_sta)
-					instance_add_midi_event(&instance[pe->da0],pe->trk,0x90+(pe->da1&0xF),pe->da2,pe->da3,0,event_sample_sta-block_sample_sta);
+					instance_add_midi_event(&instance[pe->da0],pe->trk,0x90+(pe->da1&0xF),pe->da2,pe->da3,0,event_sample_sta+deltaframe);
 
 				// note off
 				if(event_sample_end<block_sample_end)
-					instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,event_sample_end-block_sample_sta);
+					instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,event_sample_end+deltaframe);
 			}
 
 			// pattern event
@@ -555,7 +556,7 @@ int CAodixCore::dsp_play_events(int const i_samples_per_point,int const block_sa
 								int const transposed_velo=arg_tool_clipped_assign(int(pse->da3)+pe_velo_transpose,1,127);
 
 								// send midi sub note-on event
-								instance_add_midi_event(&instance[pse->da0],pe->trk,0x90+(pse->da1&0xF),transposed_note,transposed_velo,0,sub_event_sample_sta-block_sample_sta);
+								instance_add_midi_event(&instance[pse->da0],pe->trk,0x90+(pse->da1&0xF),transposed_note,transposed_velo,0,sub_event_sample_sta+deltaframe);
 							}
 
 							// check sub note-off
@@ -565,13 +566,13 @@ int CAodixCore::dsp_play_events(int const i_samples_per_point,int const block_sa
 								int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
 
 								// send midi sub note-off event
-								instance_add_midi_event(&instance[pse->da0],pe->trk,0x80+(pse->da1&0xF),transposed_note,0x40,0,sub_event_sample_end-block_sample_sta);
+								instance_add_midi_event(&instance[pse->da0],pe->trk,0x80+(pse->da1&0xF),transposed_note,0x40,0,sub_event_sample_end+deltaframe);
 							}
 						}
 
 						// sub midi automation event
 						if(pse->typ==EVT_MID)
-							instance_add_midi_event(&instance[pse->da0],pe->trk,pse->da1,pse->da2,pse->da3,0,sub_event_sample_end-block_sample_sta);
+							instance_add_midi_event(&instance[pse->da0],pe->trk,pse->da1,pse->da2,pse->da3,0,sub_event_sample_end+deltaframe);
 
 						// sub vst automation event
 						if(pse->typ==EVT_AUT)
@@ -590,7 +591,7 @@ int CAodixCore::dsp_play_events(int const i_samples_per_point,int const block_sa
 
 			// midi automation event
 			if(pe->typ==EVT_MID)
-				instance_add_midi_event(&instance[pe->da0],pe->trk,pe->da1,pe->da2,pe->da3,0,event_sample_sta-block_sample_sta);
+				instance_add_midi_event(&instance[pe->da0],pe->trk,pe->da1,pe->da2,pe->da3,0,event_sample_sta+deltaframe);
 
 			// vst automation event
 			if(pe->typ==EVT_AUT)
