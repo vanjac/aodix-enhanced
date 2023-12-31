@@ -130,9 +130,8 @@ void CAodixCore::dsp_work(void)
 			// play events before cycle wrap
 			dsp_play_events(i_samples_per_point,block_sample_sta,cue_end_sample,-block_sample_sta,track_on,&tempo_change);
 
-			// all sounds off thru all instances
-			for(int i=0;i<MAX_INSTANCES;i++)
-				instance_midi_panic(&instance[i],true,false,cue_end_sample-block_sample_sta-1);
+			// stop all notes at cycle end
+			dsp_stop_playing_notes(pp->cue_end,user_pat,-1,true,cue_end_sample-block_sample_sta);
 
 			// play events after cycle wrap
 			int const wrap_sample_end=cue_sta_sample+(block_sample_end-cue_end_sample);
@@ -438,7 +437,7 @@ void CAodixCore::dsp_transport_play(void)
 	{
 		// scan all instances
 		for(int i=0;i<MAX_INSTANCES;i++)
-			instance_midi_panic(&instance[i],true,true,0);
+			instance_midi_panic(&instance[i],true,true);
 	}
 
 	// set transport sample frame position from user pattern edit position
@@ -472,7 +471,7 @@ void CAodixCore::dsp_transport_stop(void)
 
 	// send all notes off (all sounds off too if transport is stopped)
 	for(int i=0;i<MAX_INSTANCES;i++)
-		instance_midi_panic(&instance[i],true,true,0);
+		instance_midi_panic(&instance[i],true,true);
 
 	// sort events
 	seq_sort();
@@ -607,7 +606,7 @@ int CAodixCore::dsp_play_events(int const i_samples_per_point,int const block_sa
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CAodixCore::dsp_stop_playing_notes(int pat,int trk,bool check_muted)
+void CAodixCore::dsp_stop_playing_notes(int const pos,int const pat,int const trk,bool const check_muted,int const deltaframe)
 {
 	if(master_time_info.flags & kVstTransportPlaying)
 	{
@@ -616,9 +615,6 @@ void CAodixCore::dsp_stop_playing_notes(int pat,int trk,bool check_muted)
 
 		// get pattern pointer
 		ADX_PATTERN* pp=&project.pattern[pat];
-
-		// current playback position
-		int play_pos = seq_sample_to_pos(master_transport_sampleframe);
 
 		// scan all sequencer events
 		for(int e=0;e<seq_num_events;e++)
@@ -629,13 +625,13 @@ void CAodixCore::dsp_stop_playing_notes(int pat,int trk,bool check_muted)
 			// event overlaps playback position
 			if(pe->pat==pat && pe->szd
 				&& (check_muted ^ (pe->trk==trk)) && (!check_muted || !pp->track[pe->trk].mute)
-				&& pe->pos <= play_pos && pe->pos+pe->par > play_pos)
+				&& pe->pos <= pos && pe->pos+pe->par >= pos)
 			{
 				// note event
 				if (pe->typ==EVT_NOT)
 				{
 					// send note off message
-					instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,0);
+					instance_add_midi_event(&instance[pe->da0],pe->trk,0x80+(pe->da1&0xF),pe->da2,0x40,0,deltaframe);
 				}
 				// pattern event
 				else if (pe->typ==EVT_PAT)
@@ -659,13 +655,13 @@ void CAodixCore::dsp_stop_playing_notes(int pat,int trk,bool check_muted)
 						int sub_pos = (pe->pos+pse->pos)-pe_marker_offset;
 
 						if (pse->pat==pe->da0 && pse->szd && pse->typ==EVT_NOT
-							&& sub_pos <= play_pos && sub_pos+pse->par > play_pos)
+							&& sub_pos <= pos && sub_pos+pse->par >= pos)
 						{
 							// calculate transposed note
 							int const transposed_note=arg_tool_clipped_assign(int(pse->da2)+pe_note_transpose,1,127);
 
 							// send sub note-off message
-							instance_add_midi_event(&instance[pse->da0],pe->trk,0x80+(pse->da1&0xF),transposed_note,0x40,0,0);
+							instance_add_midi_event(&instance[pse->da0],pe->trk,0x80+(pse->da1&0xF),transposed_note,0x40,0,deltaframe);
 						}
 					}
 				}

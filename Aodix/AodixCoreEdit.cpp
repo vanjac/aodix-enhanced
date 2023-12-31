@@ -692,7 +692,7 @@ void CAodixCore::edit_toggle_mute(int pat,int trk)
 
 	// stop muted notes
 	if(pt->mute && !edit_is_solo_mode(pat))
-		dsp_stop_playing_notes(pat,trk,false);
+		dsp_stop_playing_notes(seq_sample_to_pos(master_transport_sampleframe), pat,trk,false,0);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -706,14 +706,14 @@ void CAodixCore::edit_toggle_solo(int pat,int trk)
 
 	// if this is the first solo track, mute all other non-muted tracks
 	if(!pt->solo && !edit_is_solo_mode(pat))
-		dsp_stop_playing_notes(pat,trk,true);
+		dsp_stop_playing_notes(seq_sample_to_pos(master_transport_sampleframe),pat,trk,true,0);
 
 	// toggle track mute
 	pt->solo=!pt->solo;
 
 	// if this isn't the last solo track, mute this track
 	if(!pt->solo && edit_is_solo_mode(pat))
-		dsp_stop_playing_notes(pat,trk,false);
+		dsp_stop_playing_notes(seq_sample_to_pos(master_transport_sampleframe),pat,trk,false,0);
 }
 
 

@@ -325,7 +325,7 @@ LRESULT CALLBACK boun_dlg_proc(HWND hdlg,UINT message,WPARAM wparam,LPARAM lpara
 
 			// send all notes off/all sounds off
 			for(int i=0;i<MAX_INSTANCES;i++)
-				gl_padx->instance_midi_panic(&gl_padx->instance[i],true,true,0);
+				gl_padx->instance_midi_panic(&gl_padx->instance[i],true,true);
 
 			// re-enable controls
 			EnableWindow(hwnd_edit1,TRUE);
