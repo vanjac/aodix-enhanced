@@ -13,6 +13,7 @@ void CAodixCore::dsp_work(void)
 
 	// temporal sequencer flags
 	int jump=0;
+	bool cycle_wrap=false;
 
 	// highest pin count flag
 	int hpc=3;
@@ -93,9 +94,6 @@ void CAodixCore::dsp_work(void)
 	int const cue_end_sample=(pp->cue_end*i_samples_per_point)>>4;
 	int const cue_stp_sample=(pp->cue_stp*i_samples_per_point)>>4;
 
-	// get transport cycle status
-	int const trn_cycle=master_time_info.flags & kVstTransportCycleActive;
-
 	// fill audio master time info structure
 	master_time_info.samplePos=double(master_transport_sampleframe);
 	master_time_info.sampleRate=cfg.asio_driver_sample_rate;
@@ -125,13 +123,14 @@ void CAodixCore::dsp_work(void)
 		int const block_sample_end=master_transport_sampleframe+dsp_block_size;
 
 		// check cycle wrap
-		if (trn_cycle && cue_end_sample<block_sample_end)
+		cycle_wrap=(master_time_info.flags & kVstTransportCycleActive) && block_sample_sta<=cue_end_sample && block_sample_end>cue_end_sample;
+		if(cycle_wrap)
 		{
 			// play events before cycle wrap
 			dsp_play_events(i_samples_per_point,block_sample_sta,cue_end_sample,-block_sample_sta,track_on,&tempo_change);
 
 			// stop all notes at cycle end
-			dsp_stop_playing_notes(pp->cue_end,user_pat,-1,true,cue_end_sample-block_sample_sta);
+			dsp_stop_playing_notes(pp->cue_end,user_pat,-1,true,cue_end_sample-block_sample_sta-1);
 
 			// play events after cycle wrap
 			int const wrap_sample_end=cue_sta_sample+(block_sample_end-cue_end_sample);
@@ -357,26 +356,13 @@ void CAodixCore::dsp_work(void)
 	if(master_time_info.flags & kVstTransportPlaying)
 	{
 		// transport increment (and jump command dispatch)
-		if(jump)
+		if(jump && !cycle_wrap)
 			master_transport_sampleframe=jump;
 		else
 			master_transport_sampleframe+=dsp_block_size;
 
-		// tempo change dispatch
-		if(tempo_change>=10.0)
-		{
-			// get current sequencer position
-			int const trn_new_sample=(master_transport_sampleframe<<4)/i_samples_per_point;
-
-			// set new tempo
-			project.master_tempo=tempo_change;
-
-			// set sequencer position
-			master_transport_sampleframe=seq_pos_to_sample(trn_new_sample+1);
-		}
-
 		// perform transport cycle
-		if(trn_cycle && master_transport_sampleframe>=cue_end_sample)
+		if(cycle_wrap)
 		{
 			// wrap master sampleframe pos
 			master_transport_sampleframe-=cue_end_sample-cue_sta_sample;
@@ -402,6 +388,19 @@ void CAodixCore::dsp_work(void)
 
 			// post refresh
 			gui_is_dirty=1;
+		}
+
+		// tempo change dispatch
+		if(tempo_change>=10.0)
+		{
+			// get current sequencer position
+			int const trn_new_sample=(master_transport_sampleframe<<4)/i_samples_per_point;
+
+			// set new tempo
+			project.master_tempo=tempo_change;
+
+			// set sequencer position
+			master_transport_sampleframe=seq_pos_to_sample(trn_new_sample+1);
 		}
 	}
 
